@@ -15,6 +15,7 @@ import { onMounted, ref } from 'vue'
 import debounce from 'lodash/debounce'
 import NavItem from './NavItem.vue'
 
+
 const props = defineProps<{
   navList: Array<navItem>
   bg: string

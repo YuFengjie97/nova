@@ -1,11 +1,13 @@
 <template>
   <div class="home py-40 flex justify-center">
-    <NavGrid :navList="navList" bg="/img/bg.png" />
+    <NavGrid :navList="navList" :bg="img" />
   </div>
 </template>
 <script lang="ts" setup>
 import NavGrid from '@/components/NavGrid.vue'
 import { ref } from 'vue'
+
+import img from '@/assets/img/bg.png'
 
 const navList = ref<Array<navItem>>([
   { title: '愤愤愤愤', link: '/' },
