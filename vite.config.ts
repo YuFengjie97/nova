@@ -15,5 +15,8 @@ export default defineConfig({
     host: 'localhost',
     port: 8080,
     open: true
+  },
+  build: {
+    outDir: './docs'
   }
 })
