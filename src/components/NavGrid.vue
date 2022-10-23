@@ -25,7 +25,7 @@ const navGrid = ref<HTMLElement>()
 const navGridDomRect = ref<DOMRect>()
 
 function initNavGridDomRect() {
-  console.log(1)
+  console.log('initNavGridDomRect')
   navGridDomRect.value = navGrid.value!.getBoundingClientRect()
 }
 
@@ -41,6 +41,6 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
 }
 </style>

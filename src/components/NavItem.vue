@@ -8,14 +8,13 @@
         'background-image': `url(${bg})`,
       }"
     ></div>
-    <div class="content">
-      <router-link :to="link">{{ title }}</router-link>
-    </div>
+    <div class="content" @click="go">{{ title }}</div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
+import router from '../router'
 
 interface navItem {
   title: string
@@ -34,10 +33,15 @@ watch(
   (conDomRect) => {
     const { top, left } = navItem.value!.getBoundingClientRect()
     let { top: baseTop, left: baseLeft } = conDomRect as DOMRect
-    
+
     bgPos.value = `-${left - baseLeft}px -${top - baseTop}px`
   }
 )
+
+function go() {
+  let routeData = router.resolve({ path: props.link })
+  window.open(routeData.href, '_blank')
+}
 </script>
 
 <style lang="less" scoped>
@@ -48,14 +52,11 @@ watch(
   position: relative;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow:
-  0px 0px 20.1px rgba(0, 0, 0, 0.057),
-  0px 0px 36.2px rgba(0, 0, 0, 0.083),
-  0px 0px 55.6px rgba(0, 0, 0, 0.106),
-  0px 0px 84.3px rgba(0, 0, 0, 0.14),
-  0px 0px 156px rgba(0, 0, 0, 0.22)
-;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 1);
+  transition: 0.3s;
+
   &:hover {
+    box-shadow: 0px 0px 10px rgb(210, 175, 210);
     .content {
       transform: rotateY(0deg);
       z-index: 2;
@@ -81,15 +82,15 @@ watch(
   .content {
     position: relative;
     z-index: 1;
-    padding: 20px 40px;
     text-align: center;
+    cursor: pointer;
     user-select: none;
     color: #fd93b8;
-    cursor: pointer;
     background: #2d3436;
     transition: 0.3s;
     transform-origin: center center;
     transform: rotateY(180deg);
+    padding: 20px 40px;
   }
 }
 </style>
