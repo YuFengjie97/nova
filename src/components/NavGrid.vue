@@ -15,7 +15,6 @@ import { onMounted, ref } from 'vue'
 import debounce from 'lodash/debounce'
 import NavItem from './NavItem.vue'
 
-
 const props = defineProps<{
   navList: Array<navItem>
   bg: string
@@ -31,7 +30,7 @@ function initNavGridDomRect() {
 
 onMounted(() => {
   initNavGridDomRect()
-  window.addEventListener('resize', debounce(initNavGridDomRect, 1000))
+  window.addEventListener('resize', debounce(initNavGridDomRect, 500))
 })
 </script>
 

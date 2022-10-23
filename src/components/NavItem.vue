@@ -91,6 +91,9 @@ function go() {
     transform-origin: center center;
     transform: rotateY(180deg);
     padding: 20px 40px;
+    letter-spacing: 2px;
+    font-family: Pacifico, 'Microsoft YaHei';
+    // font-family: 'Blackadder ITC', 'Microsoft YaHei';
   }
 }
 </style>
