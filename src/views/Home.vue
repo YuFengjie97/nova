@@ -10,7 +10,7 @@ import { ref } from 'vue'
 import img from '@/assets/img/bg.png'
 
 const navList = ref<Array<navItem>>([
-  { title: '愤愤愤愤', link: '/' },
+  { title: '星星评价分', link: '/starRate' },
   { title: '分分分分分分分分分', link: '/' },
   { title: '啊', link: '/' },
   { title: '愤愤愤愤烦烦烦烦烦烦烦烦烦烦烦烦烦烦烦', link: '/' },
