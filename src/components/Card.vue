@@ -14,7 +14,7 @@ const props = defineProps<{
 
 <style lang="less" scoped>
 .card {
-  min-width: 40%;
+  min-width: 600px;
   display: inline-block;
   padding: 40px;
   border-radius: 6px;
