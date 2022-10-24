@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Home from '@/views/Home.vue'
-import About from '@/views/About.vue'
 import NotFound from '@/views/NotFound.vue'
+
 
 interface Route {
   path: string
@@ -16,9 +16,10 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    children: [
-      { path: 'about', component: About }
-    ],
+  },
+  {
+    path: '/starRate',
+    component: ()=>import('@/views/StarRate.vue')
   },
   { path: '/:path(.*)', component: NotFound },
 ]

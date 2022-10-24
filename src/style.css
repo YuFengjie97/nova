@@ -8,3 +8,6 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+.baseBg{
+  background-color: #2d3436;
+}
