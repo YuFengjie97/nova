@@ -16,7 +16,6 @@ const props = defineProps<{
 .card {
   min-width: 600px;
   display: inline-block;
-  padding: 40px;
   border-radius: 6px;
   overflow: hidden;
   background-color: var(--bgColor);

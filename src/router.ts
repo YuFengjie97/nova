@@ -21,6 +21,10 @@ const routes = [
     path: '/starRate',
     component: ()=>import('@/views/StarRate.vue')
   },
+  {
+    path: '/flowField',
+    component: ()=>import('@/views/FlowField.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 

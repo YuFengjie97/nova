@@ -16,7 +16,7 @@ import debounce from 'lodash/debounce'
 import NavItem from './NavItem.vue'
 
 const props = defineProps<{
-  navList: Array<navItem>
+  navList: Array<NavItem>
   bg: string
 }>()
 

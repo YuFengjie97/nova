@@ -16,14 +16,14 @@
 import { ref, watch } from 'vue'
 import router from '../router'
 
-interface navItem {
+interface NavItem {
   title: string
   link: string
   conDomRect: DOMRect
   bg: string
 }
 
-const props = defineProps<navItem>()
+const props = defineProps<NavItem>()
 
 const navItem = ref<HTMLElement>()
 const bgPos = ref('')
