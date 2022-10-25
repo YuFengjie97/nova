@@ -8,3 +8,8 @@ interface Position{
   x: number,
   y: number
 }
+
+interface Vector{
+  vx: number,
+  vy: number
+}

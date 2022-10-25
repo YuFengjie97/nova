@@ -25,6 +25,10 @@ const routes = [
     path: '/flowField',
     component: ()=>import('@/views/FlowField.vue')
   },
+  {
+    path: '/flowFieldLine',
+    component: ()=>import('@/views/FlowFieldLine.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 

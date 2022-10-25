@@ -10,9 +10,9 @@ import { ref } from 'vue'
 import img from '@/assets/img/bg.png'
 
 const navList = ref<Array<NavItem>>([
-  { title: 'StarRate星星评分', link: '/starRate' },
-  { title: 'FlowField', link: '/flowField' },
-  { title: '啊', link: '/' },
+  { title: 'cssTrick-StarRate(星星评分)', link: '/starRate' },
+  { title: 'fabric-FlowField(柏林噪音)', link: '/flowField' },
+  { title: 'fabric-FlowFieldLine', link: '/flowFieldLine' },
   { title: 'gggg鬼鬼鬼鬼鬼鬼鬼鬼鬼鬼鬼鬼', link: '/' },
   { title: '肥', link: '/' },
   { title: '愤愤愤愤', link: '/' },

@@ -29,7 +29,7 @@ let flowFieldSize: number = 50
 
 let xInc = 0.3
 let yInc = 0.3
-let zInc = 0.0007
+let zInc = 0.0008
 let zoff = 0
 
 class FlowField {
@@ -133,7 +133,7 @@ function updateFlowFields() {
     let yoff = 0
     for (let x = 0; x < cols; x++) {
       yoff += yInc
-      let angle = noise(xoff, yoff, zoff) * 90
+      let angle = noise(xoff, yoff, zoff) * 480
       let index = x + y * cols
       flowFields[index].updateAngle(angle)
     }
@@ -143,7 +143,8 @@ function updateFlowFields() {
 
 function animate() {
   updateFlowFields()
-  requestAnimationFrame(animate)
+  fabric.util.requestAnimFrame(animate);
+  canvas?.renderAll()
 }
 
 onMounted(() => {
