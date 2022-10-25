@@ -3,6 +3,9 @@
     "types": [
       "node"
     ],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
