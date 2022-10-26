@@ -1,5 +1,6 @@
 <template>
-  <div class="home py-40 flex justify-center">
+  <div class="home py-40 flex felx-col flex-wrap justify-center items-center">
+    <h1 class="title">Hover and Click</h1>
     <NavGrid :navList="navList" :bg="img" />
   </div>
 </template>
@@ -75,5 +76,11 @@ const navList = ref<Array<NavItem>>([
 <style lang="less" scoped>
 .home {
   background-color: #b4286c;
+  .title{
+    width: fit-content;
+    padding-bottom: 10px;
+    font-size: 4rem;
+    font-family: 'Patrick Hand';
+  }
 }
 </style>
