@@ -1,6 +1,6 @@
 <template>
   <div class="flowFieldLine2 h-full flex justify-center items-center">
-    <Card class="card" bgColor="#00cec9">
+    <Card class="card" bgColor="transparent">
       <P5Con :sketch="sketch" />
     </Card>
   </div>
@@ -22,13 +22,15 @@ let rows = height / flowFieldSize
 let cols = height / flowFieldSize
 let flowFieldTotal = rows * cols
 let flowFields: Array<FlowField> = []
-let flowFieldBaseAngle = 360
+let flowFieldBaseAngle = PI * 8
 let particles: Array<Particle> = []
-let particleTotal = 10
-let xInc = 0.3
-let yInc = 0.3
-let zInc = 0.0008
+let particleTotal = 500
+let xInc = 0.1
+let yInc = 0.1
+let zInc = 0.0003
 let zoff = 0
+
+let multiColor = true
 
 function initFlowFields() {
   for (let x = 0; x < width; x += flowFieldSize) {
@@ -47,10 +49,7 @@ function updateFlowFields() {
     for (let x = 0; x < cols; x++) {
       yoff += yInc
       let angle = noise(xoff, yoff, zoff) * flowFieldBaseAngle
-      let vec = new p5.Vector(
-        cos(angle) * flowFieldSize,
-        sin(angle) * flowFieldSize
-      )
+      let vec = p5.Vector.fromAngle(angle)
       let index = x + y * cols
       flowFields[index].update(vec)
     }
@@ -66,7 +65,8 @@ function initParticles($p: p5) {
         rangeWidth: width,
         rangeHeight: height,
         position: new p5.Vector(random() * width, random() * height),
-        r: 2
+        r: 2,
+        color: 'rgba(0, 0, 0, 0.25)'
       })
     )
     i++
@@ -84,7 +84,7 @@ function updateParticles() {
       particles[i].applyForce(flowFields[index].vec)
     }
     particles[i].update()
-    particles[i].draw()
+    particles[i].draw(multiColor)
     i++
   }
 }
@@ -92,7 +92,8 @@ function updateParticles() {
 function sketch($p: p5) {
   $p.setup = function () {
     $p.createCanvas(width, height)
-    $p.background('#34495e')
+    $p.background('rgba(0,0,0,0.5)')
+    $p.colorMode($p.HSB, 255)
     initFlowFields()
     initParticles($p)
   }
@@ -113,6 +114,7 @@ function sketch($p: p5) {
   .con {
     width: 100%;
     height: 100%;
+    // color: rgba(0, 0, 0, 0.5);
   }
 }
 </style>

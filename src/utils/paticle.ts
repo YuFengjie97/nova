@@ -36,11 +36,15 @@ export class Particle {
     }
   }
 
-  draw () {
-    this.$p.stroke(this.h, 255, 255, 25);
-    this.h = this.h + 1;
-    if (this.h > 255) {
-      this.h = 0;
+  draw (multiColor: boolean = true) {
+    if(multiColor){
+      this.$p.stroke(this.h, 255, 255, 30);
+      this.h = this.h + 1;
+      if (this.h > 255) {
+        this.h = 0;
+      }
+    }else{
+      this.$p.stroke(this.color)
     }
     this.$p.strokeWeight(this.r);
     this.$p.line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
