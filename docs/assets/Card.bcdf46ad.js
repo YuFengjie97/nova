@@ -1,1 +1,0 @@
-import{d as a,c as s,g as r,n as t,o as c,_}from"./index.cd616a4a.js";const n=a({__name:"Card",props:{bgColor:null},setup(e){return(o,l)=>(c(),s("div",{class:"card",style:t({"--bgColor":`${e.bgColor}`})},[r(o.$slots,"default",{},void 0,!0)],4))}});const p=_(n,[["__scopeId","data-v-2ca1083c"]]);export{p as C};
