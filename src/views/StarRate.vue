@@ -1,6 +1,6 @@
 <template>
   <div class="starRate h-full flex justify-center items-center">
-    <Card bgColor="#175f8f" class="p-10">
+    <Card bgColor="#175f8f" class="p-10 w-fit h-fit">
       <StarRate v-for="(item, index) in starList" :key="index" v-bind="item" />
     </Card>
   </div>

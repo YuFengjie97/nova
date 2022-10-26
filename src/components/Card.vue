@@ -1,15 +1,11 @@
 <template>
-  <div class="card" :style="{ '--bgColor': `${bgColor}` }">
+  <div class="card">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 
-const props = defineProps<{
-  bgColor: string
-}>()
 </script>
 
 <style lang="less" scoped>
@@ -18,7 +14,7 @@ const props = defineProps<{
   display: inline-block;
   border-radius: 6px;
   overflow: hidden;
-  background-color: var(--bgColor);
+  background-color: #2c3e50;
   box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.5);
 }
 </style>

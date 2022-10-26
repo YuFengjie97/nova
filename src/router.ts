@@ -28,6 +28,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/flowFieldLine2',
     component: ()=>import('@/views/FlowFieldLine2.vue')
   },
+  {
+    path: '/maze',
+    component: ()=>import('@/views/Maze.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 
