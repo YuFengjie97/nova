@@ -76,6 +76,7 @@ function go() {
     transition: 0.3s;
     transform-origin: center center;
     transform: rotateY(0deg);
+    background-color: #e84393;
     background-repeat: repeat;
     overflow: hidden;
   }
