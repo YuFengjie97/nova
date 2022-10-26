@@ -12,8 +12,8 @@ import img from '@/assets/img/bg.png'
 const navList = ref<Array<NavItem>>([
   { title: 'cssTrick-StarRate(星星评分)', link: '/starRate' },
   { title: 'fabric-FlowField(柏林噪音)', link: '/flowField' },
-  { title: 'fabric-FlowFieldLine', link: '/flowFieldLine' },
-  { title: 'gggg鬼鬼鬼鬼鬼鬼鬼鬼鬼鬼鬼鬼', link: '/' },
+  { title: 'fabric-FlowFieldPoint', link: '/flowFieldLine' },
+  { title: 'p5-FlowFieldLine', link: '/flowFieldLine2' },
   { title: '肥', link: '/' },
   { title: '愤愤愤愤', link: '/' },
   { title: '分分分', link: '/' },

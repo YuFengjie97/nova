@@ -92,7 +92,8 @@ function go() {
     transform: rotateY(180deg);
     padding: 20px 40px;
     letter-spacing: 2px;
-    font-family: Pacifico, 'Microsoft YaHei';
+    font-family: 'Patrick Hand';
+    // font-family: Pacifico, 'Microsoft YaHei';
     // font-family: 'Blackadder ITC', 'Microsoft YaHei';
   }
 }

@@ -31,6 +31,7 @@ let xInc = 0.3
 let yInc = 0.3
 let zInc = 0.0008
 let zoff = 0
+let flowFieldBaseAngle = 360
 
 class FlowField {
   position: Position
@@ -133,7 +134,7 @@ function updateFlowFields() {
     let yoff = 0
     for (let x = 0; x < cols; x++) {
       yoff += yInc
-      let angle = noise(xoff, yoff, zoff) * 480
+      let angle = noise(xoff, yoff, zoff) * flowFieldBaseAngle
       let index = x + y * cols
       flowFields[index].updateAngle(angle)
     }

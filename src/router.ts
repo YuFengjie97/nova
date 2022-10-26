@@ -2,16 +2,11 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
+import { RouteRecordRaw } from 'vue-router'
 
 
-interface Route {
-  path: string
-  name: string
-  component: any
-  children: Array<Route>
-}
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
@@ -28,6 +23,10 @@ const routes = [
   {
     path: '/flowFieldLine',
     component: ()=>import('@/views/FlowFieldLine.vue')
+  },
+  {
+    path: '/flowFieldLine2',
+    component: ()=>import('@/views/FlowFieldLine2.vue')
   },
   { path: '/:path(.*)', component: NotFound },
 ]
