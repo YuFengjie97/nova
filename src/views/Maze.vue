@@ -13,8 +13,6 @@ import p5 from 'p5'
 import { ref } from 'vue'
 const { floor, random } = Math
 
-const con = ref()
-
 let width = 820
 let height = 620
 const cellSize = 20
