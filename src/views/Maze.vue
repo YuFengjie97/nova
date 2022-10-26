@@ -11,20 +11,20 @@ import Card from '@/components/Card.vue'
 import P5Con from '@/components/P5Con.vue'
 import p5 from 'p5'
 import { ref } from 'vue'
-const { floor, ceil, random } = Math
+const { floor, random } = Math
 
 const con = ref()
 
-let width = 800
-let height = 600
+let width = 820
+let height = 620
 const cellSize = 20
 const row = floor(width / cellSize) - 1
 const col = floor(height / cellSize) - 1
 let cells: Array<Array<Cell>> = []
-const bgColor = '#2980b9'
-const wallColor = '#fdcb6e'
-const currentColor = '#d63031'
-const pathColor = '#c0392b'
+const bgColor = '#222f3e'
+const wallColor = '#c0392b'
+const currentColor = '#55efc4'
+const pathColor = '#34495e'
 
 class Cell {
   $p: p5
@@ -74,8 +74,8 @@ class Cell {
   }
 
   draw() {
-    let canvasX = this.x * cellSize + 4
-    let canvasY = this.y * cellSize + 4
+    let canvasX = this.x * cellSize + 2
+    let canvasY = this.y * cellSize + 2
 
     this.$p.stroke(wallColor)
     this.$p.strokeWeight(4)
@@ -159,7 +159,6 @@ function sketch($p: p5) {
   }
 
   $p.draw = function () {
-    // 绘制背景,所有cell状态
     cells.forEach((row) => {
       row.forEach((cell) => {
         cell.draw()
@@ -196,10 +195,10 @@ function sketch($p: p5) {
 .maze {
   height: 100%;
   .card {
-    padding: 10px;
-    width: 800px;
-    height: 600px;
+    width: 804px;
+    height: 604px;
     background: #2980b9;
+    // color: #015fa8;
   }
 }
 </style>
