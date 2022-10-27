@@ -2,14 +2,14 @@
 </script>
 
 <template>
-  <div class="h-screen rootApp">
+  <div class="h-full rootApp">
     <router-view/>
   </div>
 </template>
 
 <style scoped>
 .rootApp{
-  background-color: #2d3436;
+  background-color: var(--bodyBgColor);
   min-width: 900px;
 }
 </style>
