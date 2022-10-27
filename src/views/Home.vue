@@ -75,6 +75,7 @@ const navList = ref<Array<NavItem>>([
 </script>
 <style lang="less" scoped>
 .home {
+  min-width: 900px;
   background-color: #b4286c;
   .title{
     width: fit-content;
