@@ -32,6 +32,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/maze',
     component: ()=>import('@/views/Maze.vue')
   },
+  {
+    path: '/gradientLine',
+    component: ()=>import('@/views/GradientLine.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 

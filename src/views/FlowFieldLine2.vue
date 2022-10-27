@@ -11,7 +11,7 @@ import { ref, onMounted } from 'vue'
 import Card from '@/components/Card.vue'
 import P5Con from '@/components/P5Con.vue'
 import p5 from 'p5'
-import { FlowField, noise, Particle } from '@/utils/index'
+import { FlowField, noise, ParticleFlow } from '@/utils/index'
 
 const { random, floor, ceil, cos, sin, PI } = Math
 
@@ -23,7 +23,7 @@ let cols = height / flowFieldSize
 let flowFieldTotal = rows * cols
 let flowFields: Array<FlowField> = []
 let flowFieldBaseAngle = PI * 8
-let particles: Array<Particle> = []
+let particles: Array<ParticleFlow> = []
 let particleTotal = 500
 let xInc = 0.1
 let yInc = 0.1
@@ -60,7 +60,7 @@ function initParticles($p: p5) {
   let i = 0
   while (i < particleTotal) {
     particles.push(
-      new Particle({
+      new ParticleFlow({
         $p,
         rangeWidth: width,
         rangeHeight: height,

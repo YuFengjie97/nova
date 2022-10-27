@@ -16,7 +16,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'fabric-FlowFieldPoint', link: '/flowFieldLine' },
   { title: 'p5-FlowFieldLine', link: '/flowFieldLine2' },
   { title: 'p5-randomMaze(随机迷宫)', link: '/maze' },
-  { title: '愤愤愤愤', link: '/' },
+  { title: 'p5-gradientLine(渐变线)', link: '/gradientLine' },
   { title: '分分分', link: '/' },
   { title: '愤愤愤愤', link: '/' },
   { title: '愤愤愤愤', link: '/' },
