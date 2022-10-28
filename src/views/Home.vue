@@ -1,5 +1,5 @@
 <template>
-  <div class="home py-40 flex felx-col flex-wrap justify-center items-center">
+  <div class="home">
     <h1 class="title">Hover and Click</h1>
     <NavGrid :navList="navList" :bg="img" />
   </div>
@@ -55,12 +55,18 @@ const navList = ref<Array<NavItem>>([
 </script>
 <style lang="less" scoped>
 .home {
-  min-width: 900px;
-  background-color: #b4286c;
+  background: #b4286c;
+  height: 100%;
+  min-height: 100vh;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   .title{
     width: fit-content;
-    padding-bottom: 10px;
-    font-size: 4rem;
+    padding-bottom: 1rem;
+    font-size: 3rem;
     font-family: 'Patrick Hand';
   }
 }

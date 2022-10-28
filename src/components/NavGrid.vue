@@ -40,7 +40,8 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .navGrid {
-  width: 80%;
+  width: 100%;
+  padding: 0 2rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

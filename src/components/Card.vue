@@ -10,7 +10,7 @@
 
 <style lang="less" scoped>
 .card {
-  min-width: 600px;
+  height: 100%;
   display: inline-block;
   border-radius: 6px;
   overflow: hidden;

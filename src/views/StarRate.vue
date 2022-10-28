@@ -1,6 +1,6 @@
 <template>
-  <div class="starRate h-full flex justify-center items-center">
-    <Card bgColor="#175f8f" class="p-10 w-fit h-fit">
+  <div class="starRate viewCon h-full flex justify-center items-center">
+    <Card bgColor="#175f8f" class="card">
       <StarRate v-for="(item, index) in starList" :key="index" v-bind="item" />
     </Card>
   </div>
@@ -20,4 +20,10 @@ let starList = ref([
 </script>
 
 <style lang="less" scoped>
+.starRate{
+  .card{
+    padding: 2rem 4rem;
+  }
+  
+}
 </style>

@@ -34,14 +34,14 @@ const props = defineProps({
   align-items: center;
   font-size: 1rem;
   .title {
-    padding-right: 20px;
+    padding-right: 1rem;
     color: var(--color);
     font-family: 'Pacifico';
   }
   .star {
     font-size: 2.4rem;
     position: relative;
-    letter-spacing: 3px;
+    letter-spacing: 0.2rem;
     background-image: linear-gradient(
       90deg,
       var(--color) var(--rate),
@@ -52,7 +52,7 @@ const props = defineProps({
   }
   .rate{
     color: var(--color);
-    padding-left: 20px;
+    padding-left: 2rem;
   }
 }
 </style>

@@ -46,6 +46,7 @@ function go() {
 
 <style lang="less" scoped>
 .navItem {
+  font-size: 1.2rem;
   min-height: fit-content;
   display: flex;
   align-items: center;
@@ -91,8 +92,8 @@ function go() {
     transition: 0.3s;
     transform-origin: center center;
     transform: rotateY(180deg);
-    padding: 20px 40px;
-    letter-spacing: 2px;
+    padding: 1rem 2rem;
+    letter-spacing: 0.1rem;
     font-family: 'Patrick Hand';
     // font-family: Pacifico, 'Microsoft YaHei';
     // font-family: 'Blackadder ITC', 'Microsoft YaHei';
