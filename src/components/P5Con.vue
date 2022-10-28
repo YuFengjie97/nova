@@ -10,24 +10,45 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import p5 from 'p5'
 
 interface Props {
-  sketch: ($p: p5) => void,
+  preLoad?: ($p: p5) => void
+  setup: ($p: p5) => void
+  draw: ($p: p5) => void
+  isWEBGL?: boolean
   showFps?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(),{
-  sketch: ($p: p5) => {},
-  showFps: true
+const props = withDefaults(defineProps<Props>(), {
+  isWEBGL: false,
+  showFps: true,
 })
 
 const p5Con = ref<HTMLElement>()
 let $p: p5
 const frameRate = ref(0)
-
 let timer: NodeJS.Timer
+let bgColor = '#2d3436'
+
+function sketch($p: p5) {
+  $p.preload = function () {
+    if(props.preLoad) props.preLoad($p)
+  }
+
+  $p.setup = function () {
+    let { width, height } = p5Con.value?.getBoundingClientRect()!
+    $p.createCanvas(width, height, props.isWEBGL ? $p.WEBGL : undefined)
+    $p.background(bgColor)
+
+    if(props.setup) props.setup($p)
+  }
+
+  $p.draw = function () {
+    if(props.draw) props.draw($p)
+  }
+}
 
 onMounted(() => {
-  $p = new p5(props.sketch, p5Con.value)
-  
+  $p = new p5(sketch, p5Con.value)
+
   if (props.showFps) {
     timer = setInterval(() => {
       frameRate.value = $p.floor($p.frameRate())
@@ -50,16 +71,16 @@ onUnmounted(() => {
     height: 100%;
   }
   .framRate {
-    width: 80px;
-    padding: 10px;
+    width: 5.5rem;
+    padding: 0.5rem 1rem;
     font-family: 'Patrick Hand';
-    border-radius: 4px;
+    border-radius: 0.2rem;
     overflow: hidden;
     position: absolute;
-    top: 4px;
-    right: 2px;
-    background: #2d3436;
-    color: #fff;
+    top: 0;
+    right: 0;
+    background: var(--bg2);
+    color: var(--text);
   }
 }
 </style>

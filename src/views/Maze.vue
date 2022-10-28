@@ -1,7 +1,7 @@
 <template>
-  <div class="maze flex justify-center items-center">
-    <Card class="card">
-      <P5Con :sketch="sketch" />
+  <div class="viewCon" style="height: 100%">
+    <Card>
+      <P5Con :setup="setup" :draw="draw" />
     </Card>
   </div>
 </template>
@@ -10,14 +10,13 @@
 import Card from '@/components/Card.vue'
 import P5Con from '@/components/P5Con.vue'
 import p5 from 'p5'
-import { ref } from 'vue'
 const { floor, random } = Math
 
-let width = 820
-let height = 620
+let width = 0
+let height = 0
 const cellSize = 20
-const row = floor(width / cellSize) - 1
-const col = floor(height / cellSize) - 1
+let row = 0
+let col = 0
 let cells: Array<Array<Cell>> = []
 const bgColor = '#222f3e'
 const wallColor = '#c0392b'
@@ -146,23 +145,27 @@ function breakWall(curCell: Cell, neiCell: Cell) {
 let stack: Array<Cell> = []
 let current: Cell
 
-function sketch($p: p5) {
-  $p.setup = function () {
-    $p.createCanvas(width, height)
-    $p.background(bgColor)
-    $p.frameRate(60)
+function setup($p: p5) {
+  
+  width = $p.width
+  height = $p.height
+  row = floor(width / cellSize)
+  col = floor(height / cellSize)
 
-    initCells($p)
-    stack.push(cells[0][0])
-  }
+  $p.frameRate(60)
 
-  $p.draw = function () {
-    cells.forEach((row) => {
-      row.forEach((cell) => {
-        cell.draw()
-      })
+  initCells($p)
+  
+  stack.push(cells[0][0])
+}
+
+function draw() {
+  cells.forEach((row) => {
+    row.forEach((cell) => {
+      cell.draw()
     })
-    /**
+  })
+  /**
      * dfs算法
      *  1.Choose the initial cell, mark it as visited and push it to the stack
         2.While the stack is not empty
@@ -173,30 +176,20 @@ function sketch($p: p5) {
             3.Remove the wall between the current cell and the chosen cell
             4.Mark the chosen cell as visited and push it to the stack
      */
-    if (stack.length > 0) {
-      current = stack.pop()!
-      current.highlight()
-      current.visited = true
-      const next = current.getNeighbor()
-      if (next) {
-        stack.push(current)
-        breakWall(current, next)
-        next.visited = true
-        stack.push(next)
-      }
+  if (stack.length > 0) {
+    current = stack.pop()!
+    current.highlight()
+    current.visited = true
+    const next = current.getNeighbor()
+    if (next) {
+      stack.push(current)
+      breakWall(current, next)
+      next.visited = true
+      stack.push(next)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.maze {
-  height: 100%;
-  .card {
-    width: 804px;
-    height: 604px;
-    background: #2980b9;
-    // color: #015fa8;
-  }
-}
 </style>

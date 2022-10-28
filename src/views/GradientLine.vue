@@ -1,7 +1,7 @@
 <template>
-  <div class="gradientLine h-full flex justify-center items-center">
+  <div class="gradientLine viewCon">
     <Card class="card">
-      <P5Con :sketch="sketch"></P5Con>
+      <P5Con :setup="setup" :draw="draw"></P5Con>
     </Card>
   </div>
 </template>
@@ -17,8 +17,8 @@ const { random, floor } = Math
 
 let particles: Array<ParticleGradientLine> = []
 let particlesTotal = 30
-let width = 800
-let height = 600
+let width: number
+let height: number
 let velBase = 2 // 最开始的随机速度基准值
 let lineRange = 200 // 在这个范围内，才会绘制线条
 let lineWidth = 2
@@ -94,24 +94,16 @@ function mouseLine($p: p5) {
   }
 }
 
-function sketch($p: p5) {
-  $p.setup = function () {
-    $p.createCanvas(width, height)
+  function setup ($p: p5) {
+    width = $p.width
+    height = $p.height
     $p.background('#2d3436')
     initParticles($p)
   }
-  $p.draw = function () {
+  function draw ($p: p5) {
     $p.background('#2d3436')
     updateParticles($p)
     mouseLine($p)
   }
-}
 </script>
 
-<style lang="less" scoped>
-.gradientLine {
-  .card {
-    // color: rgb(166, 179, 54);
-  }
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="flowField">
-    <Card bgColor="#d63031" class="p-2">
+    <Card class="card">
       <div class="con" ref="con">
         <canvas ref="canvasDom" />
       </div>
@@ -172,6 +172,10 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  .card{
+    width: fit-content;
+    height: fit-content;
+  }
   .con {
     width: 800px;
     height: 600px;

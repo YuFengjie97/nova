@@ -1,7 +1,12 @@
 <template>
-  <div class="codeRain h-full flex justify-center items-center">
-    <Card class="card">
-      <P5Con :sketch="sketch"></P5Con>
+  <div class="codeRain viewCon">
+    <Card>
+      <P5Con
+        :isWEBGL="true"
+        :preLoad="preload"
+        :setup="setup"
+        :draw="draw"
+      ></P5Con>
     </Card>
   </div>
 </template>
@@ -18,12 +23,12 @@ const { random, floor } = Math
 
 let font: p5.Font
 let bgColor = '#000'
-let width = 800
-let height = 600
-let fontSize = 16
+let width: number
+let height: number
+let fontSize = 20
 let letterSpace = 2
-let velBase = 4
-let velMin = 1
+let velBase = 15
+let velMin = 5
 let flickerChance = 0.3
 let errorChance = 0.001
 let baseColor = [120, 100, 100]
@@ -72,7 +77,7 @@ class Stream {
     this.str = str
     this.pos = pos
     this.vel = vel
-    let translateZ = parseFloat((-10 * random() + 3).toFixed(1))
+    let translateZ = parseFloat((-8 * random() + 3).toFixed(1))
     this.translateZ = translateZ
 
     for (let i = 0; i < str.length; i++) {
@@ -84,7 +89,7 @@ class Stream {
   }
   draw() {
     this.$p.textFont(font)
-    this.$p.translate(0,0,this.translateZ)
+    this.$p.translate(0, 0, this.translateZ)
     this.chars.forEach((char) => {
       char.draw()
     })
@@ -114,7 +119,7 @@ function initStreams($p: p5) {
   let langLen = langs.length
   for (let i = 0; i < streamTotal; i++) {
     let str = langs[i < langLen ? i : i % langLen]
-    let pos = new p5.Vector(random() * width, -100)
+    let pos = new p5.Vector($p.random(width), -100)
     let vel = new p5.Vector(0, velMin + random() * velBase)
     streams.push(new Stream($p, str, pos, vel))
   }
@@ -126,27 +131,22 @@ function updateStreams() {
   }
 }
 
-function sketch($p: p5) {
-  $p.preload = function () {
-    font = $p.loadFont(fontAssets)
-  }
-  $p.setup = function () {
-    $p.createCanvas(width, height, $p.WEBGL)
-    $p.frameRate(30)
-    $p.background(bgColor)
-    $p.colorMode($p.HSB)
-    initStreams($p)
-  }
-  $p.draw = function () {
-    $p.translate(-width / 2, -height / 2)
-    $p.background(bgColor)
+function preload($p: p5) {
+  font = $p.loadFont(fontAssets)
+}
 
-    updateStreams()
-  }
+function setup($p: p5) {
+  width = $p.width
+  height = $p.height
+  // $p.frameRate(60)
+  $p.background(bgColor)
+  $p.colorMode($p.HSB)
+  initStreams($p)
+}
+
+function draw($p: p5) {
+  $p.translate(-width / 2, -height / 2)
+  $p.background(bgColor)
+  updateStreams()
 }
 </script>
-<style lang="less" scoped>
-.codeRain {
-  // color: hsl(102, 100%, 50%);
-}
-</style>

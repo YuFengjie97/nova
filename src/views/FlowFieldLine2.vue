@@ -1,7 +1,7 @@
 <template>
-  <div class="flowFieldLine2 h-full flex justify-center items-center">
-    <Card class="card" bgColor="transparent">
-      <P5Con :sketch="sketch" />
+  <div class="flowFieldLine2 viewCon">
+    <Card class="card">
+      <P5Con :setup="setup" :draw="draw" />
     </Card>
   </div>
 </template>
@@ -15,12 +15,12 @@ import { FlowField, noise, ParticleFlow } from '@/utils/index'
 
 const { random, floor, ceil, cos, sin, PI } = Math
 
-let width = 800
-let height = 600
+let width: number
+let height: number
 let flowFieldSize = 40
-let rows = height / flowFieldSize
-let cols = height / flowFieldSize
-let flowFieldTotal = rows * cols
+let rows: number
+let cols: number
+let flowFieldTotal: number
 let flowFields: Array<FlowField> = []
 let flowFieldBaseAngle = PI * 8
 let particles: Array<ParticleFlow> = []
@@ -89,32 +89,19 @@ function updateParticles() {
   }
 }
 
-function sketch($p: p5) {
-  $p.setup = function () {
-    $p.createCanvas(width, height)
+  function setup ($p: p5) {
+    width = $p.width
+    height = $p.height
+    rows = floor(width / flowFieldSize)
+    cols = floor(height / flowFieldSize)
+    flowFieldTotal = rows*cols
     $p.background('rgba(0,0,0,0.5)')
     $p.colorMode($p.HSB, 255)
     initFlowFields()
     initParticles($p)
   }
-  $p.draw = function () {
+  function draw ($p: p5) {
     updateFlowFields()
     updateParticles()
   }
-}
 </script>
-
-<style lang="less" scoped>
-.flowFieldLine2 {
-  .card {
-    width: 800px;
-    height: 600px;
-    padding: 0;
-  }
-  .con {
-    width: 100%;
-    height: 100%;
-    // color: rgba(0, 0, 0, 0.5);
-  }
-}
-</style>
