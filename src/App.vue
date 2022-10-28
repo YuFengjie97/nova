@@ -2,13 +2,13 @@
 </script>
 
 <template>
-  <div class="min-h-screen rootApp">
-    <router-view/>
+  <div class="h-screen rootApp">
+    <router-view></router-view>
   </div>
 </template>
 
 <style scoped>
 .rootApp{
-  background-color: var(--bodyBgColor);
+  background-color: var(--bg);
 }
 </style>

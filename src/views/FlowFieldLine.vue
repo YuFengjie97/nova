@@ -1,6 +1,6 @@
 <template>
   <div class="flowFieldLine">
-    <Card bgColor="#00cec9">
+    <Card class="card">
       <div class="con" ref="con">
         <canvas ref="canvasDom"></canvas>
       </div>
@@ -171,17 +171,3 @@ class FlowField {
   }
 }
 </script>
-
-<style lang="less" scoped>
-.flowFieldLine {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .con {
-    width: 800px;
-    height: 600px;
-  }
-}
-</style>

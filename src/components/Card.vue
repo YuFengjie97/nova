@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="cardCon">
     <slot />
   </div>
 </template>
@@ -9,12 +9,14 @@
 </script>
 
 <style lang="less" scoped>
-.card {
+.cardCon {
+  width: 100%;
   height: 100%;
+  padding: 0.8rem;
   display: inline-block;
-  border-radius: 6px;
+  border-radius: 0.8rem;
   overflow: hidden;
-  background-color: #2c3e50;
+  background-color: var(--bg4);
   box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.5);
 }
 </style>
