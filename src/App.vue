@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="h-screen rootApp">
+  <div class="rootApp">
     <router-view></router-view>
   </div>
 </template>
