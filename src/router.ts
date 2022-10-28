@@ -36,6 +36,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/gradientLine',
     component: ()=>import('@/views/GradientLine.vue')
   },
+  {
+    path: '/codeRain',
+    component: ()=>import('@/views/CodeRain.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 
