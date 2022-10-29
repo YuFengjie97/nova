@@ -14,7 +14,7 @@ html,body,#app{
 }
 @font-face {
   font-family: 'Patrick Hand';
-  src: url('./src/assets/font/PatrickHand-Regular.ttf');
+  src: url('./assets/font/PatrickHand-Regular.ttf');
   font-display: block;
 }
 @media screen and (max-width:1200px) {
