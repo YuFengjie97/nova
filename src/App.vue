@@ -2,13 +2,8 @@
 </script>
 
 <template>
-  <div class="rootApp">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <style scoped>
-.rootApp{
-  background-color: var(--bg);
-}
 </style>

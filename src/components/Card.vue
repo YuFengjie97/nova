@@ -12,9 +12,9 @@
 .cardCon {
   width: 100%;
   height: 100%;
-  padding: 0.8rem;
+  padding: 0.4rem;
   display: inline-block;
-  border-radius: 0.8rem;
+  border-radius: 0.3rem;
   overflow: hidden;
   background-color: var(--bg4);
   box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.5);

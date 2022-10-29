@@ -40,6 +40,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/codeRain',
     component: ()=>import('@/views/CodeRain.vue')
   },
+  {
+    path: '/cross',
+    component: () =>import('@/views/Cross.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 

@@ -79,7 +79,9 @@ function updateFlowFields() {
       yoff += yInc
       let angle = noise(xoff, yoff, zoff) * flowFieldBaseAngle
       let index = x + y * cols
-      flowFields[index].update(angle)
+      if(index>0&&index<flowFields.length){
+        flowFields[index].update(angle)
+      }
     }
   }
 }

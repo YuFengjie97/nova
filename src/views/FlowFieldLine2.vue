@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
 import Card from '@/components/Card.vue'
 import P5Con from '@/components/P5Con.vue'
 import p5 from 'p5'
