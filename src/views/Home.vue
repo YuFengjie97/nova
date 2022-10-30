@@ -18,7 +18,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'p5-randomMaze(随机迷宫)', link: '/maze' },
   { title: 'p5-gradientLine(渐变线)', link: '/gradientLine' },
   { title: 'p5-CodeRain', link: '/codeRain' },
-  { title: 'p5-Cross', link: '/cross' },
+  { title: 'css-Sun', link: '/sun' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },

@@ -44,6 +44,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/cross',
     component: () =>import('@/views/Cross.vue')
   },
+  {
+    path: '/sun',
+    component: () => import('@/views/Sun.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 
