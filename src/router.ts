@@ -48,6 +48,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sun',
     component: () => import('@/views/Sun.vue')
   },
+  {
+    path: '/deathLoading',
+    component: ()=>import('@/views/DeathLoading.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 
