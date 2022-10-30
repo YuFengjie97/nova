@@ -20,7 +20,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'p5-CodeRain', link: '/codeRain' },
   { title: 'css-Sun', link: '/sun' },
   { title: 'css-DeathLoading', link: '/deathLoading' },
-  { title: 'hello I am null', link: '/' },
+  { title: 'css-ProgerssCube', link: '/progressCube' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },

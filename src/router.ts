@@ -49,6 +49,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Sun.vue')
   },
   {
+    path: '/progressCube',
+    component: () => import('@/views/ProgressCube.vue')
+  },
+  {
     path: '/deathLoading',
     component: ()=>import('@/views/DeathLoading.vue')
   },
