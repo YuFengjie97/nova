@@ -1,47 +1,36 @@
 <template>
-  <div class='viewCon'>
-    <ProgressCube class="item" :val="val1" />
-    <ProgressCube class="item" :val="val2" fill-color="#e74c3ccc"/>
-    <ProgressCube class="item" :val="val3" fill-color="#6c5ce7cc"/>
-    <ProgressCube class="item" :val="val4" fill-color="#74b9ffcc"/>
+  <div class="viewCon">
+    <ProgressCube class="item" :fill-color="color" :val="val" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted} from 'vue';
+import * as dat from 'dat.gui'
+import { ref, onMounted, onUnmounted } from 'vue'
 import ProgressCube from '@/components/ProgressCube.vue'
 
-const {random} = Math
-
-const val1 = ref(0.2)
-const val2 = ref(0.4)
-const val3 = ref(0.6)
-const val4 = ref(0.8)
-
-let timer: NodeJS.Timer
-
-onMounted(()=>{
-  timer = setInterval(()=>{
-    val1.value = random()
-    val2.value = random()
-    val3.value = random()
-    val4.value = random()
-  },1000)
+const val = ref(0.4)
+const color = ref('#e308cd')
+const PARAMS = {
+  color: '#0984e3',
+  val: 0.4,
+}
+const gui = new dat.GUI()
+gui.addColor(PARAMS, 'color').onChange((e) => {
+  color.value = e
 })
-
-onUnmounted(()=>{
-  clearInterval(timer)
+gui.add(PARAMS, 'val', 0, 1, 0.1).onChange((e) => {
+  val.value = parseFloat(e.toFixed(1))
 })
-
 </script>
 
-<style lang='less' scoped>
-.viewCon{
+<style lang="less" scoped>
+.viewCon {
   background: #2d3436;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  .item{
+  .item {
     padding-top: 5rem;
   }
   // color: rgb(255, 0, 0);

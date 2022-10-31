@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "fontfaceobserver": "^2.3.0",
     "lodash": "^4.17.21",
     "p5": "^1.5.0",
@@ -16,6 +17,7 @@
     "vue-router": "4"
   },
   "devDependencies": {
+    "@types/dat.gui": "^0.7.7",
     "@types/fabric": "^4.5.12",
     "@types/fontfaceobserver": "^2.1.0",
     "@types/lodash": "^4.14.186",
