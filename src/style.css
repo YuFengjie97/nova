@@ -1,12 +1,12 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
-*,*::before,*::after{
+/* *,*::before,*::after{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
 :root{
   --bg4: #0f0a0aff;
@@ -50,4 +50,8 @@ html,body,#app{
   width: 100%;
   background-color: var(--bg);
   /* min-height: 100vh; */
+}
+
+.c input{
+  line-height: 0px;
 }
