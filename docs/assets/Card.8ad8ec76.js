@@ -1,0 +1,1 @@
+import{_ as c,o as _,c as s,g as o}from"./index.ecdcc81b.js";const t={},n={class:"cardCon"};function r(e,a){return _(),s("div",n,[o(e.$slots,"default",{},void 0,!0)])}const f=c(t,[["render",r],["__scopeId","data-v-f7bce78c"]]);export{f as C};
