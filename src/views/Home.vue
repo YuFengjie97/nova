@@ -56,7 +56,6 @@ const navList = ref<Array<NavItem>>([
 <style lang="less" scoped>
 .home {
   background: #b4286c;
-  height: 100%;
   min-height: 100vh;
   padding: 2rem 0;
   display: flex;
