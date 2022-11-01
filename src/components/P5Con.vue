@@ -11,7 +11,7 @@ import p5 from 'p5'
 
 interface Props {
   preLoad?: ($p: p5) => void
-  setup: ($p: p5) => void
+  setup: ($p: p5, canvas?: p5.Renderer) => void
   draw: ($p: p5) => void
   isWEBGL?: boolean
   showFps?: boolean
@@ -35,10 +35,10 @@ function sketch($p: p5) {
 
   $p.setup = function () {
     let { width, height } = p5Con.value?.getBoundingClientRect()!
-    $p.createCanvas(width, height, props.isWEBGL ? $p.WEBGL : undefined)
+    let canvas = $p.createCanvas(width, height, props.isWEBGL ? $p.WEBGL : undefined)
     $p.background(bgColor)
 
-    if(props.setup) props.setup($p)
+    if(props.setup) props.setup($p, canvas)
   }
 
   $p.draw = function () {

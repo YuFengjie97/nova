@@ -13,3 +13,5 @@ interface Vector{
   vx: number,
   vy: number
 }
+
+type Point = [number, number]

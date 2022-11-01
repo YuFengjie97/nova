@@ -56,6 +56,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/deathLoading',
     component: ()=>import('@/views/DeathLoading.vue')
   },
+  {
+    path: '/musicRect',
+    component: () => import('@/views/MusicRect.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 
