@@ -32,8 +32,9 @@ function initChars($p: p5) {
   let x = gap + rectSize / 2
   let y = gap + rectSize / 2
   timer = setInterval(() => {
-    if (boreArr.length > 0) {
-      chars.push(new Char($p, new p5.Vector(x, y), boreArr.shift()!))
+    let char = boreArr.shift()
+    if (char) {
+      chars.push(new Char($p, new p5.Vector(x, y), char))
       y += rectSize + gap
       if (y > height - gap) {
         x += gap + rectSize
