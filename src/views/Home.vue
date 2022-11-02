@@ -23,7 +23,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'css-ProgerssCube', link: '/progressCube' },
   { title: 'p5-MusicRect', link: '/musicRect' },
   { title: 'p5-MusicCircle', link: '/musicCircle' },
-  { title: 'hello I am null', link: '/' },
+  { title: 'p5-BoRe', link: '/bore' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
