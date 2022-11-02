@@ -110,7 +110,9 @@ function setup($p: p5, canvas?: p5.Renderer) {
 }
 function draw($p: p5) {
   $p.translate(width / 2, height / 2)
-  $p.background('#2d3436')
+  // $p.background('#2d3436')
+  $p.background('rgba(0, 0, 0, 0.07)')
+
   if (aa) {
     updateParticles()
     drawLine($p)

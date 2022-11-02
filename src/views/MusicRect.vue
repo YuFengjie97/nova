@@ -55,7 +55,8 @@ class Rect {
     $p.rectMode($p.CENTER)
     $p.noStroke()
     $p.translate(0, height / 2)
-    $p.rect(x, y, rectWidth, this.rectHeight + rectMinHeight)
+    let borderRadius = rectWidth * 0.2
+    $p.rect(x, y, rectWidth, this.rectHeight + rectMinHeight,borderRadius,borderRadius,borderRadius,borderRadius)
     $p.pop()
   }
   update(val: number) {
@@ -117,7 +118,8 @@ function setup($p: p5, canvas?: p5.Renderer) {
   }
 }
 function draw($p: p5) {
-  $p.background('#2d3436')
+  $p.background('rgba(0, 0, 0, 0.08)')
+  // $p.background('#2d3436')
   if (aa) {
     updateRects($p)
     drawLine($p)
