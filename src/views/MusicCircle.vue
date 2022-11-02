@@ -84,13 +84,15 @@ function updateParticles() {
   points.length = 0
 
   particles.forEach((particle) => {
-    let data = audioData[particle.audioIndex]
-    data = data < audioDataMin ? audioDataMin : data
+    let dataOrigin = audioData[particle.audioIndex]
+    let data = dataOrigin < audioDataMin ? audioDataMin : dataOrigin
     particle.update(data / audioDataMax)
     particle.draw()
 
     //记录曲线用的坐标
-    points.push([particle.pos.x, particle.pos.y])
+    if(dataOrigin > audioDataMin){
+      points.push([particle.pos.x, particle.pos.y])
+    }
   })
 }
 
@@ -98,7 +100,9 @@ function drawLine($p: p5) {
   $p.noFill()
   $p.stroke(lineColor)
   $p.strokeWeight(2)
-  newBezier(points, 'CLOSE')
+  if(points.length>=10){
+    newBezier(points, 'CLOSE')
+  }
 }
 
 function setup($p: p5, canvas?: p5.Renderer) {
