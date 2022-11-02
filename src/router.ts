@@ -60,6 +60,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/musicRect',
     component: () => import('@/views/MusicRect.vue')
   },
+  {
+    path: '/musicCircle',
+    component: () => import('@/views/MusicCircle.vue')
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 

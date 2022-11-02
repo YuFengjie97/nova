@@ -21,3 +21,16 @@ export function myRandom(
     return mixin[index]
   }
 }
+
+//获取随机数字，每次获取在0-len范围内不重复
+export function getRandomIndex(len: number) {
+  let arr: Array<number> = []
+  for (let i = 0; i < len; i++) {
+    arr.push(i)
+  }
+  return function (): number | undefined {
+    if(arr.length === 0) return
+    let i = floor(random() * arr.length)
+    return arr.splice(i, 1)[0]
+  }
+}
