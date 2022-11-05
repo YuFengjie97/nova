@@ -29,8 +29,19 @@ export function getRandomIndex(len: number) {
     arr.push(i)
   }
   return function (): number | undefined {
-    if(arr.length === 0) return
+    if (arr.length === 0) return
     let i = floor(random() * arr.length)
     return arr.splice(i, 1)[0]
   }
+}
+
+// 获取一个值在某个范围的映射值
+export function map(
+  val: number,
+  s1: number,
+  e1: number,
+  s2: number,
+  e2: number
+): number {
+  return (val - s1) / (e1 - s1) * (e2 - s2) + s2
 }
