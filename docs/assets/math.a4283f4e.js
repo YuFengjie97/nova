@@ -1,1 +1,0 @@
-const{floor:n,ceil:f,random:o}=Math;function u(e,r){if(typeof e=="number"&&r===void 0)return n(o()*e);if(typeof e=="number"&&typeof r=="number")return n(o()*(r-e))+e;if(Array.isArray(e)){let t=u(e.length);return e[t]}}function l(e){let r=[];for(let t=0;t<e;t++)r.push(t);return function(){if(r.length===0)return;let t=n(o()*r.length);return r.splice(t,1)[0]}}export{l as g,u as m};
