@@ -70,6 +70,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/hsCard',
     component: () => import('@/views/HSCard.vue'),
   },
+  {
+    path: '/barChart',
+    component: () => import('@/views/BarChart.vue'),
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 

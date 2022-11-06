@@ -25,7 +25,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'p5-MusicCircle', link: '/musicCircle' },
   { title: 'p5-BoRe', link: '/bore' },
   { title: 'css-hsCard', link: '/hsCard' },
-  { title: 'hello I am null', link: '/' },
+  { title: 'css-barChart', link: '/barChart' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
