@@ -74,6 +74,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/barChart',
     component: () => import('@/views/BarChart.vue'),
   },
+  {
+    path: '/water',
+    component: () => import('@/views/Water.vue'),
+  },
   { path: '/:path(.*)', component: NotFound },
 ]
 
