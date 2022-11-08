@@ -72,7 +72,7 @@ class Char {
       $p,
       pos: { x, y },
       char,
-      opacity,
+      opacity
     } = this
     $p.fill(...textColor, opacity)
     $p.textFont(fontFamily)
@@ -84,7 +84,7 @@ class Char {
   update() {
     let {
       $p,
-      basePos: { x, y },
+      basePos: { x, y }
     } = this
     this.xoff += xInc
     this.yoff += yInc
@@ -92,7 +92,7 @@ class Char {
     let x2 = $p.map($p.noise(this.xoff, zoff), 0, 1, x - gap, x + gap)
     let y2 = $p.map($p.noise(this.yoff, zoff), 0, 1, y - gap, y + gap)
     this.pos.set(x2, y2)
-    this.opacity = $p.map($p.noise(zoff), 0, 1,100,255)
+    this.opacity = $p.map($p.noise(zoff), 0, 1, 100, 255)
   }
 }
 

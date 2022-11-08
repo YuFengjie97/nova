@@ -9,8 +9,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '@public': resolve(__dirname, 'public'),
-    },
+      '@public': resolve(__dirname, 'public')
+    }
   },
   server: {
     host: 'localhost',

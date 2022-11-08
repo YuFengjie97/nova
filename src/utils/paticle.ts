@@ -144,7 +144,7 @@ export class ParticleGradientLine extends Particle {
     const {
       pos: { x, y },
       rangeHeight,
-      rangeWidth,
+      rangeWidth
     } = this
     if (x <= 0 || x >= rangeWidth) {
       this.updateColor()

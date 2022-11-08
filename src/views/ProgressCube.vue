@@ -13,7 +13,7 @@ const val = ref(0.4)
 const color = ref('#e308cd')
 const PARAMS = {
   color: '#0984e3',
-  val: 0.4,
+  val: 0.4
 }
 const gui = new dat.GUI()
 gui.addColor(PARAMS, 'color').onChange((e) => {

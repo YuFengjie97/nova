@@ -1,4 +1,4 @@
-import { myRandom } from "./math"
+import { myRandom } from './math'
 
 export function getRandomColor(colorRange: number = 255): string {
   if (colorRange > 255) colorRange = colorRange % 255
@@ -7,4 +7,3 @@ export function getRandomColor(colorRange: number = 255): string {
   let b = myRandom(colorRange)
   return `rgb(${r},${g},${b})`
 }
-

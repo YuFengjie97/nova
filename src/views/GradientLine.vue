@@ -34,7 +34,7 @@ function initParticles($p: p5) {
           rangeWidth: width,
           rangeHeight: height,
           position: new p5.Vector(random() * width, random() * height),
-          color: getRandomColor(),
+          color: getRandomColor()
         },
         new p5.Vector(
           $p.random(-velBase, velBase),
@@ -94,16 +94,15 @@ function mouseLine($p: p5) {
   }
 }
 
-  function setup ($p: p5) {
-    width = $p.width
-    height = $p.height
-    $p.background('#2d3436')
-    initParticles($p)
-  }
-  function draw ($p: p5) {
-    $p.background('#2d3436')
-    updateParticles($p)
-    mouseLine($p)
-  }
+function setup($p: p5) {
+  width = $p.width
+  height = $p.height
+  $p.background('#2d3436')
+  initParticles($p)
+}
+function draw($p: p5) {
+  $p.background('#2d3436')
+  updateParticles($p)
+  mouseLine($p)
+}
 </script>
-

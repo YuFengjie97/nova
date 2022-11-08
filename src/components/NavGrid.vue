@@ -32,8 +32,8 @@ function initNavGridDomRect() {
 
 onMounted(() => {
   let myFont = new FontFaceObserver('Patrick Hand')
-  myFont.load().then(initNavGridDomRect);
-  
+  myFont.load().then(initNavGridDomRect)
+
   window.addEventListener('resize', debounce(initNavGridDomRect, 500))
 })
 </script>

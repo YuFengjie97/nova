@@ -43,5 +43,5 @@ export function map(
   s2: number,
   e2: number
 ): number {
-  return (val - s1) / (e1 - s1) * (e2 - s2) + s2
+  return ((val - s1) / (e1 - s1)) * (e2 - s2) + s2
 }

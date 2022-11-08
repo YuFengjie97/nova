@@ -18,14 +18,12 @@
       :style="{
         top: `${pop.pos.top}px`,
         left: `${pop.pos.left}px`,
-        '--color': pop.color,
+        '--color': pop.color
       }"
     >
       <div class="titleCon">
         <div class="point"></div>
-        <div class="val">
-          {{ pop.name }} {{pop.ratio * 100}}%
-        </div>
+        <div class="val">{{ pop.name }} {{ pop.ratio * 100 }}%</div>
       </div>
       <div class="childCon">
         <div class="child" v-for="(item, i) in pop.childs" :key="i">
@@ -58,7 +56,7 @@ const colors = [
   '#e17055',
   '#d63031',
   '#e84393',
-  '#2d3436',
+  '#2d3436'
 ]
 
 const props = defineProps<{
@@ -96,7 +94,7 @@ const pop = reactive<{
   name: '',
   ratio: 0,
   childs: [],
-  color: '#fff',
+  color: '#fff'
 })
 
 function mousemove(i: number, e: MouseEvent) {

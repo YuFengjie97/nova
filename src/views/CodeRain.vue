@@ -106,7 +106,7 @@ class Stream {
   }
   updateCharsPosByPos() {
     let {
-      pos: { y: startY },
+      pos: { y: startY }
     } = this
     for (let i = 0; i < this.str.length; i++) {
       let char = this.chars[i]

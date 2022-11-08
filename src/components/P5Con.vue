@@ -19,7 +19,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   isWEBGL: false,
-  showFps: true,
+  showFps: true
 })
 
 const p5Con = ref<HTMLElement>()
@@ -30,19 +30,23 @@ let bgColor = '#2d3436'
 
 function sketch($p: p5) {
   $p.preload = function () {
-    if(props.preLoad) props.preLoad($p)
+    if (props.preLoad) props.preLoad($p)
   }
 
   $p.setup = function () {
     let { width, height } = p5Con.value?.getBoundingClientRect()!
-    let canvas = $p.createCanvas(width, height, props.isWEBGL ? $p.WEBGL : undefined)
+    let canvas = $p.createCanvas(
+      width,
+      height,
+      props.isWEBGL ? $p.WEBGL : undefined
+    )
     $p.background(bgColor)
 
-    if(props.setup) props.setup($p, canvas)
+    if (props.setup) props.setup($p, canvas)
   }
 
   $p.draw = function () {
-    if(props.draw) props.draw($p)
+    if (props.draw) props.draw($p)
   }
 }
 

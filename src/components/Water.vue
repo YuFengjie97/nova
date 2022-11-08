@@ -3,7 +3,7 @@
     <div
       class="base"
       :style="{
-        transform: `translate(-50%, -50%) scale(${scale})`,
+        transform: `translate(-50%, -50%) scale(${scale})`
       }"
     ></div>
     <div class="clickMe" @click="handleMerge">Click Me</div>
@@ -17,7 +17,7 @@
         width: `${item.size}px`,
         height: `${item.size}px`,
         'transition-delay': `${transitionDelay * i}s`,
-        'transition-duration': `${transitionDuration}s`,
+        'transition-duration': `${transitionDuration}s`
       }"
     ></div>
   </div>

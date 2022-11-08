@@ -19,7 +19,7 @@ import audio from '@/assets/audio/audio1.mp3'
 import { AudioAnalyser, getRandomIndex } from '@/utils'
 import { ref } from 'vue'
 
-const { PI, random, floor,min } = Math
+const { PI, random, floor, min } = Math
 
 let width: number
 let height: number
@@ -46,7 +46,10 @@ class Particle {
   constructor($p: p5, angle: number, audioIndex: number) {
     this.$p = $p
     this.angle = angle
-    this.basePos = p5.Vector.fromAngle(angle, (min(width,height) / 2) * radiusRatio)
+    this.basePos = p5.Vector.fromAngle(
+      angle,
+      (min(width, height) / 2) * radiusRatio
+    )
     this.pos = this.basePos.copy()
     this.audioIndex = audioIndex
   }
@@ -58,13 +61,13 @@ class Particle {
       count
     } = this
     $p.noStroke()
-    $p.fill((h+count) % 255, 255,127)
+    $p.fill((h + count) % 255, 255, 127)
     $p.circle(x, y, this.r * 2)
   }
   update(scale: number) {
     this.pos = this.basePos.copy().mult(scale)
     this.h = floor(scale * 255)
-    this.count ++
+    this.count++
   }
 }
 
@@ -90,7 +93,7 @@ function updateParticles() {
     particle.draw()
 
     //记录曲线用的坐标
-    if(dataOrigin > audioDataMin){
+    if (dataOrigin > audioDataMin) {
       points.push([particle.pos.x, particle.pos.y])
     }
   })
@@ -100,7 +103,7 @@ function drawLine($p: p5) {
   $p.noFill()
   $p.stroke(lineColor)
   $p.strokeWeight(2)
-  if(points.length>=10){
+  if (points.length >= 10) {
     newBezier(points, 'CLOSE')
   }
 }

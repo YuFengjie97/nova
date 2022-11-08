@@ -56,7 +56,7 @@ function initCanvasOptions() {
   canvas = new fabric.StaticCanvas(canvasDom.value!, {
     width,
     height,
-    fill: 'rgba(255, 255, 255, 0.6)',
+    fill: 'rgba(255, 255, 255, 0.6)'
     // backgroundColor: 'rgba(255, 255, 255, 0.6)',
   })
 }
@@ -79,7 +79,7 @@ function updateFlowFields() {
       yoff += yInc
       let angle = noise(xoff, yoff, zoff) * flowFieldBaseAngle
       let index = x + y * cols
-      if(index>0&&index<flowFields.length){
+      if (index > 0 && index < flowFields.length) {
         flowFields[index].update(angle)
       }
     }
@@ -135,7 +135,7 @@ class Particle {
       fill: 'red',
       radius: 1,
       originX: 'center',
-      originY: 'center',
+      originY: 'center'
     })
     canvas?.add(this.circle)
   }

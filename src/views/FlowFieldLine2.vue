@@ -88,19 +88,19 @@ function updateParticles() {
   }
 }
 
-  function setup ($p: p5) {
-    width = $p.width
-    height = $p.height
-    rows = floor(width / flowFieldSize)
-    cols = floor(height / flowFieldSize)
-    flowFieldTotal = rows*cols
-    $p.background('rgba(0,0,0,0.5)')
-    $p.colorMode($p.HSB, 255)
-    initFlowFields()
-    initParticles($p)
-  }
-  function draw ($p: p5) {
-    updateFlowFields()
-    updateParticles()
-  }
+function setup($p: p5) {
+  width = $p.width
+  height = $p.height
+  rows = floor(width / flowFieldSize)
+  cols = floor(height / flowFieldSize)
+  flowFieldTotal = rows * cols
+  $p.background('rgba(0,0,0,0.5)')
+  $p.colorMode($p.HSB, 255)
+  initFlowFields()
+  initParticles($p)
+}
+function draw($p: p5) {
+  updateFlowFields()
+  updateParticles()
+}
 </script>

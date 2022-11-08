@@ -19,8 +19,8 @@ const dataArr = ref<Array<dataItem>>([
       { name: '黄瓜', val: 11 },
       { name: '西红柿', val: 11 },
       { name: '茄子', val: 11 },
-      { name: '土豆', val: 11 },
-    ],
+      { name: '土豆', val: 11 }
+    ]
   },
   {
     name: '就坑你大酒店',
@@ -29,8 +29,8 @@ const dataArr = ref<Array<dataItem>>([
       { name: '黄瓜', val: 110 },
       { name: '西红柿', val: 110 },
       { name: '茄子', val: 110 },
-      { name: '土豆', val: 110 },
-    ],
+      { name: '土豆', val: 110 }
+    ]
   },
   {
     name: '大学城',
@@ -39,8 +39,8 @@ const dataArr = ref<Array<dataItem>>([
       { name: '黄瓜', val: 121 },
       { name: '西红柿', val: 131 },
       { name: '茄子', val: 11 },
-      { name: '土豆', val: 11 },
-    ],
+      { name: '土豆', val: 11 }
+    ]
   },
   {
     name: '狗剩批发超市',
@@ -49,15 +49,15 @@ const dataArr = ref<Array<dataItem>>([
       { name: '黄瓜', val: 115 },
       { name: '西红柿', val: 151 },
       { name: '茄子', val: 111 },
-      { name: '土豆', val: 121 },
-    ],
-  },
+      { name: '土豆', val: 121 }
+    ]
+  }
 ])
 </script>
 
 <style lang="less" scoped>
 .viewCon {
-  h1{
+  h1 {
     color: #fff;
     font-size: 2rem;
     text-align: center;

@@ -3,19 +3,14 @@
     class="hsCard"
     :style="{
       '--front': `url(${frontImg})`,
-      '--back': `url(${backImg})`,
+      '--back': `url(${backImg})`
     }"
     @mousemove="mousemove"
-      @mouseout="mouseout"
+    @mouseout="mouseout"
   >
-    <div
-      class="front"
-      :style="styleFront"
-      ref="front"
-      
-    >
-    <img :src="`${frontImg}`"/>
-  </div>
+    <div class="front" :style="styleFront" ref="front">
+      <img :src="`${frontImg}`" />
+    </div>
     <div class="back" :style="styleBack" @click="show"></div>
   </div>
 </template>
@@ -24,7 +19,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { map } from '@/utils'
 
-const {floor} = Math
+const { floor } = Math
 
 const props = defineProps<{
   frontImg: string
@@ -34,7 +29,7 @@ let cardInfo = {
   startX: 0,
   endX: 0,
   startY: 0,
-  endY: 0,
+  endY: 0
 }
 let rotateXBase = 12 // 最大x轴y轴旋转角度是7deg
 let rotateYBase = 20 // 最大x轴y轴旋转角度是7deg
@@ -49,7 +44,7 @@ const front = ref<HTMLElement>()
 const rotateX = ref(0)
 const rotateY = ref(0)
 const isHover = ref(false)
-function mousemove (e: MouseEvent) {
+function mousemove(e: MouseEvent) {
   isHover.value = true
   const { startX, endX, startY, endY } = cardInfo
   const { clientX, clientY } = e
@@ -73,7 +68,9 @@ const styleFront = computed(() => {
     }
   }
 
-  return { transform: `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(${s},${s},${s})` }
+  return {
+    transform: `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(${s},${s},${s})`
+  }
 })
 const styleBack = computed(() => {
   let rx = 0
@@ -124,11 +121,11 @@ onMounted(() => {
   .front {
     .public();
     // background-image: var(--front);// 因为filter会使整个dom模糊，所以将图片放到子img元素
-    img{
+    img {
       filter: drop-shadow(0 0 5px var(--light));
     }
     &:hover {
-      img{
+      img {
         filter: drop-shadow(0 0 20px var(--light));
       }
     }

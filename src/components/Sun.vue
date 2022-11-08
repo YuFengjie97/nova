@@ -4,7 +4,7 @@
       class="sun"
       :style="{
         '--baseColor': baseColor,
-        '--lightColor': lightColor,
+        '--lightColor': lightColor
       }"
     >
       <div class="lightCon">
@@ -12,7 +12,7 @@
           class="light"
           v-for="n in lightNum"
           :style="{
-            transform: `rotate(${n * (360 / lightNum)}deg)`,
+            transform: `rotate(${n * (360 / lightNum)}deg)`
           }"
         ></div>
       </div>
@@ -33,7 +33,7 @@ const props = withDefaults(
   }>(),
   {
     baseColor: '#fee433',
-    lightColor: '#e41014',
+    lightColor: '#e41014'
   }
 )
 
@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-.sunCon{
+.sunCon {
   display: flex;
   justify-content: center;
   align-items: center;

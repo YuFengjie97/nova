@@ -3,14 +3,14 @@
     class="starRate"
     :style="{
       '--color': `${color}`,
-      '--rate': `${rate * 100}%`,
+      '--rate': `${rate * 100}%`
     }"
   >
     <div class="title">{{ title }}</div>
     <div class="star">
       <span v-for="i in size">{{ content }}</span>
     </div>
-    <span class="rate">{{rate}}</span>
+    <span class="rate">{{ rate }}</span>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ const props = defineProps({
   rate: { type: Number, default: 0.45 },
   color: { type: String, default: '#e67e22' },
   content: { type: String, default: '★' },
-  size: { type: Number, default: 5 },
+  size: { type: Number, default: 5 }
 })
 </script>
 
@@ -50,7 +50,7 @@ const props = defineProps({
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .rate{
+  .rate {
     color: var(--color);
     padding-left: 2rem;
   }

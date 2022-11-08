@@ -3,7 +3,7 @@
     class="progressCube"
     :style="{
       '--progress': `${val * 100}%`,
-      '--fillColor': fillColor,
+      '--fillColor': fillColor
     }"
   >
     <div class="bar">
@@ -28,7 +28,7 @@ const props = withDefaults(
   }>(),
   {
     fillColor: 'rgba(236, 0, 140 , 0.8)',
-    val: 0.5,
+    val: 0.5
   }
 )
 </script>
@@ -66,7 +66,7 @@ const props = withDefaults(
     height: 100%;
     background: var(--fillColor);
     box-shadow: -0.8rem -2rem 12rem 0px var(--fillColor);
-    transition: .3s ease-in-out;
+    transition: 0.3s ease-in-out;
   }
   .left {
     .face();

@@ -88,5 +88,5 @@ export const langs = [
   'העלא וועלט',
   'Mo ki O Ile Aiye',
   '你好，世界',
-  'Sawubona Mhlaba',
+  'Sawubona Mhlaba'
 ]

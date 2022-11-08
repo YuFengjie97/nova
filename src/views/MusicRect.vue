@@ -48,7 +48,7 @@ class Rect {
     let {
       $p,
       pos: { x, y },
-      rectHeight: y1,
+      rectHeight: y1
     } = this
     $p.fill(this.h, 255, 127)
     $p.push()
@@ -56,7 +56,16 @@ class Rect {
     $p.noStroke()
     $p.translate(0, height / 2)
     let borderRadius = rectWidth * 0.2
-    $p.rect(x, y, rectWidth, this.rectHeight + rectMinHeight,borderRadius,borderRadius,borderRadius,borderRadius)
+    $p.rect(
+      x,
+      y,
+      rectWidth,
+      this.rectHeight + rectMinHeight,
+      borderRadius,
+      borderRadius,
+      borderRadius,
+      borderRadius
+    )
     $p.pop()
   }
   update(val: number) {
@@ -96,7 +105,7 @@ function drawLine($p: p5) {
   let pointList2: Array<Point> = []
   aa.getAudioData().forEach((item, i) => {
     let x = i * rectWidth
-    let y = $p.map(item, 0, dataMax, 0, height/2) * maxRatio + gap
+    let y = $p.map(item, 0, dataMax, 0, height / 2) * maxRatio + gap
     pointList1.push([x, -y] as Point)
     pointList2.push([x, y] as Point)
   })

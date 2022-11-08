@@ -13,7 +13,6 @@ import p5 from 'p5'
 
 const { random } = Math
 
-
 let width: number
 let height: number
 let originPos: p5.Vector
@@ -31,7 +30,18 @@ let circles: Array<Circle> = []
 let circleTotal = 100
 let interval = 500 // 每隔这个时间更新方向
 
-let colors = ['#00b894', '#00cec9', '#0984e3','#6c5ce7', '#b2bec3','#ffeaa7','#fab1a0','#ff7675','#fd79a8','#636e72']
+let colors = [
+  '#00b894',
+  '#00cec9',
+  '#0984e3',
+  '#6c5ce7',
+  '#b2bec3',
+  '#ffeaa7',
+  '#fab1a0',
+  '#ff7675',
+  '#fd79a8',
+  '#636e72'
+]
 
 function setup($p: p5) {
   width = $p.width
@@ -75,7 +85,7 @@ class Circle {
   draw() {
     let {
       $p,
-      pos: { x, y },
+      pos: { x, y }
     } = this
     $p.stroke(this.color)
     $p.fill(fillColor)
@@ -91,11 +101,12 @@ class Circle {
   }
   updateDirection() {
     const now = new Date().getTime()
-    if (now - this.pre > interval - random()*10) {
+    if (now - this.pre > interval - random() * 10) {
       this.pre = now
 
       this.color = this.$p.random(colors)
-      if(circles.length < circleTotal)  circles.push(new Circle(this.$p, this.pos))
+      if (circles.length < circleTotal)
+        circles.push(new Circle(this.$p, this.pos))
       let chance = random()
 
       if (chance > down[0] && chance < down[1]) {
@@ -114,12 +125,12 @@ class Circle {
   }
   edge() {
     let chance = random()
-    if(chance < deathChance) {
+    if (chance < deathChance) {
       this.vel.set(0, 0)
       return true
     }
     let {
-      pos: { x, y },
+      pos: { x, y }
     } = this
     if (x < 0 || x > width || y < 0 || y > height) {
       this.vel.set(0, 0)

@@ -30,7 +30,7 @@ export class AudioAnalyser {
     // },-Infinity)
     // console.log(max);
     // console.log(this.dataArray.length);
-    
+
     return this.dataArray
   }
 }

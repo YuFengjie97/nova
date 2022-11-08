@@ -20,9 +20,9 @@ import back from '@/assets/img/hs/back.png'
 
 <style lang="less" scoped>
 .viewCon {
-background-image: linear-gradient(60deg, #c0392b 50%,#2980b9 80%);
-display: flex;
-flex-wrap: wrap;
-justify-content: space-around;
+  background-image: linear-gradient(60deg, #c0392b 50%, #2980b9 80%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 </style>

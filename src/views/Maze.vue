@@ -46,7 +46,7 @@ class Cell {
       [0, 1],
       [0, -1],
       [1, 0],
-      [-1, 0],
+      [-1, 0]
     ]
     for (let i = 0; i < 4; i++) {
       let [dx, dy] = directs[i]
@@ -146,7 +146,6 @@ let stack: Array<Cell> = []
 let current: Cell
 
 function setup($p: p5) {
-  
   width = $p.width
   height = $p.height
   row = floor(width / cellSize)
@@ -155,7 +154,7 @@ function setup($p: p5) {
   $p.frameRate(60)
 
   initCells($p)
-  
+
   stack.push(cells[0][0])
 }
 
@@ -191,5 +190,4 @@ function draw() {
 }
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

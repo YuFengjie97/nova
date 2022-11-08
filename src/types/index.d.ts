@@ -1,16 +1,16 @@
 interface NavItem {
-  title: string,
-  link: string,
+  title: string
+  link: string
   bgPos?: Array<string>
 }
 
-interface Position{
-  x: number,
+interface Position {
+  x: number
   y: number
 }
 
-interface Vector{
-  vx: number,
+interface Vector {
+  vx: number
   vy: number
 }
 

@@ -6,7 +6,7 @@ p5.bezier library by Peiling Jiang
 import p5 from 'p5'
 
 const p5bezierAccuracyListAll = [
-  0.2, 0.1, 0.05, 0.04, 0.02, 0.01, 0.008, 0.002, 0.001, 0.0005, 0.0001,
+  0.2, 0.1, 0.05, 0.04, 0.02, 0.01, 0.008, 0.002, 0.001, 0.0005, 0.0001
 ]
 
 let _canvas,

@@ -50,7 +50,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'hello I am null ', link: '/' },
   { title: 'hello I am null', link: '/' },
   { title: 'hello I am null', link: '/' },
-  { title: 'hello I am null', link: '/' },
+  { title: 'hello I am null', link: '/' }
 ])
 </script>
 <style lang="less" scoped>
@@ -62,7 +62,7 @@ const navList = ref<Array<NavItem>>([
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .title{
+  .title {
     width: fit-content;
     padding-bottom: 1rem;
     font-size: 3rem;

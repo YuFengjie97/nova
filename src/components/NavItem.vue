@@ -5,7 +5,7 @@
       :style="{
         'background-position': bgPos,
         'background-size': `${conDomRect?.width ?? 0}px`,
-        'background-image': `url(${bg})`,
+        'background-image': `url(${bg})`
       }"
     ></div>
     <div class="content" @click="go">{{ title }}</div>

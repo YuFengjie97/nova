@@ -4,24 +4,24 @@
       <div
         class="petal"
         :class="{
-          petalFade: progress !== 1,
+          petalFade: progress !== 1
         }"
         v-for="n in 5"
         :style="{
           '--color': colors[n - 1],
           transform: `rotate(${(360 / 5) * n}deg)`,
-          background: colors[n - 1],
+          background: colors[n - 1]
         }"
       ></div>
     </div>
     <div class="progressCon">
       <div
-      class="progress"
-      :style="{
-        '--progress': `${progress * 100}%`,
-      }"
-    ></div>
-    <div class="val">{{progress * 100}}%</div>
+        class="progress"
+        :style="{
+          '--progress': `${progress * 100}%`
+        }"
+      ></div>
+      <div class="val">{{ progress * 100 }}%</div>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 
-const {random} = Math
+const { random } = Math
 
 const colors = ref(['#f368e0', '#ff9f43', '#ee5253', '#0abde3', '#10ac84'])
 
@@ -39,7 +39,7 @@ onMounted(() => {
   setInterval(() => {
     let val = progress.value
     if (val < 1) {
-      let inc =  random() * 0.2
+      let inc = random() * 0.2
       val += inc
       val = val > 1 ? 1 : parseFloat(val.toFixed(1))
       progress.value = val
@@ -74,7 +74,7 @@ onMounted(() => {
   .petalFade {
     animation: fade 2.5s infinite;
   }
-  .progressCon{
+  .progressCon {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -94,8 +94,8 @@ onMounted(() => {
       transition: 0.3s;
     }
   }
-  .val{
-    margin-left: .5rem;
+  .val {
+    margin-left: 0.5rem;
     width: 16%;
     display: inline-block;
     color: #48dbfb;

@@ -49,7 +49,7 @@ const props = withDefaults(
     showStop: false,
     showForward: false,
     showBackward: false,
-    fftSize: 512,
+    fftSize: 512
   }
 )
 const emit = defineEmits([
@@ -58,7 +58,7 @@ const emit = defineEmits([
   'pause',
   'stop',
   'forward',
-  'initAudioAnalyser',
+  'initAudioAnalyser'
 ])
 
 let aa: AudioAnalyser

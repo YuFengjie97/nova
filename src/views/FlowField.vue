@@ -57,7 +57,7 @@ class FlowField {
       originRadius,
       triangleWidth,
       triangleHeight,
-      position: { x, y },
+      position: { x, y }
     } = this
 
     let rect = new fabric.Rect({
@@ -67,7 +67,7 @@ class FlowField {
       height: size,
       stroke: '#3498db',
       strokeWidth: borderWidth,
-      fill: '#fff',
+      fill: '#fff'
     })
     canvas?.add(rect)
 
@@ -77,7 +77,7 @@ class FlowField {
       top: y,
       left: x,
       radius: originRadius,
-      fill: arrowColor,
+      fill: arrowColor
     })
     canvas?.add(circle)
 
@@ -88,7 +88,7 @@ class FlowField {
       originY: 'center',
       stroke: arrowColor,
       strokeWidth: lineWidth,
-      strokeLineCap: 'round',
+      strokeLineCap: 'round'
     })
     let triangle = new fabric.Triangle({
       originX: 'center',
@@ -98,7 +98,7 @@ class FlowField {
       width: triangleWidth,
       height: triangleHeight,
       fill: arrowColor,
-      angle: 90,
+      angle: 90
     })
 
     this.group = new fabric.Group([line, triangle], {
@@ -106,7 +106,7 @@ class FlowField {
       left: x,
       angle,
       originX: 'left',
-      originY: 'center',
+      originY: 'center'
     })
 
     canvas?.add(this.group)
@@ -144,7 +144,7 @@ function updateFlowFields() {
 
 function animate() {
   updateFlowFields()
-  fabric.util.requestAnimFrame(animate);
+  fabric.util.requestAnimFrame(animate)
   canvas?.renderAll()
 }
 
@@ -158,7 +158,7 @@ onMounted(() => {
   canvas = new fabric.StaticCanvas(canvasDom.value as HTMLCanvasElement, {
     width,
     height,
-    backgroundColor: '#3498db',
+    backgroundColor: '#3498db'
   })
   initFlowFields()
   animate()
@@ -172,7 +172,7 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  .card{
+  .card {
     width: fit-content;
     height: fit-content;
   }
