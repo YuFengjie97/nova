@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "format": "prettier --write .",
-    "format-check": "prettier --check ."
+    "format": "prettier --write --cache .",
+    "format-check": "prettier --check --cache ."
   },
   "dependencies": {
     "dat.gui": "^0.7.9",
