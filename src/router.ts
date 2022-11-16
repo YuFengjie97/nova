@@ -78,6 +78,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/water',
     component: () => import('@/views/Water.vue')
   },
+  {
+    path: '/bloodBranch',
+    component: () => import('@/views/BloodBranch.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
