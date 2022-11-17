@@ -38,13 +38,14 @@ let tangram:Array<{
   center: Point,
   ps: Array<Point>
 }> = [
-  {id: 1, c: '#cd9670', center: [-s/2, -s/2], ps: [ [-s/2, -s/2], [-s/2,  s/2], [0,       0], [-s/2, -s/2] ]},
-  {id: 2, c: '#f4444a', center: [-s/2,  s/2], ps: [ [-s/2,  s/2], [s/2 ,  s/2], [0,       0], [-s/2,  s/2] ]},
-  {id: 3, c: '#fd796d', center: [-s/2, -s/2], ps: [ [-s/2, -s/2], [0   , -s/2], [-s/4, -s/4], [-s/2, -s/2] ]},
-  {id: 4, c: '#e7d02d', center: [0   , -s/2], ps: [ [0   , -s/2], [-s/4, -s/4], [0,       0], [s/4 , -s/4], [0  , -s/2] ]},
-  {id: 5, c: '#f9b02d', center: [s/4 , -s/4], ps: [ [s/4 , -s/4], [s/4 ,  s/4], [0,       0], [s/4 , -s/4] ]},
-  {id: 6, c: '#acc94a', center: [s/4 , -s/4], ps: [ [s/4 , -s/4], [s/2 ,  0  ], [s/2,   s/2], [s/4 ,  s/4], [s/4, -s/4] ]},
-  {id: 7, c: '#59afcb', center: [0   , -s/2], ps: [ [0   , -s/2], [s/2 , -s/2], [s/2,     0], [0   , -s/2] ]},
+  // 以七巧板正中心为原点确认的坐标
+  {id: 1, c: '#cd9670', center: [0, 0], ps: [ [-s/2, -s/2], [-s/2,  s/2], [0,       0], [-s/2, -s/2] ]},
+  {id: 2, c: '#f4444a', center: [0, 0], ps: [ [-s/2,  s/2], [s/2 ,  s/2], [0,       0], [-s/2,  s/2] ]},
+  {id: 3, c: '#fd796d', center: [0, 0], ps: [ [-s/2, -s/2], [0   , -s/2], [-s/4, -s/4], [-s/2, -s/2] ]},
+  {id: 4, c: '#e7d02d', center: [0, 0], ps: [ [0   , -s/2], [-s/4, -s/4], [0,       0], [s/4 , -s/4], [0  , -s/2] ]},
+  {id: 5, c: '#f9b02d', center: [0, 0], ps: [ [s/4 , -s/4], [s/4 ,  s/4], [0,       0], [s/4 , -s/4] ]},
+  {id: 6, c: '#acc94a', center: [0, 0], ps: [ [s/4 , -s/4], [s/2 ,  0  ], [s/2,   s/2], [s/4 ,  s/4], [s/4, -s/4] ]},
+  {id: 7, c: '#59afcb', center: [0, 0], ps: [ [0   , -s/2], [s/2 , -s/2], [s/2,     0], [0   , -s/2] ]},
 ]
 
 class Shape {
@@ -60,6 +61,9 @@ class Shape {
     this.color = color
     this.points = points
     this.center = centroid(points)
+    let {x,y} = this.center
+    console.log(x,y);
+    
   }
   draw() {
     const { color, points, center, angle } = this
@@ -96,6 +100,7 @@ class Shape {
     let { center, points } = this
     this.angle += isClockWise ? angleInc : -angleInc
 
+    // 计算所有顶点绕该shape中心旋转后的值(这样会有精度丢失的问题)
     let a = p.radians(isClockWise ? angleInc : -angleInc)
     for (let i = 0, len = points.length; i < len; i++) {
       rotateByPoint(points[i], center, a)
