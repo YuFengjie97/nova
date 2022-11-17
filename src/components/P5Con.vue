@@ -13,6 +13,9 @@ interface Props {
   preLoad?: ($p: p5) => void
   setup: ($p: p5, canvas?: p5.Renderer) => void
   draw: ($p: p5) => void
+  mousePressed?: () => void
+  mouseReleased?: () => void
+  keyPressed?: ()=>void
   isWEBGL?: boolean
   showFps?: boolean
 }
@@ -47,6 +50,18 @@ function sketch($p: p5) {
 
   $p.draw = function () {
     if (props.draw) props.draw($p)
+  }
+
+  $p.mousePressed = function() {
+    if(props.mousePressed) props.mousePressed()
+  }
+
+  $p.mouseReleased = function() {
+    if(props.mouseReleased) props.mouseReleased()
+  }
+
+  $p.keyPressed = function(){
+    if(props.keyPressed) props.keyPressed()
   }
 }
 
