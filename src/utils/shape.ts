@@ -24,6 +24,8 @@ export function getRandomTriangle($p: p5, pos: p5.Vector, range: number) {
 }
 
 // 判断点是否在多边形内
+// https://stackoverflow.com/questions/16282330/find-centerpoint-of-polygon-in-javascript
+
 export function pointInPolygon(polygon: Array<p5.Vector>, point: Point) {
   let odd = false
   for (let i = 0, j = polygon.length - 1; i < polygon.length; i++) {
@@ -40,7 +42,6 @@ export function pointInPolygon(polygon: Array<p5.Vector>, point: Point) {
  *
  * @param vertexs 多边形的顶点左边
  * @returns 多边形面积
- * https://stackoverflow.com/questions/16282330/find-centerpoint-of-polygon-in-javascript
  */
 function getArea(vertexs: Array<p5.Vector>): number {
   let area = 0,
