@@ -171,13 +171,16 @@ function updateMouse() {
 
 function info() {
   let str =
-    'Left mouse press to chose shape, holed on to drag, holed on and use <--/a -->/d to rotate'
+    `Left mouse press holed on to chose shape,
+    move mouse to drag,
+    pressed 'a / d' to rotate quickly,
+    pressed once 'LEFT_ARROW / RIGHT_ARROW' to rotate by 1 deg`
   p.fill('#000')
   p.noStroke()
-  p.textSize(24)
+  p.textSize(20)
   p.textWrap(p.WORD)
   p.textAlign(p.CENTER)
-  p.text(str, -200, -340, 400)
+  p.text(str, width/2 - 250, 50, 500)
 }
 
 function setup($p: p5) {
