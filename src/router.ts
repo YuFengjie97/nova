@@ -86,6 +86,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tangram',
     component: () => import('@/views/Tangram.vue')
   },
+  {
+    path: '/terrain',
+    component: ()=>import('@/views/Terrain.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

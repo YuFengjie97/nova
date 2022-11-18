@@ -29,7 +29,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'css-water', link: '/water' },
   { title: 'p5-bloodBranch', link: '/bloodBranch' },
   { title: 'p5-tangram', link: '/tangram' },
-  { title: 'helloIamnull', link: '/' },
+  { title: 'p5-terrain', link: '/terrain' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },

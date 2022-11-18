@@ -43,9 +43,6 @@ onUnmounted(() => {
 .p5Container {
   position: relative;
   width: fit-content;
-  .p5Con {
-    width: fit-content;
-  }
   .framRate {
     width: 5.5rem;
     padding: 0.5rem 1rem;
