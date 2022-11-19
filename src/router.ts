@@ -94,6 +94,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/disperseParticle',
     component: () => import('@/views/DisperseParticle.vue')
   },
+  {
+    path: '/disperseParticle2',
+    component: () => import('@/views/DisperseParticle2.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
