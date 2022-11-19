@@ -88,7 +88,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/terrain',
-    component: ()=>import('@/views/Terrain.vue')
+    component: () => import('@/views/Terrain.vue')
+  },
+  {
+    path: '/disperseParticle',
+    component: () => import('@/views/DisperseParticle.vue')
   },
   { path: '/:path(.*)', component: NotFound }
 ]
