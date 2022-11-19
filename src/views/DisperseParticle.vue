@@ -13,50 +13,56 @@ let canvasWidth = 800
 let canvasHeight = 800
 let width = 600
 let height = 600
-let r = 10
-let gap = 4
-let rows = height / (2 * r)
-let cols = width / (2 * r)
+let dBase = 20
+let rows = height / dBase
+let cols = width / dBase
 let total = rows * cols
-// 鼠标画布坐标
-let mx: number
-let my: number
+let range = 100
+// 鼠标坐标向量
+let mv = new p5.Vector(canvasWidth / 2 - range, canvasHeight / 2 - range)
 let ps: Array<Particle> = []
 
 class Particle {
   pos: p5.Vector
-  r: number
-  c: string
-  constructor(pos: p5.Vector, r: number, c: string) {
+  d: number
+  c: number = 125
+  constructor(pos: p5.Vector) {
     this.pos = pos
-    this.r = r
-    this.c = c
+    this.d = dBase
   }
   draw() {
     let {
       pos: { x, y },
-      r,
+      d,
       c
     } = this
     p.noStroke()
-    p.fill(c)
-    p.circle(x, y, r)
+    p.colorMode(p.HSB, 100)
+    p.fill(c, 50, 100)
+    p.circle(x, y, d)
   }
-  update() {}
+  update() {
+    let dis = p5.Vector.dist(mv, this.pos)
+    let ratio = p.map(dis, 0, range, 0, 100)
+    this.c = ratio
+    this.d = (ratio < 50 ? 50 : ratio) / 100 * dBase
+  }
 }
 
 function initParticles() {
-  p.translate(canvasWidth / 2 - width / 2, canvasHeight / 2 - height / 2)
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      let par = new Particle(
-        new p5.Vector(x * (r + gap), y * (r + gap)),
-        r,
-        '#fff'
-      )
+      let par = new Particle(new p5.Vector(x * dBase + dBase / 2, y * dBase + dBase / 2))
       ps.push(par)
       par.draw()
     }
+  }
+}
+
+function updateParticles() {
+  for (let i = 0, len = ps.length; i < len; i++) {
+    ps[i].update()
+    ps[i].draw()
   }
 }
 
@@ -68,8 +74,12 @@ function sketch(_p: p5) {
     initParticles()
   }
   p.draw = function () {
+    p.translate(canvasWidth / 2 - width / 2, canvasHeight / 2 - height / 2)
     p.background('#2d3436')
-    initParticles()
+    updateParticles()
+  }
+  p.mouseMoved = function () {
+    mv.set(p.mouseX - range, p.mouseY - range)
   }
   p.windowResized = function () {
     let size = p.min(p.windowWidth, p.windowHeight)
