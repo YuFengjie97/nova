@@ -102,6 +102,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/snake',
     component: () => import('@/views/Snake.vue')
   },
+  {
+    path: '/crossLine',
+    component: () => import('@/views/CrossLine.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
