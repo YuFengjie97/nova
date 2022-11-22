@@ -106,6 +106,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/crossLine',
     component: () => import('@/views/CrossLine.vue')
   },
+  {
+    path: '/noisePixels',
+    component: ()=>import('@/views/NoisePixels.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
