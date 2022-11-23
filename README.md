@@ -1,5 +1,10 @@
 # Nova(Am I a Blog?)
-> vite & vue3 & typeScript
+> 这个项目包含了一些css或canvas的实现，一些我正在探索或者觉得有趣的东西。
+> 使用 `vite & vue3 & typeScript`搭建
+
+## Preview👻
+
+you can click here[👉NOVA👈](https://yufengjie97.github.io/nova/#/)to preview.
 
 ## Start
 
@@ -9,6 +14,4 @@
 
     pnpm run build
 
-## Preview👻
 
-你可以点击这里[NOVA](https://yufengjie97.github.io/nova/#/),来预览内容
