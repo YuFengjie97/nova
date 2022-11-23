@@ -4,6 +4,7 @@
       <P5 :sketch="sketch" />
       <img class="gameover" v-show="isGameOver" :src="gameover" />
       <div class="score">Score: {{ score }}</div>
+      <div class="info" v-show="!isLearn">Use space/touch to fly</div>
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ const { floor } = Math
 
 const isGameOver = ref(false)
 const score = ref(0)
+const isLearn = ref(false)
 
 let p: p5
 let width = 800
@@ -43,12 +45,12 @@ class Pipe {
     this.x = x
   }
   show() {
-    p.stroke(0)
+    p.noStroke()
     p.fill(this.c)
     //prettier-ignore
     p.rect(this.x, 0, this.w, this.top,0,0, this.w/2, this.w/2)
     //prettier-ignore
-    p.rect(this.x, width - this.bottom, this.w, this.bottom, this.w/2, this.w/2,0,0)
+    p.rect(this.x, height - this.bottom, this.w, this.bottom, this.w/2, this.w/2,0,0)
   }
   update() {
     this.outCanvas()
@@ -130,11 +132,23 @@ function updatePipe() {
 function sketch(_p: p5) {
   p = _p
   p.setup = function () {
-    p.createCanvas(width, height)
+    if (innerWidth < 800) {
+      p.createCanvas(innerWidth, innerHeight)
+      width = innerWidth
+      height = innerHeight
+    } else {
+      p.createCanvas(width, height)
+    }
     bird = new Bird()
     initPipe()
+    setTimeout(() => {
+      isLearn.value = true
+    }, 5000)
   }
   p.draw = function () {
+    if (p.touches.length > 0) {
+      bird.up()
+    }
     if (!isGameOver.value) {
       p.background(50)
       bird.update()
@@ -154,13 +168,16 @@ function sketch(_p: p5) {
 .viewCon {
   display: grid;
   place-items: center;
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
   .canvasCon {
     width: fit-content;
     height: fit-content;
     position: relative;
   }
   .gameover {
-    width: 300px;
+    width: 20rem;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -171,8 +188,17 @@ function sketch(_p: p5) {
     top: 10px;
     left: 10px;
     font-weight: 800;
-    font-size: 24px;
+    font-size: 1.5rem;
     color: #fff;
+    font-family: 'Patrick Hand';
+  }
+  .info {
+    font-size: 2rem;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: 'Patrick Hand';
   }
 }
