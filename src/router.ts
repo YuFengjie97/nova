@@ -108,7 +108,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/noisePixels',
-    component: ()=>import('@/views/NoisePixels.vue')
+    component: () => import('@/views/NoisePixels.vue')
+  },
+  {
+    path: '/lightBall',
+    component: () => import('@/views/LightBall.vue')
   },
   { path: '/:path(.*)', component: NotFound }
 ]
