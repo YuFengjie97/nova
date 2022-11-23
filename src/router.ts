@@ -114,6 +114,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/lightBall',
     component: () => import('@/views/LightBall.vue')
   },
+  {
+    path: '/flappyBird',
+    component: () => import('@/views/FlappyBird.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
