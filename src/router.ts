@@ -118,6 +118,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/flappyBird',
     component: () => import('@/views/FlappyBird.vue')
   },
+  {
+    path: '/fireWork',
+    component: ()=>import('@/views/Firework.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
