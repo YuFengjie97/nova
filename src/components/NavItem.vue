@@ -7,7 +7,9 @@
     @mouseout="mouseout"
   >
     <div class="bg" :style="bgStyle"></div>
-    <div class="content" :style="contentStyle" @click="go">{{ title }}</div>
+    <div class="content" :style="contentStyle" @click="go">
+      {{ show ? `👻${title}` : title }}
+    </div>
   </div>
 </template>
 
@@ -23,9 +25,9 @@ interface NavItem {
   show?: boolean // 默认是否展示
 }
 
-const props = withDefaults(defineProps<NavItem>(),{
+const props = withDefaults(defineProps<NavItem>(), {
   show: false
-}) 
+})
 const navItem = ref<HTMLElement>()
 const bgPos = ref('')
 
