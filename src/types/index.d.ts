@@ -2,6 +2,7 @@ interface NavItem {
   title: string
   link: string
   bgPos?: Array<string>
+  show?: boolean 
 }
 
 interface Position {
