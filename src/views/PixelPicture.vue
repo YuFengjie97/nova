@@ -1,48 +1,88 @@
 <template>
   <div class="viewCon">
+    <input
+      @change="handleImgChange"
+      ref="file"
+      type="file"
+      accept="image/png, image/jpeg, image/jpg"
+      style="display: none"
+    />
     <P5 :sketch="sketch" />
+    <Loading :is-loading="isLoading"/>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+import Loading from '@/components/Loading.vue'
 import P5 from '@/components/P5.vue'
 import p5 from 'p5'
-import jpg from '@/assets/img/test.jpg'
+import defaultImg from '@/assets/img/test.jpg'
+import * as dat from 'dat.gui'
 
-const { max, min } = Math
+const isLoading = ref(false)
 
 let p: p5
-let width = 600
-let height = 600
-let img: p5.Image
-let pixelSize = 20 // 像素风尺寸
-let pixelTotal = pixelSize ** 2
-let pixelArr: Array<Pixel> = []
-
-// 根据图片宽高和画布宽高比例，获取缩放后的画布宽高（限制在屏幕内）
-function setCanvasSize(imgW: number, imgH: number) {
-  let ratio = imgW / imgH
-  if (ratio > 1) {
-    height = width / ratio
-  } else {
-    width = height * ratio
+let imgUrl = defaultImg
+let canvasWidth: number
+let canvasHeight: number
+let options = {
+  pixelSize: 20, // 像素风尺寸
+  isCircle: false,
+  importImg: function () {
+    file.value?.click()
+  },
+  downloadImg: function(){
+    p.saveCanvas()
   }
 }
+let pixelSize = options.pixelSize
+let pixelTotal = options.pixelSize ** 2
+let pixelArr: Array<Pixel> = []
+
+
+const file = ref<HTMLInputElement>()
+function handleImgChange() {
+  if (file.value) {
+    let img = file.value.files![0]
+    let url = URL.createObjectURL(img)
+    imgUrl = url
+    initPixelArr(imgUrl)
+  }
+}
+
+
+// gui
+const panel = new dat.GUI({ width: 300 })
+panel.add(options, 'pixelSize', 4, 30, 1).name('PixelSize').onFinishChange(function (val) {
+  pixelSize = val
+  pixelTotal = val ** 2
+  initPixelArr(imgUrl)
+  p.redraw()
+})
+panel.add(options, 'isCircle').name('ShowCircle')
+panel.add(options, 'importImg').name('LoadLocalImg').listen()
+panel.add(options, 'downloadImg').name('DownLoad').listen()
+
 
 class Pixel {
   pos: p5.Vector
   tarPos: p5.Vector
-  vel: p5.Vector = new p5.Vector(0,0)
+  vel: p5.Vector = new p5.Vector(0, 0)
   color: Array<number>
   constructor(tarPos: p5.Vector, color: Array<number>) {
     this.tarPos = tarPos
-    this.pos = new p5.Vector(p.random(0, width), p.random(0, height))
+    this.pos = new p5.Vector(p.random(0, canvasWidth), p.random(0, canvasHeight))
     this.color = color
   }
   show() {
     p.noStroke()
     p.fill(this.color)
-    p.rect(this.pos.x, this.pos.y, pixelSize, pixelSize, pixelSize/2)
+    if(options.isCircle){
+      p.circle(this.pos.x, this.pos.y, pixelSize)
+    } else{
+      p.rect(this.pos.x, this.pos.y, pixelSize, pixelSize)
+    }
   }
   update() {
     let dist = p5.Vector.dist(this.pos, this.tarPos)
@@ -54,18 +94,27 @@ class Pixel {
   }
 }
 
-function sketch(_p: p5) {
-  p = _p
-
-  p.preload = function () {
-    img = p.loadImage(jpg)
+// 根据图片宽高和画布宽高比例，获取缩放后的画布宽高（限制在屏幕内）
+function setCanvasSize(imgW: number, imgH: number) {
+  let w = 600
+  let h = 600
+  let ratio = imgW / imgH
+  if (ratio > 1) {
+    h = w / ratio
+  } else {
+    w = h * ratio
   }
+  canvasWidth = w
+  canvasHeight = h
+  p.createCanvas(canvasWidth, canvasHeight)
+}
 
-  p.setup = function () {
+function initPixelArr(imgUrl: string) {
+  isLoading.value = true
+  
+  p.loadImage(imgUrl, (img) => {
     setCanvasSize(img.width, img.height)
-    p.createCanvas(width, height)
-    p.background(50)
-
+    pixelArr.length = 0
     img.loadPixels()
     for (let y = 0; y < img.height; y += pixelSize) {
       for (let x = 0; x < img.width; x += pixelSize) {
@@ -85,8 +134,8 @@ function sketch(_p: p5) {
           colorSum[2] / pixelTotal,
           colorSum[3] / pixelTotal
         ]
-        let cx = (x / img.width) * width
-        let cy = (y / img.height) * height
+        let cx = (x / img.width) * canvasWidth
+        let cy = (y / img.height) * canvasHeight
 
         // p.fill(colorAvg)
         // p.rect(cx,cy,pixelSize,pixelSize)
@@ -94,6 +143,14 @@ function sketch(_p: p5) {
         pixelArr.push(new Pixel(new p5.Vector(cx, cy), colorAvg))
       }
     }
+    isLoading.value = false
+  })
+}
+
+function sketch(_p: p5) {
+  p = _p
+  p.setup = function () {
+    initPixelArr(defaultImg)
   }
   p.draw = function () {
     p.background(51)
