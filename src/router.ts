@@ -122,6 +122,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/fireWork',
     component: ()=>import('@/views/Firework.vue')
   },
+  {
+    path: '/pixelPicture',
+    component: ()=>import('@/views/PixelPicture.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

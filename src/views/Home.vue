@@ -38,7 +38,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'p5-LightBall', link: '/lightBall' },
   { title: 'p5-FlappyBird', link: '/flappyBird', show: true },
   { title: 'p5-Firework', link: '/firework' },
-  { title: 'helloIamnull', link: '/' },
+  { title: 'p5-PixelPicture', link: '/pixelPicture' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
