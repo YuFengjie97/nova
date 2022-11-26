@@ -126,6 +126,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/pixelPicture',
     component: ()=>import('@/views/PixelPicture.vue')
   },
+  {
+    path:'/cube',
+    component: ()=>import('@/views/Cube.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
