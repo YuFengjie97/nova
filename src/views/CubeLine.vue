@@ -9,17 +9,38 @@
 <script lang="ts" setup>
 // https://threejs.org/examples/?q=bufferg#webgl_buffergeometry_drawrange
 import { ref, onMounted } from 'vue'
-import * as THREE from 'three'
+// import * as THREE from 'three'
+import {
+  Group,
+  Material,
+  Color,
+  Vector3,
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  BoxHelper,
+  BufferGeometry,
+  Points,
+  LineSegments,
+  BoxGeometry,
+  BufferAttribute,
+  Mesh,
+  AdditiveBlending,
+  DynamicDrawUsage,
+  PointsMaterial,
+  LineBasicMaterial,
+  AxesHelper,
+} from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GUI } from 'dat.gui'
 const { random, sqrt } = Math
 
-type Mat = THREE.Material & {
-  color: THREE.Color
+type Mat = Material & {
+  color: Color
 }
 type ParticlesDataItem = {
-  vel: THREE.Vector3
+  vel: Vector3
   numConnection: number
 }
 
@@ -27,12 +48,12 @@ const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
 let stats: Stats
 let orbitControls: OrbitControls
-let scene: THREE.Scene
-let camera: THREE.PerspectiveCamera
-let renderer: THREE.WebGLRenderer
+let scene: Scene
+let camera: PerspectiveCamera
+let renderer: WebGLRenderer
 
-let group: THREE.Group
-let box: THREE.BoxHelper
+let group: Group
+let box: BoxHelper
 let size: number = 500 // boxSize
 
 let particleNum = 500
@@ -41,11 +62,11 @@ let particlesVertex = new Float32Array(particlesMax * 3) // 点云顶点集合
 let lineVertex = new Float32Array(particlesMax ** 2 * 3) // 线的顶点集合，线与点云不能共用一个数据源,因为线是双向线（两个点有两条线，因为两层for循环），
 let lineColors = new Float32Array(particlesMax ** 2 * 3) // 每段线的颜色
 let particlesData: Array<ParticlesDataItem> = []
-let particlesGeo: THREE.BufferGeometry
-let particlesMesh: THREE.Points
+let particlesGeo: BufferGeometry
+let particlesMesh: Points
 let minDistance = 100 // 如果两个粒子的距离在这个范围内就绘制线段
 let maxConnection = 20 // 一个粒子最大连接数
-let lineMesh: THREE.LineSegments
+let lineMesh: LineSegments
 
 const option = {
   showDots: true,
@@ -75,16 +96,16 @@ function initGUI() {
 }
 
 function initBox() {
-  group = new THREE.Group()
+  group = new Group()
   scene.add(group)
 
-  let boxGeo = new THREE.BoxGeometry(size, size, size)
-  box = new THREE.BoxHelper(new THREE.Mesh(boxGeo))
+  let boxGeo = new BoxGeometry(size, size, size)
+  box = new BoxHelper(new Mesh(boxGeo))
   // 不清楚是不是type/three的bug，box.material上找不到这三个属性
   ;(box.material as Mat).color.setRGB(255, 0, 0)
   // ;(box.material as Mat).color.setHex(0x101010) // 这个颜色跟例子的颜色设置也有出入，太淡了
-  ;(box.material as THREE.Material).blending = THREE.AdditiveBlending
-  ;(box.material as THREE.Material).transparent = true
+  ;(box.material as Material).blending = AdditiveBlending
+  ;(box.material as Material).transparent = true
   group.add(box)
 }
 
@@ -100,7 +121,7 @@ function initParticles() {
 
     // 粒子随机速度，初始化连接数
     particlesData.push({
-      vel: new THREE.Vector3(
+      vel: new Vector3(
         random() * 2 - 1,
         random() * 2 - 1,
         random() * 2 - 1
@@ -111,42 +132,42 @@ function initParticles() {
 }
 
 function initParticlesMesh() {
-  particlesGeo = new THREE.BufferGeometry()
+  particlesGeo = new BufferGeometry()
   particlesGeo.setDrawRange(0, particleNum)
   particlesGeo.setAttribute(
     'position',
-    new THREE.BufferAttribute(particlesVertex, 3).setUsage(
-      THREE.DynamicDrawUsage
+    new BufferAttribute(particlesVertex, 3).setUsage(
+      DynamicDrawUsage
     )
   )
   // 所有粒子共用一个材质
-  const particlesMaterial = new THREE.PointsMaterial({
+  const particlesMaterial = new PointsMaterial({
     color: 0xffffff,
     size: 3,
-    blending: THREE.AdditiveBlending,
+    blending: AdditiveBlending,
     transparent: true,
     sizeAttenuation: false
   })
-  particlesMesh = new THREE.Points(particlesGeo, particlesMaterial)
+  particlesMesh = new Points(particlesGeo, particlesMaterial)
   group.add(particlesMesh)
 }
 
 function initLineMesh() {
-  const lineMat = new THREE.LineBasicMaterial({
+  const lineMat = new LineBasicMaterial({
     vertexColors: true,
-    blending: THREE.AdditiveBlending,
+    blending: AdditiveBlending,
     transparent: true
   })
-  const lineGeo = new THREE.BufferGeometry()
+  const lineGeo = new BufferGeometry()
   lineGeo.setAttribute(
     'position',
-    new THREE.BufferAttribute(lineVertex, 3).setUsage(THREE.DynamicDrawUsage)
+    new BufferAttribute(lineVertex, 3).setUsage(DynamicDrawUsage)
   )
   lineGeo.setAttribute(
     'color',
-    new THREE.BufferAttribute(lineColors, 3).setUsage(THREE.DynamicDrawUsage)
+    new BufferAttribute(lineColors, 3).setUsage(DynamicDrawUsage)
   )
-  lineMesh = new THREE.LineSegments(lineGeo, lineMat)
+  lineMesh = new LineSegments(lineGeo, lineMat)
 
   group.add(lineMesh)
 }
@@ -244,7 +265,7 @@ function initControl() {
 }
 // 坐标轴
 function showAxesHelper() {
-  scene.add(new THREE.AxesHelper(1000))
+  scene.add(new AxesHelper(1000))
 }
 // 自适应
 function onWindowResize() {
@@ -255,15 +276,15 @@ function onWindowResize() {
 
 // three初始化
 function initTHREE() {
-  scene = new THREE.Scene()
-  camera = new THREE.PerspectiveCamera(
+  scene = new Scene()
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
     4000
   )
   camera.position.z = 1000
-  renderer = new THREE.WebGLRenderer({
+  renderer = new WebGLRenderer({
     canvas: canvasDom.value,
     antialias: true
   })
