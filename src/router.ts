@@ -126,10 +126,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/pixelPicture',
     component: ()=>import('@/views/PixelPicture.vue')
   },
-  // {
-  //   path:'/cube',
-  //   component: ()=>import('@/views/Cube.vue')
-  // },
+  {
+    path:'/threeTemplate',
+    component: ()=>import('@/views/THREE-template.vue')
+  },
+  {
+    path: '/cubeLine',
+    component: ()=>import('@/views/CubeLine.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

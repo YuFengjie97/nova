@@ -14,16 +14,16 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
-let width = 800
-let height = 600
+let width = innerWidth
+let height = innerHeight
 let stats: Stats
 let orbitControls: OrbitControls
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 
+// 自定义部分
 let cube: Cube
-
 class Cube {
   mesh: THREE.Mesh
   constructor() {
@@ -37,16 +37,40 @@ class Cube {
     this.mesh.rotation.y += 0.01
   }
 }
-
-function initStats(){
-  stats = Stats()
-  canvasCon.value?.append(stats.dom)
+function initCube(){
+  cube = new Cube()
+}
+function updateCube(){
+  cube.update()
 }
 
+// 帧率
+function initStats(){
+  stats = Stats()
+  canvasCon.value!.append(stats.dom)
+}
+// 控制
 function initControl(){
   orbitControls = new OrbitControls( camera, renderer.domElement );
 }
+// 坐标轴
+function showAxesHelper(){
+  scene.add(new THREE.AxesHelper(1000))
+}
+// 自适应
+function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
+  const canvas = renderer.domElement;
+  const pixelRatio = window.devicePixelRatio;
+  const width = canvas.clientWidth * pixelRatio | 0;
+  const height = canvas.clientHeight * pixelRatio | 0;
+  const needResize = canvas.width !== width || canvas.height !== height;
+  if (needResize) {
+    renderer.setSize(width, height, false);
+  }
+  return needResize;
+}
 
+// three初始化
 function initTHREE() {
   scene = new THREE.Scene()
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
@@ -56,23 +80,28 @@ function initTHREE() {
   renderer.setSize(width, height)
   camera.position.z = 5
 }
-
+// 绘制
 function animate() {
   requestAnimationFrame(animate)
+
+  if (resizeRendererToDisplaySize(renderer)) {
+    const canvas = renderer.domElement;
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+  }
+
   stats.update()
+
+  // do something
   updateCube()
+  
   renderer.render(scene, camera)
 }
 
-function initCube(){
-  cube = new Cube()
-}
-function updateCube(){
-  cube.update()
-}
 
 onMounted(() => {
   initTHREE()
+  showAxesHelper()
   initStats()
   initControl()
   initCube()
@@ -82,7 +111,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .viewCon {
-  display: grid;
-  place-items: center;
+  margin: 0;
+  padding: 0;
 }
 </style>
