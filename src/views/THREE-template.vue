@@ -55,10 +55,12 @@ function initTHREE() {
   renderer.setPixelRatio(window.devicePixelRatio) // render的像素比设置为设备屏幕的像素比
   renderer.setSize(window.innerWidth, window.innerHeight) // 画布自适应
   camera.position.z = 5
+  window.addEventListener('resize', onWindowResize)
 }
+
 // 绘制
-function animate() {
-  requestAnimationFrame(animate)
+function render() {
+  requestAnimationFrame(render)
   stats.update()
   // do something
   renderer.render(scene, camera)
@@ -70,8 +72,7 @@ onMounted(() => {
   showAxesHelper()
   initStats()
   initControl()
-  animate()
-  window.addEventListener('resize', onWindowResize)
+  render()
 })
 </script>
 

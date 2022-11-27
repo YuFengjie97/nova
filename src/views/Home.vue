@@ -40,7 +40,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'p5-Firework', link: '/firework' },
   { title: 'p5-PixelPicture', link: '/pixelPicture', show: true},
   { title: 'threeTemplate', link: '/threeTemplate' },
-  { title: 'three-cubeLine', link: '/cubeLine' },
+  { title: 'three-DemoRewrite-cubeLine', link: '/cubeLine' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
