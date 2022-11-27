@@ -22,27 +22,6 @@ let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 
-// 自定义部分
-let cube: Cube
-class Cube {
-  mesh: THREE.Mesh
-  constructor() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    this.mesh = new THREE.Mesh(geometry, material)
-    scene.add(this.mesh)
-  }
-  update() {
-    this.mesh.rotation.x += 0.01
-    this.mesh.rotation.y += 0.01
-  }
-}
-function initCube(){
-  cube = new Cube()
-}
-function updateCube(){
-  cube.update()
-}
 
 // 帧率
 function initStats(){
@@ -58,16 +37,10 @@ function showAxesHelper(){
   scene.add(new THREE.AxesHelper(1000))
 }
 // 自适应
-function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
-  const canvas = renderer.domElement;
-  const pixelRatio = window.devicePixelRatio;
-  const width = canvas.clientWidth * pixelRatio | 0;
-  const height = canvas.clientHeight * pixelRatio | 0;
-  const needResize = canvas.width !== width || canvas.height !== height;
-  if (needResize) {
-    renderer.setSize(width, height, false);
-  }
-  return needResize;
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
 // three初始化
@@ -75,26 +48,19 @@ function initTHREE() {
   scene = new THREE.Scene()
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
-    canvas: canvasDom.value
+    canvas: canvasDom.value,
+    antialias: true
   })
   renderer.setSize(width, height)
+  renderer.setPixelRatio(window.devicePixelRatio) // render的像素比设置为设备屏幕的像素比
+  renderer.setSize(window.innerWidth, window.innerHeight) // 画布自适应
   camera.position.z = 5
 }
 // 绘制
 function animate() {
   requestAnimationFrame(animate)
-
-  if (resizeRendererToDisplaySize(renderer)) {
-    const canvas = renderer.domElement;
-    camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.updateProjectionMatrix();
-  }
-
   stats.update()
-
   // do something
-  updateCube()
-  
   renderer.render(scene, camera)
 }
 
@@ -104,8 +70,8 @@ onMounted(() => {
   showAxesHelper()
   initStats()
   initControl()
-  initCube()
   animate()
+  window.addEventListener('resize', onWindowResize)
 })
 </script>
 
