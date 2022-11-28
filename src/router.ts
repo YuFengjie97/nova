@@ -134,6 +134,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/cubeLine',
     component: ()=>import('@/views/CubeLine.vue')
   },
+  {
+    path: '/allBufferGeo',
+    component: ()=>import('@/views/AllBufferGeo/AllBufferGeo.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

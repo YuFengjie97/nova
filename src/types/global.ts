@@ -1,3 +1,4 @@
+// 全局自动类型定义，不允许存在import/export，这样会自动将该文件声明为一个模块，就需要引入才能使用类型了
 interface NavItem {
   title: string
   link: string

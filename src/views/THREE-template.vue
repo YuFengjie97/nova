@@ -31,6 +31,10 @@ function initStats(){
 // 控制
 function initControl(){
   orbitControls = new OrbitControls( camera, renderer.domElement );
+  orbitControls.target = new THREE.Vector3(120, 60, 0)
+
+  camera.position.set(120, 60, 100)
+  orbitControls.update() // 更新camera要更新control
 }
 // 坐标轴
 function showAxesHelper(){
@@ -46,32 +50,46 @@ function onWindowResize() {
 // three初始化
 function initTHREE() {
   scene = new THREE.Scene()
+  scene.background = new THREE.Color( 0x444444 );
+
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
     antialias: true
   })
   renderer.setSize(width, height)
-  renderer.setPixelRatio(window.devicePixelRatio) // render的像素比设置为设备屏幕的像素比
+  // renderer.setPixelRatio(window.devicePixelRatio) // render的像素比设置为设备屏幕的像素比，不推荐
   renderer.setSize(window.innerWidth, window.innerHeight) // 画布自适应
-  camera.position.z = 5
+  orbitControls.update() 
   window.addEventListener('resize', onWindowResize)
+}
+
+// 光源
+function initLight() {
+  const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+  scene.add( light );
+}
+
+function animate(){
+  // doSomething
 }
 
 // 绘制
 function render() {
   requestAnimationFrame(render)
   stats.update()
-  // do something
+  animate()
   renderer.render(scene, camera)
 }
 
 
 onMounted(() => {
   initTHREE()
+  initControl()
+
+  initLight()
   showAxesHelper()
   initStats()
-  initControl()
   render()
 })
 </script>

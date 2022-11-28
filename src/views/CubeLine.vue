@@ -13,7 +13,6 @@ import { ref, onMounted } from 'vue'
 import {
   Group,
   Material,
-  Color,
   Vector3,
   Scene,
   PerspectiveCamera,
@@ -29,16 +28,14 @@ import {
   DynamicDrawUsage,
   PointsMaterial,
   LineBasicMaterial,
-  AxesHelper,
+  AxesHelper
 } from 'three'
+import { Mat } from 'threePatch'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GUI } from 'dat.gui'
 const { random, sqrt } = Math
 
-type Mat = Material & {
-  color: Color
-}
 type ParticlesDataItem = {
   vel: Vector3
   numConnection: number
@@ -121,11 +118,7 @@ function initParticles() {
 
     // 粒子随机速度，初始化连接数
     particlesData.push({
-      vel: new Vector3(
-        random() * 2 - 1,
-        random() * 2 - 1,
-        random() * 2 - 1
-      ),
+      vel: new Vector3(random() * 2 - 1, random() * 2 - 1, random() * 2 - 1),
       numConnection: 0
     })
   }
@@ -136,9 +129,7 @@ function initParticlesMesh() {
   particlesGeo.setDrawRange(0, particleNum)
   particlesGeo.setAttribute(
     'position',
-    new BufferAttribute(particlesVertex, 3).setUsage(
-      DynamicDrawUsage
-    )
+    new BufferAttribute(particlesVertex, 3).setUsage(DynamicDrawUsage)
   )
   // 所有粒子共用一个材质
   const particlesMaterial = new PointsMaterial({
