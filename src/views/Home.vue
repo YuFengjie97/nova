@@ -43,7 +43,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'three-DemoRewrite-cubeLine', link: '/cubeLine' },
   { title: 'three-AllBufferGeo', link: '/allBufferGeo' },
   { title: 'canvas-TextPoint', link: '/canvasTextPoint' },
-  { title: 'helloIamnull', link: '/' },
+  { title: 'three-TextPoint', link: '/threeTextPoint' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },

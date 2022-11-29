@@ -50,7 +50,7 @@ function sampleCoordinates() {
 
   // 绘制字体
   const linesNumber = lines.length
-  ctx.font = '100 ' + textureFontSize + 'px ' + fontName
+  ctx.font = textureFontSize + 'px ' + fontName
   ctx.fillStyle = '#2a9d8f'
   for (let i = 0; i < linesNumber; i++) {
     ctx.fillText(lines[i], 0, ((i + 0.8) * hTexture) / linesNumber)
@@ -58,7 +58,7 @@ function sampleCoordinates() {
 
   // 获取画布上绘制的文字坐标信息
   textureCoordinates = []
-  const samplingStep = 4 //像素是每4个为一组rgba
+  const samplingStep = 4 // rgb取样跨度
   if (wTexture > 0) {
     const imageData = ctx.getImageData(
       0,

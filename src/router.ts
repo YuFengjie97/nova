@@ -142,6 +142,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/canvasTextPoint',
     component: ()=>import('@/views/CanvasTextPoint.vue')
   },
+  {
+    path: '/threeTextPoint',
+    component: ()=>import('@/views/ThreeTextPoint.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

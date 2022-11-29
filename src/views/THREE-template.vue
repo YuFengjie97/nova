@@ -1,6 +1,6 @@
 <template>
   <div class="viewCon">
-    <div class="con" ref="canvasCon">
+    <div class="canvasCon" ref="canvasCon">
       <canvas class="canvas" ref="canvasDom" />
     </div>
   </div>
@@ -14,8 +14,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
-let width = innerWidth
-let height = innerHeight
+let width = window.innerWidth
+let height = window.innerHeight
 let stats: Stats
 let orbitControls: OrbitControls
 let scene: THREE.Scene
@@ -32,9 +32,10 @@ function initStats(){
 function initControl(){
   orbitControls = new OrbitControls( camera, renderer.domElement );
   orbitControls.target = new THREE.Vector3(120, 60, 0)
+  orbitControls.object.position.set(120, 60, 100) // 通过control控件更新相机位置，不需要调用update方法
 
-  camera.position.set(120, 60, 100)
-  orbitControls.update() // 更新camera要更新control
+  // camera.position.set(120, 60, 100)
+  // orbitControls.update() // 更新camera要更新control
 }
 // 坐标轴
 function showAxesHelper(){
@@ -42,9 +43,11 @@ function showAxesHelper(){
 }
 // 自适应
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight
+  width = window.innerWidth
+  height = window.innerHeight
+  camera.aspect = width / height
   camera.updateProjectionMatrix()
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setSize(width, height)
 }
 
 // three初始化
@@ -59,8 +62,6 @@ function initTHREE() {
   })
   renderer.setSize(width, height)
   // renderer.setPixelRatio(window.devicePixelRatio) // render的像素比设置为设备屏幕的像素比，不推荐
-  renderer.setSize(window.innerWidth, window.innerHeight) // 画布自适应
-  orbitControls.update() 
   window.addEventListener('resize', onWindowResize)
 }
 
