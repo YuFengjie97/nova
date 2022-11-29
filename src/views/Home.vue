@@ -42,7 +42,7 @@ const navList = ref<Array<NavItem>>([
   // { title: 'threeTemplate', link: '/threeTemplate' },
   { title: 'three-DemoRewrite-cubeLine', link: '/cubeLine' },
   { title: 'three-AllBufferGeo', link: '/allBufferGeo' },
-  { title: 'helloIamnull', link: '/' },
+  { title: 'canvas-TextPoint', link: '/canvasTextPoint' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
