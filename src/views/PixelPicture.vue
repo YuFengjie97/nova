@@ -19,6 +19,7 @@ import P5 from '@/components/P5.vue'
 import p5 from 'p5'
 import defaultImg from '@/assets/img/test.jpg'
 import * as dat from 'dat.gui'
+const {min} = Math
 
 const isLoading = ref(false)
 
@@ -27,7 +28,7 @@ let imgUrl = defaultImg
 let canvasWidth: number
 let canvasHeight: number
 let options = {
-  pixelSize: 20, // 像素风尺寸
+  sampleNum: 20, // 图片宽高的最小值被分成的份数 
   isCircle: false,
   importImg: function () {
     file.value?.click()
@@ -36,10 +37,7 @@ let options = {
     p.saveCanvas()
   }
 }
-let pixelSize = options.pixelSize
-let pixelTotal = options.pixelSize ** 2
 let pixelArr: Array<Pixel> = []
-
 
 const file = ref<HTMLInputElement>()
 function handleImgChange() {
@@ -54,11 +52,8 @@ function handleImgChange() {
 
 // gui
 const panel = new dat.GUI({ width: 300 })
-panel.add(options, 'pixelSize', 4, 30, 1).name('PixelSize').onFinishChange(function (val) {
-  pixelSize = val
-  pixelTotal = val ** 2
+panel.add(options, 'sampleNum', 10, 100, 1).name('sampleNum').onFinishChange(function (val) {
   initPixelArr(imgUrl)
-  p.redraw()
 })
 panel.add(options, 'isCircle').name('ShowCircle')
 panel.add(options, 'importImg').name('LoadLocalImg').listen()
@@ -70,18 +65,20 @@ class Pixel {
   tarPos: p5.Vector
   vel: p5.Vector = new p5.Vector(0, 0)
   color: Array<number>
-  constructor(tarPos: p5.Vector, color: Array<number>) {
+  size: number
+  constructor(tarPos: p5.Vector, color: Array<number>, size: number) {
     this.tarPos = tarPos
     this.pos = new p5.Vector(p.random(0, canvasWidth), p.random(0, canvasHeight))
     this.color = color
+    this.size = size
   }
   show() {
     p.noStroke()
     p.fill(this.color)
     if(options.isCircle){
-      p.circle(this.pos.x, this.pos.y, pixelSize)
+      p.circle(this.pos.x, this.pos.y, this.size)
     } else{
-      p.rect(this.pos.x, this.pos.y, pixelSize, pixelSize)
+      p.rect(this.pos.x, this.pos.y, this.size, this.size)
     }
   }
   update() {
@@ -109,38 +106,24 @@ function setCanvasSize(imgW: number, imgH: number) {
   p.createCanvas(canvasWidth, canvasHeight)
 }
 
+// 根据图片像素数据初始化粒子
 function initPixelArr(imgUrl: string) {
   isLoading.value = true
   
   p.loadImage(imgUrl, (img) => {
     setCanvasSize(img.width, img.height)
+    let sampleSize = min(img.width, img.height) / options.sampleNum
+    let size = min(canvasWidth, canvasHeight) / options.sampleNum
     pixelArr.length = 0
     img.loadPixels()
-    for (let y = 0; y < img.height; y += pixelSize) {
-      for (let x = 0; x < img.width; x += pixelSize) {
-        let colorSum = [0, 0, 0, 0]
-        for (let j = y; j < y + pixelSize; j++) {
-          for (let i = x; i < x + pixelSize; i++) {
-            let c = img.get(i, j)
-            colorSum[0] += c[0]
-            colorSum[1] += c[1]
-            colorSum[2] += c[2]
-            colorSum[3] += c[3]
-          }
-        }
-        let colorAvg = [
-          colorSum[0] / pixelTotal,
-          colorSum[1] / pixelTotal,
-          colorSum[2] / pixelTotal,
-          colorSum[3] / pixelTotal
-        ]
+    for (let y = 0; y < img.height; y += sampleSize) {
+      for (let x = 0; x < img.width; x += sampleSize) {
+        let color = img.get(x, y)
+        
         let cx = (x / img.width) * canvasWidth
         let cy = (y / img.height) * canvasHeight
 
-        // p.fill(colorAvg)
-        // p.rect(cx,cy,pixelSize,pixelSize)
-
-        pixelArr.push(new Pixel(new p5.Vector(cx, cy), colorAvg))
+        pixelArr.push(new Pixel(new p5.Vector(cx, cy), color, size))
       }
     }
     isLoading.value = false
