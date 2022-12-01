@@ -44,7 +44,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'three-AllBufferGeo', link: '/allBufferGeo' },
   { title: 'canvas-TextPoint', link: '/canvasTextPoint' },
   { title: 'three-TextPoint', link: '/threeTextPoint' },
-  { title: 'helloIamnull', link: '/' },
+  { title: 'three-Text', link: '/threeText' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },

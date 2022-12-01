@@ -146,6 +146,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/threeTextPoint',
     component: ()=>import('@/views/ThreeTextPoint.vue')
   },
+  {
+    path: '/threeText',
+    component: ()=>import('@/views/TextGeo.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
