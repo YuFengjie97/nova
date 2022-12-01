@@ -15,7 +15,7 @@ import P5 from '@/components/P5.vue'
 import p5 from 'p5'
 import gameover from '@/assets/img/gameover.png'
 
-const { floor } = Math
+const { floor, min } = Math
 
 const isGameOver = ref(false)
 const score = ref(0)
@@ -132,6 +132,8 @@ function updatePipe() {
 function sketch(_p: p5) {
   p = _p
   p.setup = function () {
+    let size = min(innerWidth, innerHeight)
+    height = width = size
     if (innerWidth < 800) {
       p.createCanvas(innerWidth, innerHeight)
       width = innerWidth
@@ -166,6 +168,8 @@ function sketch(_p: p5) {
 
 <style lang="less" scoped>
 .viewCon {
+  padding: 0;
+  margin: 0;
   display: grid;
   place-items: center;
   @media screen and (max-width: 768px) {
