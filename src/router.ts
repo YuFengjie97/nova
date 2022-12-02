@@ -150,6 +150,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/threeText',
     component: ()=>import('@/views/three/TextGeo.vue')
   },
+  {
+    path: '/solarSystem',
+    component: () => import('@/views/three/SolarSystem.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

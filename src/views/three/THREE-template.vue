@@ -9,8 +9,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import * as THREE from 'three'
-import Stats from 'three/examples/jsm/libs/stats.module.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import Stats from 'three/examples/jsm/libs/stats.module.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+const {random, PI, floor, ceil, min, max} = Math
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
@@ -22,15 +23,24 @@ let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 
+onMounted(() => {
+  initTHREE()
+  initControl()
+
+  initLight()
+  showAxesHelper()
+  initStats()
+  render()
+})
 
 // 帧率
-function initStats(){
+function initStats() {
   stats = Stats()
   canvasCon.value!.append(stats.dom)
 }
 // 控制
-function initControl(){
-  orbitControls = new OrbitControls( camera, renderer.domElement );
+function initControl() {
+  orbitControls = new OrbitControls(camera, renderer.domElement)
   orbitControls.target = new THREE.Vector3(120, 60, 0)
   orbitControls.object.position.set(120, 60, 100) // 通过control控件更新相机位置，不需要调用update方法
 
@@ -38,7 +48,7 @@ function initControl(){
   // orbitControls.update() // 更新camera要更新control
 }
 // 坐标轴
-function showAxesHelper(){
+function showAxesHelper() {
   scene.add(new THREE.AxesHelper(1000))
 }
 // 自适应
@@ -53,7 +63,7 @@ function onWindowResize() {
 // three初始化
 function initTHREE() {
   scene = new THREE.Scene()
-  scene.background = new THREE.Color( 0x444444 );
+  scene.background = new THREE.Color(0x444444)
 
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
@@ -67,11 +77,11 @@ function initTHREE() {
 
 // 光源
 function initLight() {
-  const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-  scene.add( light );
+  const light = new THREE.AmbientLight(0x404040) // soft white light
+  scene.add(light)
 }
 
-function animate(){
+function animate() {
   // doSomething
 }
 
@@ -82,17 +92,6 @@ function render() {
   animate()
   renderer.render(scene, camera)
 }
-
-
-onMounted(() => {
-  initTHREE()
-  initControl()
-
-  initLight()
-  showAxesHelper()
-  initStats()
-  render()
-})
 </script>
 
 <style lang="less" scoped>
