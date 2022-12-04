@@ -154,6 +154,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/solarSystem',
     component: () => import('@/views/three/SolarSystem.vue')
   },
+  {
+    path: '/glowBall',
+    component: ()=>import('@/views/three/GlowBall.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 
