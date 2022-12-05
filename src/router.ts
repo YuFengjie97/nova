@@ -136,7 +136,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/allBufferGeo',
-    component: ()=>import('@/views/AllBufferGeo/AllBufferGeo.vue')
+    component: ()=>import('@/views/three/AllBufferGeo/AllBufferGeo.vue')
   },
   {
     path: '/canvasTextPoint',
