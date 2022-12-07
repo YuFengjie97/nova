@@ -11,6 +11,7 @@ import { ref } from 'vue'
 import img from '@/assets/img/bg.png'
 
 const navList = ref<Array<NavItem>>([
+  {title: 'ol-demo', link: '/olDemo', show: true},
   { title: 'css-StarRate', link: '/starRate' },
   { title: 'css-Sun', link: '/sun', show: true },
   { title: 'css-DeathLoading', link: '/deathLoading', show: true },
