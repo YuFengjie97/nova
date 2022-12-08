@@ -158,6 +158,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/glowBall',
     component: ()=>import('@/views/three/GlowBall.vue')
   },
+  {
+    path: '/atom',
+    component: ()=>import('@/views/three/Atom.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

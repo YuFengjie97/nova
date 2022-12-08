@@ -13,7 +13,7 @@ import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-const { random, PI, floor, ceil, min, max } = Math
+const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
