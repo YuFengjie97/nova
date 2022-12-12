@@ -49,7 +49,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'three-GlowBall', link: '/glowBall' },
   { title: 'three-atom', link: '/atom', show: true },
   // { title: 'three-lavaBall', link: '/lavaBall' },
-  { title: 'helloIamnull', link: '/' },
+  { title: 'three-lensFlares', link: '/lensFlares' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' }
 ])
