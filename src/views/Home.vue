@@ -48,7 +48,7 @@ const navList = ref<Array<NavItem>>([
   { title: 'three-SolarSystem', link: '/solarSystem', show: true },
   { title: 'three-GlowBall', link: '/glowBall' },
   { title: 'three-atom', link: '/atom', show: true },
-  { title: 'helloIamnull', link: '/' },
+  // { title: 'three-lavaBall', link: '/lavaBall' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' },
   { title: 'helloIamnull', link: '/' }

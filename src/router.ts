@@ -162,6 +162,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/atom',
     component: ()=>import('@/views/three/Atom.vue')
   },
+  {
+    path: '/lavaBall',
+    component: ()=>import('@/views/three/LavaBall.vue')
+  },
   { path: '/:path(.*)', component: NotFound }
 ]
 

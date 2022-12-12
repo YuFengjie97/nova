@@ -13,6 +13,14 @@ import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+import { Mat } from 'threePatch'
+
+// 后期处理相关
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+
 const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
 const canvasDom = ref<HTMLElement>()
