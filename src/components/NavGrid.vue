@@ -51,6 +51,6 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 2px;
 }
 </style>

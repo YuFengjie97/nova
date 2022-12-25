@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <SnowyBg class="snowBg"/>
     <h1 class="title">Hover and Click</h1>
     <NavGrid :navList="navList" :bg="img" />
   </div>
@@ -9,6 +10,7 @@ import NavGrid from '@/components/NavGrid.vue'
 import { ref } from 'vue'
 
 import img from '@/assets/img/bg.png'
+import SnowyBg from './three/SnowyBg.vue';
 
 const navList = ref<Array<NavItem>>([
   { title: 'css-StarRate', link: '/starRate' },
@@ -63,7 +65,16 @@ const navList = ref<Array<NavItem>>([
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .snowBg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
   .title {
+    z-index: 1;
+    color: #e84393;
     width: fit-content;
     padding-bottom: 1rem;
     font-size: 3rem;
