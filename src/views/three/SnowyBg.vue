@@ -5,6 +5,16 @@
     </div>
   </div>
 </template>
+<style lang="less" scoped>
+.snowBg{
+  width: 100%;
+  height: 100%;
+  .canvasCon{
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
 
 <script lang="ts" setup>
 /**
@@ -34,8 +44,8 @@ const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
-let width = window.innerWidth
-let height = window.innerHeight
+let width: number
+let height: number
 let stats: Stats
 let orbitControls: OrbitControls
 let scene: THREE.Scene
@@ -67,12 +77,15 @@ const parameters: materialInfo[] = [
 ]
 
 // 鼠标基准位置，以屏幕中心点为基准计算
-let mouseX: number = window.innerWidth / 2
-let mouseY: number = window.innerHeight / 2
+let mouseX: number
+let mouseY: number
 
 onMounted(() => {
   // initGUI()
   initTHREE()
+  onWindowResize()
+  mouseX = width / 2
+  mouseY = height / 2
   initSprites()
   render()
 })
@@ -186,8 +199,9 @@ function render() {
 }
 // 自适应
 function onWindowResize() {
-  width = window.innerWidth
-  height = window.innerHeight
+  const conInfo = canvasCon.value?.getBoundingClientRect()
+  width = conInfo!.width
+  height = conInfo!.height
   camera.aspect = width / height
   camera.updateProjectionMatrix()
   renderer.setSize(width, height)

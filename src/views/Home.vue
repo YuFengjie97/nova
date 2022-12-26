@@ -58,6 +58,7 @@ const navList = ref<Array<NavItem>>([
 </script>
 <style lang="less" scoped>
 .home {
+  position: relative;
   background: #b4286c;
   min-height: 100vh;
   padding: 2rem 0;
@@ -69,6 +70,8 @@ const navList = ref<Array<NavItem>>([
     position: absolute;
     top: 0;
     left: 0;
+    // bottom: 0;
+    // right: 0;
     height: 100%;
     width: 100%;
   }
