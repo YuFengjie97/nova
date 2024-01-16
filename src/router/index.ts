@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory,createWebHistory  } from 'vue-router'
 
 import css from './css'
 import canvas from './canvas'
@@ -19,6 +19,6 @@ const notfound: RouteRecordRaw = { path: '/:path(.*)', meta: { name: 'notfound',
 export const routes: RouteRecordRaw[] = [home, css, canvas, three, p5, notfound]
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })

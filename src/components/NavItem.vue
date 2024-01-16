@@ -14,6 +14,7 @@
 </template>
 
 <script lang="ts" setup>
+import { router } from '@/router'
 import { ref, watch, computed } from 'vue'
 
 export interface NavItemProp {
@@ -39,8 +40,8 @@ watch(
 )
 
 function go() {
-  // let routeData = router.resolve({ path: props.link })
-  window.open(props.link, '_blank')
+  const routeLocation = router.resolve({ path: props.link })
+  window.open(routeLocation.href, '_blank')
 }
 
 const isHover = ref(props.show ? true : false)

@@ -3,50 +3,51 @@ import { RouteRecordRaw } from 'vue-router'
 const three: RouteRecordRaw = {
   path: '/three',
   children: [
-  
+
     {
-      path:'/threeTemplate',
-      component: ()=>import('@/views/three/THREE-template.vue')
+      path: '/threeTemplate',
+      meta: { name: '', show: true },
+      component: () => import('@/views/three/THREE-template.vue')
     },
     {
       path: '/cubeLine',
-      component: ()=>import('@/views/three/CubeLine.vue')
+      meta: { name: 'cubeLine', show: true }, component: () => import('@/views/three/CubeLine.vue')
     },
     {
       path: '/allBufferGeo',
-      component: ()=>import('@/views/three/AllBufferGeo/AllBufferGeo.vue')
+      meta: { name: 'allBufferGeo', show: true }, component: () => import('@/views/three/AllBufferGeo/AllBufferGeo.vue')
     },
     {
       path: '/canvasTextPoint',
-      component: ()=>import('@/views/canvas/CanvasTextPoint.vue')
+      meta: { name: 'canvasTextPoint', show: true }, component: () => import('@/views/canvas/CanvasTextPoint.vue')
     },
     {
       path: '/threeTextPoint',
-      component: ()=>import('@/views/three/ThreeTextPoint.vue')
+      meta: { name: 'threeTextPoint', show: true }, component: () => import('@/views/three/ThreeTextPoint.vue')
     },
     {
       path: '/threeText',
-      component: ()=>import('@/views/three/TextGeo.vue')
+      meta: { name: 'threeText', show: true }, component: () => import('@/views/three/TextGeo.vue')
     },
     {
       path: '/solarSystem',
-      component: () => import('@/views/three/SolarSystem.vue')
+      meta: { name: 'solarSystem', show: true }, component: () => import('@/views/three/SolarSystem.vue')
     },
     {
       path: '/glowBall',
-      component: ()=>import('@/views/three/GlowBall.vue')
+      meta: { name: 'glowBall', show: true }, component: () => import('@/views/three/GlowBall.vue')
     },
     {
       path: '/atom',
-      component: ()=>import('@/views/three/Atom.vue')
+      meta: { name: 'atom', show: true }, component: () => import('@/views/three/Atom.vue')
     },
     {
       path: '/lavaBall',
-      component: ()=>import('@/views/three/LavaBall.vue')
+      meta: { name: 'lavaBall', show: true }, component: () => import('@/views/three/LavaBall.vue')
     },
     {
       path: '/lensFlares',
-      component: ()=>import('@/views/three/LensFlares.vue')
+      meta: { name: 'lensFlares', show: true }, component: () => import('@/views/three/LensFlares.vue')
     },
 
   ]

@@ -18,25 +18,19 @@ import bg from '@/assets/img/bg.png'
 const navList = ref<NavItemProp[]>([])
 
 function resolveRoutes() {
-  console.log(routes);
-  
-  routes.forEach(r => {
-    if (r.children?.length !== 0) {
-      r.children?.forEach(rc => {
-        if (r.meta?.show) {
-          const item: NavItemProp = {
-        name: rc.meta!.name as string,
-        link: rc.path,
-        conDomRect: navGrid.value!.getBoundingClientRect(),
-        show: rc.meta!.show as boolean,
-        bg
-      }
-      navList.value.push(item)
+  routes.forEach((r) => {
+    r.children && r.children?.forEach((rc) => {
+      if (rc.meta?.show) {
+        const item: NavItemProp = {
+          name: rc.meta!.name as string,
+          link: `${r.path}${rc.path}`,
+          conDomRect: navGrid.value!.getBoundingClientRect(),
+          show: rc.meta!.show as boolean,
+          bg
         }
-        
-      })
-      
-    }
+        navList.value.push(item)
+      }
+    })
   })
 }
 
@@ -54,12 +48,11 @@ onMounted(() => {
   let myFont = new FontFaceObserver('Patrick Hand')
   myFont.load().then(initNavGridDomRect)
 
-resolveRoutes()
+  resolveRoutes()
 
   // 适配响应式
   window.addEventListener('resize', debounce(initNavGridDomRect, 500))
 })
-
 </script>
 
 <style lang="less" scoped>
