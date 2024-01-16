@@ -8,26 +8,23 @@
   >
     <div class="bg" :style="bgStyle"></div>
     <div class="content" :style="contentStyle" @click="go">
-      {{ show ? `👻${title}` : title }}
+      {{ show ? `👻${name}` : name }}
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
-import router from '../router'
 
-interface NavItem {
-  title: string
+export interface NavItemProp {
+  name: string
   link: string
   conDomRect: DOMRect
   bg: string
-  show?: boolean // 默认是否展示
+  show: boolean
 }
 
-const props = withDefaults(defineProps<NavItem>(), {
-  show: false
-})
+const props = defineProps<NavItemProp>()
 const navItem = ref<HTMLElement>()
 const bgPos = ref('')
 
@@ -42,8 +39,8 @@ watch(
 )
 
 function go() {
-  let routeData = router.resolve({ path: props.link })
-  window.open(routeData.href, '_blank')
+  // let routeData = router.resolve({ path: props.link })
+  window.open(props.link, '_blank')
 }
 
 const isHover = ref(props.show ? true : false)

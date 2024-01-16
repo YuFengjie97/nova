@@ -1,27 +1,44 @@
 <template>
   <div class="navGrid" ref="navGrid">
-    <NavItem
-      v-for="(item, index) in navList"
-      :key="index"
-      ref="navItemRefs"
-      v-bind="item"
-      :conDomRect="(navGridDomRect as DOMRect)"
-      :bg="bg"
-    />
+    <NavItem v-for="(item, index) in navList" :key="index" ref="navItemRefs" v-bind="item"
+      :conDomRect="(navGridDomRect as DOMRect)" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import debounce from 'lodash/debounce'
-import NavItem from './NavItem.vue'
-
 import FontFaceObserver from 'fontfaceobserver'
 
-const props = defineProps<{
-  navList: Array<NavItem>
-  bg: string
-}>()
+import NavItem from './NavItem.vue'
+import { type NavItemProp } from './NavItem.vue'
+import { routes, router } from '@/router'
+import bg from '@/assets/img/bg.png'
+
+const navList = ref<NavItemProp[]>([])
+
+function resolveRoutes() {
+  console.log(routes);
+  
+  routes.forEach(r => {
+    if (r.children?.length !== 0) {
+      r.children?.forEach(rc => {
+        if (r.meta?.show) {
+          const item: NavItemProp = {
+        name: rc.meta!.name as string,
+        link: rc.path,
+        conDomRect: navGrid.value!.getBoundingClientRect(),
+        show: rc.meta!.show as boolean,
+        bg
+      }
+      navList.value.push(item)
+        }
+        
+      })
+      
+    }
+  })
+}
 
 const navGrid = ref<HTMLElement>()
 const navGridDomRect = ref<DOMRect>()
@@ -36,6 +53,8 @@ onMounted(() => {
   // 字体加载，更新容器信息，防止前后不同字体导致的容器信息错误，由此导致navItem的background-position计算错误
   let myFont = new FontFaceObserver('Patrick Hand')
   myFont.load().then(initNavGridDomRect)
+
+resolveRoutes()
 
   // 适配响应式
   window.addEventListener('resize', debounce(initNavGridDomRect, 500))
