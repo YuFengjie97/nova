@@ -40,8 +40,9 @@ watch(
 )
 
 function go() {
-  const routeLocation = router.resolve({ path: props.link })
-  window.open(routeLocation.href, '_blank')
+  // const routeLocation = router.resolve({ path: props.link })
+  // window.open(routeLocation.href, '_blank')
+  router.push(props.link)
 }
 
 const isHover = ref(props.show ? true : false)

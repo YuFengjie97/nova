@@ -1,7 +1,9 @@
 import { RouteRecordRaw } from 'vue-router'
+import App from '@/App.vue'
 
-const css:RouteRecordRaw = {
+const css: RouteRecordRaw = {
   path: '/css',
+  component: App,
   children: [
     {
       path: '/starRate',

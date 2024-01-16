@@ -26,7 +26,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { myRandom } from '@/utils'
-
 const { random, floor } = Math
 
 interface Drop {

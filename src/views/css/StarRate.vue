@@ -9,6 +9,7 @@
 <script lang="ts" setup>
 import Card from '@/components/Card.vue'
 import StarRate from '@/components/StarRate.vue'
+import { router } from '@/router';
 import { ref } from 'vue'
 
 let starList = ref([
@@ -17,6 +18,9 @@ let starList = ref([
   { title: 'Ghost', rate: 0.51, color: '#9b59b6', content: '👻' },
   { title: 'pizza', rate: 0.85, color: '#e67e22', content: '🍕' }
 ])
+
+console.log(router);
+
 </script>
 
 <style lang="less" scoped>
