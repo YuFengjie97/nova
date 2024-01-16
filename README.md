@@ -4,7 +4,7 @@
 
 ## Preview👻
 
-you can click here <a href="https://yufengjie97.github.io/nova/#/" target="_blank">👉NOVA👈</a>to preview.
+you can click here <a href="https://yufengjie97.github.io/nova/" target="_blank">👉NOVA👈</a>to preview.
 
 ## Start
 

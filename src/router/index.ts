@@ -19,6 +19,6 @@ const notfound: RouteRecordRaw = { path: '/:path(.*)', meta: { name: 'notfound',
 export const routes: RouteRecordRaw[] = [home, css, canvas, three, p5, notfound]
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.NODE_ENV === 'production' ? '/nova/' : '/' ),
   routes
 })
