@@ -1,38 +1,40 @@
+import type { RouteRecordRaw } from 'vue-router'
 import AppVue from '@/App.vue'
-import { RouteRecordRaw } from 'vue-router'
 
 const canvas: RouteRecordRaw = {
-  path: '/three',
+  path: '/canvas',
   component: AppVue,
   children: [
     {
       path: 'flowField',
       meta: {
         name: 'FlowField',
-        show: true
+        show: true,
       },
-      component: () => import('@/views/canvas/FlowField.vue')
+      component: () => import('@/views/canvas/FlowField.vue'),
     },
     {
       path: 'flowFieldLine',
       meta: {
         name: 'FlowFieldLine',
-        show: false
+        show: false,
       },
-      component: () => import('@/views/canvas/FlowFieldLine.vue')
+      component: () => import('@/views/canvas/FlowFieldLine.vue'),
     },
     {
       path: 'canvasTextPoint',
-      meta: { name: 'canvasTextPoint', show: false }, component: () => import('@/views/canvas/CanvasTextPoint.vue')
+      meta: { name: 'canvasTextPoint', show: false },
+      component: () => import('@/views/canvas/CanvasTextPoint.vue'),
     },
     {
       path: 'canvasPoint',
       meta: {
-        name: '图形点阵',show: true
+        name: '图片点阵化',
+        show: true,
       },
-      component: () => import('@/views/canvas/canvasPoint.vue')
+      component: () => import('@/views/canvas/canvasPoint.vue'),
     },
-  ]
+  ],
 }
 
 export default canvas

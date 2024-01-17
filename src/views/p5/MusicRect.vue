@@ -1,22 +1,10 @@
-<template>
-  <div class="viewCon">
-    <AudioController
-      class="ac"
-      :audio-src="audio"
-      :fft-size="fftSize"
-      @init-audio-analyser="getAudioAnalyser"
-    ></AudioController>
-    <P5Con :setup="setup" :draw="draw"></P5Con>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
+import p5 from 'p5'
 import AudioController from '@/components/AudioController.vue'
 import P5Con from '@/components/P5Con.vue'
 import audio from '@/assets/audio/audio1.mp3'
-import { AudioAnalyser } from '@/utils'
-import p5 from 'p5'
+import type { AudioAnalyser } from '@/utils'
 
 import { initBezier, newBezier } from '@/utils/p5bezier'
 
@@ -31,9 +19,9 @@ const dataMax = 250
 const rectTotal = fftSize.value / 2
 const rects: Array<Rect> = []
 let rectWidth: number
-let rectMinHeight = 2
-let maxRatio = 0.6 //绘制的rect高度最大占据画布高度比例
-let gap = 60
+const rectMinHeight = 2
+const maxRatio = 0.6 // 绘制的rect高度最大占据画布高度比例
+const gap = 60
 
 class Rect {
   $p: p5
@@ -44,18 +32,19 @@ class Rect {
     this.$p = $p
     this.pos = pos
   }
+
   draw(val: number, index: number) {
-    let {
+    const {
       $p,
       pos: { x, y },
-      rectHeight: y1
+      rectHeight: y1,
     } = this
     $p.fill(this.h, 255, 127)
     $p.push()
     $p.rectMode($p.CENTER)
     $p.noStroke()
     $p.translate(0, height / 2)
-    let borderRadius = rectWidth * 0.2
+    const borderRadius = rectWidth * 0.2
     $p.rect(
       x,
       y,
@@ -64,31 +53,33 @@ class Rect {
       borderRadius,
       borderRadius,
       borderRadius,
-      borderRadius
+      borderRadius,
     )
     $p.pop()
   }
+
   update(val: number) {
     this.updateH(val)
     this.updateHeight(val)
   }
+
   updateH(val: number) {
     this.h = this.$p.map(val, 0, dataMax, 0, 255)
   }
+
   updateHeight(val: number) {
     this.rectHeight = this.$p.map(val, 0, dataMax, 0, height * maxRatio)
   }
 }
 
 function initRects($p: p5) {
-  for (let i = 0; i < rectTotal; i++) {
+  for (let i = 0; i < rectTotal; i++)
     rects.push(new Rect($p, new p5.Vector(i * rectWidth, 0)))
-  }
 }
 
 function updateRects($p: p5) {
   for (let i = 0; i < rectTotal; i++) {
-    let val = aa.getAudioData()[i]
+    const val = aa.getAudioData()[i]
     rects[i].update(val)
     rects[i].draw(val, i)
   }
@@ -101,11 +92,11 @@ function drawLine($p: p5) {
   $p.stroke('#fff')
   $p.strokeWeight(2)
 
-  let pointList1: Array<Point> = []
-  let pointList2: Array<Point> = []
+  const pointList1: Array<Point> = []
+  const pointList2: Array<Point> = []
   aa.getAudioData().forEach((item, i) => {
-    let x = i * rectWidth
-    let y = $p.map(item, 0, dataMax, 0, height / 2) * maxRatio + gap
+    const x = i * rectWidth
+    const y = $p.map(item, 0, dataMax, 0, height / 2) * maxRatio + gap
     pointList1.push([x, -y] as Point)
     pointList2.push([x, y] as Point)
   })
@@ -122,9 +113,8 @@ function setup($p: p5, canvas?: p5.Renderer) {
   $p.colorMode($p.HSB)
   $p.noStroke()
   initRects($p)
-  if (canvas) {
+  if (canvas)
     initBezier(canvas)
-  }
 }
 function draw($p: p5) {
   $p.background('rgba(0, 0, 0, 0.08)')
@@ -136,13 +126,14 @@ function draw($p: p5) {
 }
 </script>
 
-<style lang="less" scoped>
-.viewCon {
-  .ac {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 900;
-  }
-}
-</style>
+<template>
+  <div class="w-full h-full">
+    <AudioController
+      class="absolute top-0 left-0 z-100"
+      :audio-src="audio"
+      :fft-size="fftSize"
+      @init-audio-analyser="getAudioAnalyser"
+    />
+    <P5Con :setup="setup" :draw="draw" />
+  </div>
+</template>

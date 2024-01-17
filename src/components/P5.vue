@@ -1,22 +1,15 @@
-<template>
-  <div class="p5Container">
-    <div class="p5Con" ref="p5Con"></div>
-    <div class="framRate" v-if="showFps">fps: {{ frameRate }}</div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import p5 from 'p5'
 
 interface Props {
-  sketch: (p: p5)=>void
+  sketch: (p: p5) => void
   showFps?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  sketch: (p: p5)=>{},
-  showFps: true
+  sketch: (p: p5) => {},
+  showFps: true,
 })
 
 const p5Con = ref<HTMLElement>()
@@ -35,14 +28,22 @@ onMounted(() => {
 })
 onUnmounted(() => {
   _p.remove()
-  if (timer) clearInterval(timer)
+  if (timer)
+    clearInterval(timer)
 })
 </script>
 
+<template>
+  <div class="p5Container">
+    <div ref="p5Con" class="p5Con" />
+    <div v-if="showFps" class="framRate">
+      fps: {{ frameRate }}
+    </div>
+  </div>
+</template>
+
 <style lang="less" scoped>
 .p5Container {
-  position: relative;
-  width: fit-content;
   .framRate {
     user-select: none;
     width: 5.5rem;
@@ -53,8 +54,8 @@ onUnmounted(() => {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--bg2);
-    color: var(--text);
+    background: #000;
+    color: #fff;
   }
 }
 </style>

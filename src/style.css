@@ -9,6 +9,10 @@ html,body,#app {
   width: 100%;
 }
 
+canvas{
+  display: block;
+}
+
 
 @font-face {
   font-family: 'Patrick Hand';

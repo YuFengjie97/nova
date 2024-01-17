@@ -1,23 +1,12 @@
-<template>
-  <div class="viewCon">
-    <AudioController
-      class="ac"
-      :audio-src="audio"
-      :fft-size="fftSize"
-      @init-audio-analyser="getAudioAnalyser"
-    ></AudioController>
-    <P5Con :setup="setup" :draw="draw" />
-  </div>
-</template>
-
 <script lang="ts" setup>
 import p5 from 'p5'
+import { ref } from 'vue'
 import P5Con from '@/components/P5Con.vue'
 import AudioController from '@/components/AudioController.vue'
 import { initBezier, newBezier } from '@/utils/p5bezier'
 import audio from '@/assets/audio/audio1.mp3'
-import { AudioAnalyser, getRandomIndex } from '@/utils'
-import { ref } from 'vue'
+import type { AudioAnalyser } from '@/utils'
+import { getRandomIndex } from '@/utils'
 
 const { PI, random, floor, min } = Math
 
@@ -28,10 +17,10 @@ const particleTotal = fftSize.value / 2
 const particles: Array<Particle> = []
 const points: Array<Point> = []
 let aa: AudioAnalyser
-let audioDataMax = 250
-let audioDataMin = 100 // audioData元素有存在0，或比较小的值，都让他们取这个值
-let radiusRatio = 0.9 //粒子圆环半径与画布高度一半比
-let lineColor = '#5f27cd'
+const audioDataMax = 250
+const audioDataMin = 100 // audioData元素有存在0，或比较小的值，都让他们取这个值
+const radiusRatio = 0.9 // 粒子圆环半径与画布高度一半比
+const lineColor = '#5f27cd'
 
 // 这个类与上面配置数据又耦合，whocare，我也没想着复用，哈哈哈
 class Particle {
@@ -40,7 +29,7 @@ class Particle {
   basePos: p5.Vector
   pos: p5.Vector
   r: number = 2
-  audioIndex: number = 0 //关联粒子与音频数据数组索引
+  audioIndex: number = 0 // 关联粒子与音频数据数组索引
   h = 0
   count = 0
   constructor($p: p5, angle: number, audioIndex: number) {
@@ -48,22 +37,24 @@ class Particle {
     this.angle = angle
     this.basePos = p5.Vector.fromAngle(
       angle,
-      (min(width, height) / 2) * radiusRatio
+      (min(width, height) / 2) * radiusRatio,
     )
     this.pos = this.basePos.copy()
     this.audioIndex = audioIndex
   }
+
   draw() {
     const {
       $p,
       pos: { x, y },
       h,
-      count
+      count,
     } = this
     $p.noStroke()
     $p.fill((h + count) % 255, 255, 127)
     $p.circle(x, y, this.r * 2)
   }
+
   update(scale: number) {
     this.pos = this.basePos.copy().mult(scale)
     this.h = floor(scale * 255)
@@ -75,10 +66,10 @@ function getAudioAnalyser(val: AudioAnalyser) {
   aa = val
 }
 function initParticles($p: p5) {
-  let getIndex = getRandomIndex(particleTotal)
+  const getIndex = getRandomIndex(particleTotal)
   for (let i = 0; i < particleTotal; i++) {
     particles.push(
-      new Particle($p, ((PI * 2) / particleTotal) * i, getIndex() ?? 0)
+      new Particle($p, ((PI * 2) / particleTotal) * i, getIndex() ?? 0),
     )
   }
 }
@@ -87,15 +78,14 @@ function updateParticles() {
   points.length = 0
 
   particles.forEach((particle) => {
-    let dataOrigin = audioData[particle.audioIndex]
-    let data = dataOrigin < audioDataMin ? audioDataMin : dataOrigin
+    const dataOrigin = audioData[particle.audioIndex]
+    const data = dataOrigin < audioDataMin ? audioDataMin : dataOrigin
     particle.update(data / audioDataMax)
     particle.draw()
 
-    //记录曲线用的坐标
-    if (dataOrigin > audioDataMin) {
+    // 记录曲线用的坐标
+    if (dataOrigin > audioDataMin)
       points.push([particle.pos.x, particle.pos.y])
-    }
   })
 }
 
@@ -103,9 +93,8 @@ function drawLine($p: p5) {
   $p.noFill()
   $p.stroke(lineColor)
   $p.strokeWeight(2)
-  if (points.length >= 10) {
+  if (points.length >= 10)
     newBezier(points, 'CLOSE')
-  }
 }
 
 function setup($p: p5, canvas?: p5.Renderer) {
@@ -127,13 +116,14 @@ function draw($p: p5) {
 }
 </script>
 
-<style lang="less" scoped>
-.viewCon {
-  .ac {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 900;
-  }
-}
-</style>
+<template>
+  <div class="w-full h-full">
+    <AudioController
+      class="absolute top-0 left-0 z-100"
+      :audio-src="audio"
+      :fft-size="fftSize"
+      @init-audio-analyser="getAudioAnalyser"
+    />
+    <P5Con :setup="setup" :draw="draw" />
+  </div>
+</template>
