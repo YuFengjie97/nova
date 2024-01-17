@@ -1,21 +1,17 @@
-<template>
-  <div class="navGrid" ref="navGrid">
-    <NavItem v-for="(item, index) in navList" :key="index" ref="navItemRefs" v-bind="item"
-      :conDomRect="(navGridDomRect as DOMRect)" />
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import debounce from 'lodash/debounce'
 import FontFaceObserver from 'fontfaceobserver'
 
 import NavItem from './NavItem.vue'
-import { type NavItemProp } from './NavItem.vue'
-import { routes, router } from '@/router'
+import type { NavItemProp } from './NavItem.vue'
+import { routes } from '@/router'
 import bg from '@/assets/img/bg.png'
 
 const navList = ref<NavItemProp[]>([])
+
+const navGrid = ref<HTMLElement>()
+const navGridDomRect = ref<DOMRect>()
 
 function resolveRoutes() {
   routes.forEach((r) => {
@@ -26,16 +22,23 @@ function resolveRoutes() {
           link: `${r.path}/${rc.path}`,
           conDomRect: navGrid.value!.getBoundingClientRect(),
           show: rc.meta!.show as boolean,
-          bg
+          bg,
         }
         navList.value.push(item)
       }
     })
   })
-}
 
-const navGrid = ref<HTMLElement>()
-const navGridDomRect = ref<DOMRect>()
+  // 外链
+  navList.value.push({
+    name: '像素鸟(phaser)',
+    link: 'https://yufengjie97.github.io/learning-phaser/#/flappyBird',
+    conDomRect: navGrid.value!.getBoundingClientRect(),
+    outLink: true,
+    show: true,
+    bg,
+  })
+}
 
 // 计算navItem容器信息，用来navItem内部计算background-position位置信息
 function initNavGridDomRect() {
@@ -44,7 +47,7 @@ function initNavGridDomRect() {
 
 onMounted(() => {
   // 字体加载，更新容器信息，防止前后不同字体导致的容器信息错误，由此导致navItem的background-position计算错误
-  let myFont = new FontFaceObserver('Patrick Hand')
+  const myFont = new FontFaceObserver('Patrick Hand')
   myFont.load().then(initNavGridDomRect)
 
   resolveRoutes()
@@ -53,6 +56,15 @@ onMounted(() => {
   window.addEventListener('resize', debounce(initNavGridDomRect, 500))
 })
 </script>
+
+<template>
+  <div ref="navGrid" class="navGrid">
+    <NavItem
+      v-for="(item, index) in navList" :key="index" v-bind="item"
+      :con-dom-rect="navGridDomRect as DOMRect"
+    />
+  </div>
+</template>
 
 <style lang="less" scoped>
 .navGrid {

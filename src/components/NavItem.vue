@@ -1,25 +1,6 @@
-<template>
-  <div
-    class="navItem font-ani"
-    ref="navItem"
-    :style="navItemStyle"
-    @mousemove="mousemove"
-    @mouseout="mouseout"
-    @click="go"
-  >
-    <div class="bg  pointer-events-none" :style="bgStyle"></div>
-    <div class="content  pointer-events-none" :style="contentStyle" >
-      <div class="fit-content flex flex-col items-center pointer-events-none">
-        {{ name }}
-        <div class="h-2px m-t-2px bg-#fff transition-duration-0.35s transition-delay-0.3s" :class="isHover ? 'w-full' : 'w-0'"></div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
+import { computed, ref, watch } from 'vue'
 import { router } from '@/router'
-import { ref, watch, computed } from 'vue'
 
 export interface NavItemProp {
   name: string
@@ -27,9 +8,12 @@ export interface NavItemProp {
   conDomRect: DOMRect
   bg: string
   show: boolean
+  outLink?: boolean
 }
 
-const props = defineProps<NavItemProp>()
+const props = withDefaults(defineProps<NavItemProp>(), {
+  outLink: false,
+})
 const navItem = ref<HTMLElement>()
 const bgPos = ref('')
 
@@ -37,19 +21,24 @@ watch(
   () => props.conDomRect,
   (conDomRect) => {
     const { top, left } = navItem.value!.getBoundingClientRect()
-    let { top: baseTop, left: baseLeft } = conDomRect as DOMRect
+    const { top: baseTop, left: baseLeft } = conDomRect as DOMRect
 
     bgPos.value = `-${left - baseLeft}px -${top - baseTop}px`
-  }
+  },
 )
 
 function go() {
+  if (props.outLink) {
+    window.open(props.link, '_blank')
+    return
+  }
+
   // const routeLocation = router.resolve({ path: props.link })
   // window.open(routeLocation.href, '_blank')
   router.push(props.link)
 }
 
-const isHover = ref(props.show ? true : false)
+const isHover = ref(!!props.show)
 function mousemove() {
   isHover.value = true
 }
@@ -60,28 +49,47 @@ const navItemStyle = computed(() => {
   return {
     'box-shadow': isHover.value
       ? '0px 0px 10px rgb(210, 175, 210)'
-      : '0px 0px 8px rgba(0, 0, 0, 1)'
+      : '0px 0px 8px rgba(0, 0, 0, 1)',
   }
 })
 const contentStyle = computed(() => {
   return {
-    transform: isHover.value ? 'rotateY(0deg)' : 'rotateY(180deg)'
+    transform: isHover.value ? 'rotateY(0deg)' : 'rotateY(180deg)',
   }
 })
 const bgStyle = computed(() => {
   return {
-    transform: isHover.value ? 'rotateY(180deg)' : 'rotateY(0deg)',
+    'transform': isHover.value ? 'rotateY(180deg)' : 'rotateY(0deg)',
     'background-position': bgPos.value,
     'background-size': `${props.conDomRect?.width ?? 0}px`,
-    'background-image': `url(${props.bg})`
+    'background-image': `url(${props.bg})`,
   }
 })
 defineExpose({
   isHover,
   mousemove,
-  mouseout
+  mouseout,
 })
 </script>
+
+<template>
+  <div
+    ref="navItem"
+    class="navItem font-ani"
+    :style="navItemStyle"
+    @mousemove="mousemove"
+    @mouseout="mouseout"
+    @click="go"
+  >
+    <div class="bg  pointer-events-none" :style="bgStyle" />
+    <div class="content  pointer-events-none" :style="contentStyle">
+      <div class="fit-content flex flex-col items-center pointer-events-none">
+        {{ name }}
+        <div class="h-2px m-t-2px bg-#fff transition-duration-0.35s transition-delay-0.3s" :class="isHover ? 'w-full' : 'w-0'" />
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .navItem {
