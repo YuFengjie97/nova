@@ -10,7 +10,7 @@
     <div class="star">
       <span v-for="i in size">{{ content }}</span>
     </div>
-    <span class="rate">{{ rate }}</span>
+    <span class="rate">{{ rate.toFixed(1) }}</span>
   </div>
 </template>
 

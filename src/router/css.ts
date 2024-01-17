@@ -1,12 +1,12 @@
 import { RouteRecordRaw } from 'vue-router'
-import App from '@/App.vue'
+import AppVue from '@/App.vue'
 
 const css: RouteRecordRaw = {
   path: '/css',
-  component: App,
+  component: AppVue,
   children: [
     {
-      path: '/starRate',
+      path: 'starRate',
       meta: {
         name: '图案评分',
         show: true,
@@ -14,7 +14,7 @@ const css: RouteRecordRaw = {
       component: () => import('@/views/css/StarRate.vue')
     },
     {
-      path: '/sun',
+      path: 'sun',
       meta: {
         name: '小太阳',
         show: true,
@@ -22,7 +22,7 @@ const css: RouteRecordRaw = {
       component: () => import('@/views/css/Sun.vue')
     },
     {
-      path: '/progressCube',
+      path: 'progressCube',
       meta: {
         name: '立体进度条',
         show: true,
@@ -30,7 +30,7 @@ const css: RouteRecordRaw = {
       component: () => import('@/views/css/ProgressCube.vue')
     },
     {
-      path: '/deathLoading',
+      path: 'deathLoading',
       meta: {
         name: '死亡搁浅loading',
         show: true,
@@ -38,7 +38,7 @@ const css: RouteRecordRaw = {
       component: () => import('@/views/css/DeathLoading.vue')
     },
     {
-      path: '/hsCard',
+      path: 'hsCard',
       meta: {
         name: '炉石卡片',
         show: true,
@@ -46,7 +46,7 @@ const css: RouteRecordRaw = {
       component: () => import('@/views/css/HSCard.vue')
     },
     {
-      path: '/barChart',
+      path: 'barChart',
       meta: {
         name: 'css条状表',
         show: true,
@@ -54,7 +54,7 @@ const css: RouteRecordRaw = {
       component: () => import('@/views/css/BarChart.vue')
     },
     {
-      path: '/water',
+      path: 'water',
       meta: {
         name: '模拟水滴',
         show: true,

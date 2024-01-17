@@ -1,10 +1,12 @@
+import AppVue from '@/App.vue'
 import { RouteRecordRaw } from 'vue-router'
 
 const canvas: RouteRecordRaw = {
   path: '/three',
+  component: AppVue,
   children: [
     {
-      path: '/flowField',
+      path: 'flowField',
       meta: {
         name: 'FlowField',
         show: true
@@ -12,7 +14,7 @@ const canvas: RouteRecordRaw = {
       component: () => import('@/views/canvas/FlowField.vue')
     },
     {
-      path: '/flowFieldLine',
+      path: 'flowFieldLine',
       meta: {
         name: 'FlowFieldLine',
         show: true

@@ -27,7 +27,6 @@ export const routes: RouteRecordRaw[] = [home, css, canvas, three, p5, notfound]
 
 console.log(routes);
 
-
 export const router = createRouter({
   // history: createWebHistory(import.meta.env.VITE_BASE_URL),
   history: createWebHashHistory(import.meta.env.VITE_BASE_URL),

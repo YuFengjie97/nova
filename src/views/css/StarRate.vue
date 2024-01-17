@@ -1,7 +1,7 @@
 <template>
-  <div class="starRate viewCon h-full flex justify-center items-center">
+  <div class="starRate viewCon h-full flex justify-center items-center" ref="con">
     <Card class="card">
-      <StarRate v-for="(item, index) in starList" :key="index" v-bind="item" />
+      <StarRate v-bind="starItem" />
     </Card>
   </div>
 </template>
@@ -9,17 +9,19 @@
 <script lang="ts" setup>
 import Card from '@/components/Card.vue'
 import StarRate from '@/components/StarRate.vue'
-import { router } from '@/router';
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import {useGUI} from '@/hooks/useGUI'
 
-let starList = ref([
-  { title: '咖喱', rate: 0.68, color: '#e67e22' },
-  { title: 'Banana', rate: 0.33, color: '#f1c40f' },
-  { title: 'Ghost', rate: 0.51, color: '#9b59b6', content: '👻' },
-  { title: 'pizza', rate: 0.85, color: '#e67e22', content: '🍕' }
-])
+const con = ref<HTMLElement>()
+const starItem = ref({ title: 'Ghost', rate: 0.5, color: '#9b59b6', content: '👻' });
 
-console.log(router);
+onMounted(() => {
+  const {gui} = useGUI(con.value!)
+
+  gui.addColor(starItem.value, 'color')
+  gui.add(starItem.value, 'content', ['字','👻','🐯'])
+  gui.add(starItem.value, 'rate', 0,1,0.1);
+})
 
 </script>
 
@@ -32,3 +34,4 @@ console.log(router);
   }
 }
 </style>
+@/hooks/useGUI

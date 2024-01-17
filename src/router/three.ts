@@ -1,52 +1,54 @@
+import AppVue from '@/App.vue'
 import { RouteRecordRaw } from 'vue-router'
 
 const three: RouteRecordRaw = {
   path: '/three',
+  component: AppVue,
   children: [
 
     {
-      path: '/threeTemplate',
+      path: 'threeTemplate',
       meta: { name: '', show: true },
       component: () => import('@/views/three/THREE-template.vue')
     },
     {
-      path: '/cubeLine',
+      path: 'cubeLine',
       meta: { name: 'cubeLine', show: true }, component: () => import('@/views/three/CubeLine.vue')
     },
     {
-      path: '/allBufferGeo',
+      path: 'allBufferGeo',
       meta: { name: 'allBufferGeo', show: true }, component: () => import('@/views/three/AllBufferGeo/AllBufferGeo.vue')
     },
     {
-      path: '/canvasTextPoint',
+      path: 'canvasTextPoint',
       meta: { name: 'canvasTextPoint', show: true }, component: () => import('@/views/canvas/CanvasTextPoint.vue')
     },
     {
-      path: '/threeTextPoint',
+      path: 'threeTextPoint',
       meta: { name: 'threeTextPoint', show: true }, component: () => import('@/views/three/ThreeTextPoint.vue')
     },
     {
-      path: '/threeText',
+      path: 'threeText',
       meta: { name: 'threeText', show: true }, component: () => import('@/views/three/TextGeo.vue')
     },
     {
-      path: '/solarSystem',
+      path: 'solarSystem',
       meta: { name: 'solarSystem', show: true }, component: () => import('@/views/three/SolarSystem.vue')
     },
     {
-      path: '/glowBall',
+      path: 'glowBall',
       meta: { name: 'glowBall', show: true }, component: () => import('@/views/three/GlowBall.vue')
     },
     {
-      path: '/atom',
+      path: 'atom',
       meta: { name: 'atom', show: true }, component: () => import('@/views/three/Atom.vue')
     },
     {
-      path: '/lavaBall',
+      path: 'lavaBall',
       meta: { name: 'lavaBall', show: true }, component: () => import('@/views/three/LavaBall.vue')
     },
     {
-      path: '/lensFlares',
+      path: 'lensFlares',
       meta: { name: 'lensFlares', show: true }, component: () => import('@/views/three/LensFlares.vue')
     },
 

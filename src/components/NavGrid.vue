@@ -23,7 +23,7 @@ function resolveRoutes() {
       if (rc.meta?.show) {
         const item: NavItemProp = {
           name: rc.meta!.name as string,
-          link: `${r.path}${rc.path}`,
+          link: `${r.path}/${rc.path}`,
           conDomRect: navGrid.value!.getBoundingClientRect(),
           show: rc.meta!.show as boolean,
           bg
