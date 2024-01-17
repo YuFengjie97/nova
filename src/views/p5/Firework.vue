@@ -20,7 +20,7 @@ class Firework {
   isBoom = false
   isAlive = true
   constructor(tarPos?: p5.Vector) {
-    this.pos = new p5.Vector(tarPos ? tarPos.x : p.mouseX, height)
+    this.pos = new p5.Vector(tarPos ? tarPos.x : p.mouseX, 400)
     this.tarPos = new p5.Vector(
       tarPos ? tarPos.x : p.mouseX,
       tarPos ? tarPos.y : p.mouseY,
