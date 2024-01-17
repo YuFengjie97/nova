@@ -19,7 +19,7 @@ onMounted(() => {
   const {gui} = useGUI(con.value!)
 
   gui.addColor(starItem.value, 'color')
-  gui.add(starItem.value, 'content', ['字','👻','🐯'])
+  gui.add(starItem.value, 'content', ['字','★','👻','🐯'])
   gui.add(starItem.value, 'rate', 0,1,0.1);
 })
 

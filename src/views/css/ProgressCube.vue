@@ -1,26 +1,22 @@
 <template>
-  <div class="viewCon">
+  <div class="w-full h-full bg-#000 flex justify-center items-center" ref="con">
     <ProgressCube class="item" :fill-color="color" :val="val" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import * as dat from 'dat.gui'
 import { ref, onMounted, onUnmounted } from 'vue'
 import ProgressCube from '@/components/ProgressCube.vue'
+import { useGUI } from '@/hooks/useGUI'
 
 const val = ref(0.4)
 const color = ref('#e308cd')
-const PARAMS = {
-  color: '#0984e3',
-  val: 0.4
-}
-const gui = new dat.GUI()
-gui.addColor(PARAMS, 'color').onChange((e) => {
-  color.value = e
-})
-gui.add(PARAMS, 'val', 0, 1, 0.1).onChange((e) => {
-  val.value = parseFloat(e.toFixed(1))
+
+const con = ref<HTMLElement>()
+onMounted(() => {
+  const {gui} = useGUI(con.value!)
+  gui.addColor(color, 'value').name('color')
+  gui.add(val, 'value', 0, 1, 0.1).name('progress')
 })
 </script>
 

@@ -1,9 +1,9 @@
 <template>
-  <div class="viewCon">
-    <Sun class="item" />
-    <Sun class="item" baseColor="#0984e3" lightColor="#6c5ce7" />
-    <Sun class="item" baseColor="#00cec9" lightColor="#fdcb6e" />
-    <Sun class="item" baseColor="#1dd1a1" lightColor="#ff9ff3" />
+  <div class="w-full min-h-full flex flex-wrap justify-center items-center bg-#000">
+    <Sun class="w-300px h-400px overflow-hidden" />
+    <Sun class="w-300px h-400px overflow-hidden" baseColor="#0984e3" lightColor="#6c5ce7" />
+    <Sun class="w-300px h-400px overflow-hidden" baseColor="#00cec9" lightColor="#fdcb6e" />
+    <Sun class="w-300px h-400px overflow-hidden" baseColor="#1dd1a1" lightColor="#ff9ff3" />
   </div>
 </template>
 
@@ -11,25 +11,3 @@
 import Sun from '@/components/Sun.vue'
 </script>
 
-<style lang="less" scoped>
-.viewCon {
-  background: var(--bg4);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  .item {
-    width: 20%;
-  }
-  @media screen and (max-width: 992px) {
-    .item {
-      width: 45%;
-    }
-  }
-  @media screen and (max-width: 576px) {
-    .item {
-      width: 80%;
-    }
-  }
-}
-</style>

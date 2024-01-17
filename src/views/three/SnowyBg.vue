@@ -1,20 +1,10 @@
 <template>
-  <div class="snowBg">
-    <div class="canvasCon" ref="canvasCon" @pointermove="updateMouse">
-      <canvas class="canvas" ref="canvasDom" />
+  <div class="w-full h-full">
+    <div class="w-full h-full" ref="canvasCon" @pointermove="updateMouse">
+      <canvas class="block w-full h-full" ref="canvasDom" />
     </div>
   </div>
 </template>
-<style lang="less" scoped>
-.snowBg{
-  width: 100%;
-  height: 100%;
-  .canvasCon{
-    width: 100%;
-    height: 100%;
-  }
-}
-</style>
 
 <script lang="ts" setup>
 /**
@@ -89,25 +79,6 @@ onMounted(() => {
   initSprites()
   render()
 })
-
-const params = {
-  texture: true
-}
-function initGUI() {
-  let gui = new GUI({
-    autoPlace: false,
-    width: 300,
-  })
-  gui.domElement.style.cssText = 'position: fixed; top: 0; right: 0;'
-  canvasCon.value?.appendChild(gui.domElement)
-
-  gui.add(params, 'texture').onChange(val => {
-    for(let i=0;i<materials.length;i++){
-      materials[i].map = val ? parameters[i][1] : null
-      materials[i].needsUpdate = true
-    }
-  })
-}
 
 function animate() {
   const time = Date.now() * 0.00005 //以时间戳来配置点云参数

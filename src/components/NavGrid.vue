@@ -39,7 +39,6 @@ const navGridDomRect = ref<DOMRect>()
 
 // 计算navItem容器信息，用来navItem内部计算background-position位置信息
 function initNavGridDomRect() {
-  console.log('nav 计算')
   navGridDomRect.value = navGrid.value!.getBoundingClientRect()
 }
 

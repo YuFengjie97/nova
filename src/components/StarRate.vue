@@ -36,7 +36,6 @@ const props = defineProps({
   .title {
     padding-right: 1rem;
     color: var(--color);
-    font-family: 'Pacifico';
   }
   .star {
     font-size: 2.4rem;

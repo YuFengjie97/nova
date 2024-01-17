@@ -1,14 +1,18 @@
 <template>
   <div
-    class="navItem"
+    class="navItem font-ani"
     ref="navItem"
     :style="navItemStyle"
     @mousemove="mousemove"
     @mouseout="mouseout"
+    @click="go"
   >
-    <div class="bg" :style="bgStyle"></div>
-    <div class="content" :style="contentStyle" @click="go">
-      {{ show ? `👻${name}` : name }}
+    <div class="bg  pointer-events-none" :style="bgStyle"></div>
+    <div class="content  pointer-events-none" :style="contentStyle" >
+      <div class="fit-content flex flex-col items-center pointer-events-none">
+        {{ name }}
+        <div class="h-2px m-t-2px bg-#fff transition-duration-0.35s transition-delay-0.3s" :class="isHover ? 'w-full' : 'w-0'"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -81,6 +85,7 @@ defineExpose({
 
 <style lang="less" scoped>
 .navItem {
+  --color-light: #f4cbdf;
   font-size: 1.2rem;
   min-height: fit-content;
   display: flex;
@@ -88,6 +93,7 @@ defineExpose({
   position: relative;
   border-radius: 4px;
   overflow: hidden;
+  color: var(--color-light);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 1);
   transition: 0.3s;
   cursor: pointer;
@@ -112,7 +118,6 @@ defineExpose({
     transition: 0.3s;
     transform-origin: center center;
     transform: rotateY(0deg);
-    background-color: #e84393;
     background-repeat: repeat;
     overflow: hidden;
   }
@@ -121,8 +126,7 @@ defineExpose({
     backface-visibility: hidden;
     text-align: center;
     user-select: none;
-    color: #fd93b8;
-    background: #2d3436;
+    background: #141414;
     transition: 0.3s;
     transform-origin: center center;
     transform: rotateY(180deg);
