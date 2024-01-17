@@ -1,15 +1,7 @@
 <!-- https://threejs.org/examples/?q=glow#webgl_postprocessing_unreal_bloom_selective -->
 <!-- 一个来自来自threejs官网的例子，发光后处理与不发光材质同时存在 -->
-<template>
-  <div class="viewCon">
-    <div class="canvasCon" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -53,28 +45,33 @@ const params = {
   bloomStrength: 5,
   bloomThreshold: 0,
   bloomRadius: 0,
-  scene: 'normalAndGlow'
+  scene: 'normalAndGlow',
 }
+
+const con = ref<HTMLElement>()
 function initGUI() {
-  let panel = new GUI()
-  panel.add(params, 'exposure', 0.1, 2).onChange(function (value) {
-    renderer.toneMappingExposure = Math.pow(value, 4.0)
+  const panel = new GUI({
+    autoPlace: false,
+  })
+  con.value?.append(panel.domElement)
+  panel.add(params, 'exposure', 0.1, 2).onChange((value) => {
+    renderer.toneMappingExposure = value ** 4.0
     render()
   })
-  panel.add(params, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
+  panel.add(params, 'bloomThreshold', 0.0, 1.0).onChange((value) => {
     bloomPass.threshold = Number(value)
     render()
   })
-  panel.add(params, 'bloomStrength', 0.0, 10.0).onChange(function (value) {
+  panel.add(params, 'bloomStrength', 0.0, 10.0).onChange((value) => {
     bloomPass.strength = Number(value)
     render()
   })
-  panel.add(params, 'bloomRadius', 0.0, 1.0, 0.001).onChange(function (value) {
+  panel.add(params, 'bloomRadius', 0.0, 1.0, 0.001).onChange((value) => {
     bloomPass.radius = Number(value)
     render()
   })
   // prettier-ignore
-  panel.add(params,'scene',['normalAndGlow','onlyNnormal','onlyGlow']).onChange(val=>{
+  panel.add(params, 'scene', ['normalAndGlow', 'onlyNnormal', 'onlyGlow']).onChange((val) => {
     params.scene = val
     render()
   })
@@ -116,7 +113,7 @@ function initPostProcessing() {
     new THREE.Vector2(window.innerWidth, window.innerHeight),
     1.5,
     0.4,
-    0.85
+    0.85,
   )
   bloomPass.threshold = params.bloomThreshold
   bloomPass.strength = params.bloomStrength
@@ -130,13 +127,13 @@ function initPostProcessing() {
     new THREE.ShaderMaterial({
       uniforms: {
         baseTexture: { value: null },
-        bloomTexture: { value: bloomComposer.renderTarget2.texture }
+        bloomTexture: { value: bloomComposer.renderTarget2.texture },
       },
       vertexShader: shaderVertex,
       fragmentShader: shaderFragment,
-      defines: {}
+      defines: {},
     }),
-    'baseTexture'
+    'baseTexture',
   )
   finalPass.needsSwap = true
 
@@ -147,7 +144,7 @@ function initPostProcessing() {
 
 // 按需绘制,只在gui参数改变后，或者camera改变后，才重新绘制
 function render() {
-  let { scene: s } = params
+  const { scene: s } = params
   // 不加后期效果，直接用renderer来渲染所有层
   if (s === 'onlyNnormal') {
     camera.layers.set(LAYER_NORMAL) // 将相机层设置为较小的那个层级，渲染所有层
@@ -200,7 +197,7 @@ function initTHREE() {
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   // renderer.setPixelRatio(window.devicePixelRatio) // 不推荐
@@ -229,9 +226,11 @@ function onWindowResize() {
   bloomComposer.setSize(width, height)
 }
 </script>
-<style lang="less" scoped>
-.viewCon {
-  margin: 0;
-  padding: 0;
-}
-</style>
+
+<template>
+  <div ref="con" class="">
+    <div ref="canvasCon" class="canvasCon">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>

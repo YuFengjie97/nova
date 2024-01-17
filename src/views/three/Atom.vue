@@ -1,22 +1,15 @@
-<template>
-  <div class="viewCon">
-    <div class="canvasCon" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { Mat } from 'threePatch'
+import type { Mat } from 'threePatch'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+import { useGUI } from '@/hooks/useGUI'
 
 const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
@@ -39,7 +32,7 @@ let bloomPass: UnrealBloomPass
 let atom: Atom
 // 发光图层定义
 const BLOOM_LAYER = 1
-const bloomLayer = new THREE.Layers() //发光图层，用来判断mesh是否与该图层是同一图层
+const bloomLayer = new THREE.Layers() // 发光图层，用来判断mesh是否与该图层是同一图层
 bloomLayer.set(BLOOM_LAYER)
 const materials: {
   [key: string]: THREE.Material | Array<THREE.Material>
@@ -48,7 +41,7 @@ const darkMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 })
 
 const params = {
   showAxes: false,
-  atomColor: 0x7745c9,
+  atomColor: 0x7745C9,
   bloomStrength: 5,
   bloomThreshold: 0,
   bloomRadius: 1,
@@ -58,12 +51,13 @@ const params = {
 
   electronNum: 100,
   tInc: 0.001,
-  electronColor: 0x0984e3,
-  orbitColor: 0xfd79a8,
-  showOrbit: false
+  electronColor: 0x0984E3,
+  orbitColor: 0xFD79A8,
+  showOrbit: false,
 }
 
 onMounted(() => {
+  initGUI()
   initTHREE()
   initEffectComposer()
   initMesh()
@@ -74,10 +68,11 @@ function animate() {
   updateMesh()
 }
 
+const con = ref<HTMLElement>()
 function initGUI() {
-  let panel = new GUI({width: 300})
+  const { gui: panel } = useGUI(con.value!)
 
-  panel.add(params, 'showAxes').onChange(val=>{
+  panel.add(params, 'showAxes').onChange((val) => {
     axesHelper.visible = val
   })
 
@@ -97,13 +92,13 @@ function initGUI() {
     bloomPass.radius = val
   })
 
-  folderAtom.add(params, 'lightIntensity',0,200,1).onChange(val=>{
+  folderAtom.add(params, 'lightIntensity', 0, 200, 1).onChange((val) => {
     light.intensity = val
   })
-  folderAtom.add(params, 'lightDistance',0,160,1).onChange(val=>{
+  folderAtom.add(params, 'lightDistance', 0, 160, 1).onChange((val) => {
     light.distance = val
   })
-  folderAtom.add(params, 'lightDecay',0,2,0.01).onChange(val=>{
+  folderAtom.add(params, 'lightDecay', 0, 2, 0.01).onChange((val) => {
     light.decay = val
   })
 
@@ -129,7 +124,6 @@ function initGUI() {
     })
   })
 }
-initGUI()
 
 function createPointLight(x: number, y: number, z: number) {
   const { lightIntensity, lightDistance, lightDecay } = params
@@ -137,7 +131,7 @@ function createPointLight(x: number, y: number, z: number) {
     params.atomColor,
     lightIntensity,
     lightDistance,
-    lightDecay
+    lightDecay,
   )
   light.position.set(x, y, z)
   scene.add(light)
@@ -163,7 +157,7 @@ function initEffectComposer() {
   const renderPass = new RenderPass(scene, camera)
   const { bloomStrength, bloomRadius, bloomThreshold } = params
   // prettier-ignore
-  bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight),bloomStrength,bloomRadius,bloomThreshold)
+  bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), bloomStrength, bloomRadius, bloomThreshold)
 
   // 初始化发光渲染
   bloomComposer = new EffectComposer(renderer)
@@ -192,13 +186,13 @@ function initEffectComposer() {
     new THREE.ShaderMaterial({
       uniforms: {
         baseTexture: { value: null },
-        bloomTexture: { value: bloomComposer.renderTarget2.texture }
+        bloomTexture: { value: bloomComposer.renderTarget2.texture },
       },
       vertexShader,
       fragmentShader,
-      defines: {}
+      defines: {},
     }),
-    'baseTexture'
+    'baseTexture',
   )
   shaderPass.needsSwap = true
   finalComposer.addPass(renderPass)
@@ -211,14 +205,14 @@ function bloomRender() {
   scene.traverse(restoreMaterial) // 将原来的暗材质恢复为原来的材质
   finalComposer.render()
 }
-const darkenNonBloomed2 = (obj: any) => {
+function darkenNonBloomed2(obj: any) {
   const material = obj.material
   if (material && bloomLayer.test(obj.layers) === false) {
     materials[obj.uuid] = material
     obj.material = darkMaterial
   }
 }
-const restoreMaterial = (obj: any) => {
+function restoreMaterial(obj: any) {
   if (materials[obj.uuid]) {
     obj.material = materials[obj.uuid]
     delete materials[obj.uuid]
@@ -228,7 +222,7 @@ const restoreMaterial = (obj: any) => {
 class Atom {
   r = 40
   curveR = 80
-  mesh: THREE.Mesh //原子
+  mesh: THREE.Mesh // 原子
   electrons: Array<Electron> = []
   constructor(electronNum: number) {
     const geo = new THREE.SphereGeometry(this.r, 128, 128)
@@ -240,18 +234,19 @@ class Atom {
 
     for (let i = 0; i < electronNum; i++) {
       this.electrons.push(
-        new Electron(((PI * 2) / electronNum) * i, this.curveR)
+        new Electron(((PI * 2) / electronNum) * i, this.curveR),
       )
     }
   }
 
   updateElectronNum(num: number) {
-    let angle = (PI * 2) / num
+    const angle = (PI * 2) / num
     this.electrons.forEach((e, i) => {
       if (i < num) {
         e.updateOrbitRotation(angle * i)
         e.group.visible = true
-      } else {
+      }
+      else {
         e.group.visible = false
       }
     })
@@ -260,7 +255,7 @@ class Atom {
 class Electron {
   r = 2
   group = new THREE.Group() // 包含电子与轨道的mesh
-  curveR: number //电子轨道半径
+  curveR: number // 电子轨道半径
   orbitCurve: THREE.EllipseCurve
   orbitMesh: THREE.Line // 轨道
   mesh: THREE.Mesh // 电子
@@ -271,17 +266,17 @@ class Electron {
     scene.add(this.group)
 
     // 电子
-    let geo = new THREE.SphereGeometry(this.r, 128, 128)
-    let mat = new THREE.MeshLambertMaterial({ color: params.electronColor })
+    const geo = new THREE.SphereGeometry(this.r, 128, 128)
+    const mat = new THREE.MeshLambertMaterial({ color: params.electronColor })
     this.mesh = new THREE.Mesh(geo, mat)
     this.group.add(this.mesh)
 
     // 电子轨道
     // prettier-ignore
-    this.orbitCurve = new THREE.EllipseCurve(0, 0, curveR, curveR, 0, 2 * Math.PI, true, PI/3)
-    let points = this.orbitCurve.getSpacedPoints(300)
-    let orbitGeo = new THREE.BufferGeometry().setFromPoints(points)
-    let orbitMat = new THREE.LineBasicMaterial({ color: params.orbitColor })
+    this.orbitCurve = new THREE.EllipseCurve(0, 0, curveR, curveR, 0, 2 * Math.PI, true, PI / 3)
+    const points = this.orbitCurve.getSpacedPoints(300)
+    const orbitGeo = new THREE.BufferGeometry().setFromPoints(points)
+    const orbitMat = new THREE.LineBasicMaterial({ color: params.orbitColor })
     this.orbitMesh = new THREE.Line(orbitGeo, orbitMat)
     this.orbitMesh.visible = params.showOrbit
     this.group.add(this.orbitMesh)
@@ -291,10 +286,11 @@ class Electron {
 
   // 使用t参数，使电子绕轨道运动
   moveByCurve() {
-    if (this.t >= 1) this.t = 0
+    if (this.t >= 1)
+      this.t = 0
     this.t += params.tInc
 
-    let oPos = this.orbitCurve.getPointAt(this.t)
+    const oPos = this.orbitCurve.getPointAt(this.t)
     // 电子位置更新
     this.mesh.position.x = oPos.x
     this.mesh.position.y = oPos.y
@@ -318,7 +314,7 @@ function initTHREE() {
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   // renderer.setPixelRatio(window.devicePixelRatio) // 不推荐
@@ -359,6 +355,14 @@ function onWindowResize() {
   renderer.setSize(width, height)
 }
 </script>
+
+<template>
+  <div ref="con">
+    <div ref="canvasCon" class="canvasCon">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

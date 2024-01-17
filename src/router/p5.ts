@@ -57,12 +57,12 @@ const p5: RouteRecordRaw = {
     },
     {
       path: 'disperseParticle',
-      meta: { name: 'disperseParticle', show: true },
+      meta: { name: 'disperseParticle', show: false },
       component: () => import('@/views/p5/DisperseParticle.vue'),
     },
     {
       path: 'disperseParticle2',
-      meta: { name: 'disperseParticle2', show: true },
+      meta: { name: 'disperseParticle2', show: false },
       component: () => import('@/views/p5/DisperseParticle2.vue'),
     },
     {
