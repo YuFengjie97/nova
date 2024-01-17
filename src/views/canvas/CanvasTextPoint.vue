@@ -1,13 +1,18 @@
 <template>
-  <div class="viewCon">
+  <div class="w-full min-h-full bg-#000 flex flex-col items-center gap-10px">
     <canvas class="canvas" ref="canvas"></canvas>
     <canvas class="canvas" ref="canvas2"></canvas>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { createNoise3D } from 'simplex-noise'
 import { ref, onMounted } from 'vue'
+import {map} from '@/utils/math'
+
 const {PI} = Math
+
+const noise = createNoise3D()
 
 type Point = {x: number, y: number}
 
@@ -21,7 +26,7 @@ let dotCanvas: HTMLCanvasElement
 
 const fontName = 'Verdana'
 const textureFontSize = 100
-let string = 'Some text' + '\n' + 'to sample' + '\n' + 'with Canvas'
+const string = '弱水三千' + '\n' + '我只取一尿饮'
 let textureCoordinates: Array<Point> = []
 
 function initCanvas() {
@@ -38,11 +43,10 @@ function initCanvas() {
 function sampleCoordinates() {
   // 找出最长字符串宽度，重新设置画布尺寸，下一步读取画布像素位置，就不需要铺满屏幕整张读取
   const lines = string.split(`\n`)
-  const linesMaxLength = [...lines].sort((a, b) => b.length - a.length)[0]
-    .length
+  const linesMaxLength = lines.map(item => item.length).reduce((pre, cur)=> cur > pre ? cur : pre, 0)
   // 根据最长字符串长度（宽度），字符串数量（高度）调整画布尺寸
-  const wTexture = textureFontSize * 0.7 * linesMaxLength
-  const hTexture = lines.length * textureFontSize
+  const wTexture = textureFontSize  * linesMaxLength + 100
+  const hTexture = lines.length * textureFontSize + 100
   textCanvas.width = wTexture
   textCanvas.height = hTexture
   dotCanvas.width = wTexture
@@ -50,15 +54,15 @@ function sampleCoordinates() {
 
   // 绘制字体
   const linesNumber = lines.length
-  ctx.font = textureFontSize + 'px ' + fontName
-  ctx.fillStyle = '#2a9d8f'
+  ctx.font = `${textureFontSize}px ${fontName}`
+  ctx.fillStyle = '#fff'
   for (let i = 0; i < linesNumber; i++) {
     ctx.fillText(lines[i], 0, ((i + 0.8) * hTexture) / linesNumber)
   }
 
   // 获取画布上绘制的文字坐标信息
   textureCoordinates = []
-  const samplingStep = 4 // rgb取样跨度
+  const samplingStep = 6 // rgb取样跨度
   if (wTexture > 0) {
     const imageData = ctx.getImageData(
       0,
@@ -82,33 +86,34 @@ function sampleCoordinates() {
 }
 
 function drawDot(){
+  const t = performance.now() / 1000;
+
   for(let i=0,len=textureCoordinates.length;i<len;i++){
     let coor = textureCoordinates[i]
     ctx2.fillStyle = '#fff'
     ctx2.beginPath()
-    ctx2.arc(coor.x, coor.y, 1, 0, PI*2);
+    ctx2.arc(coor.x, coor.y, map(noise(coor.x, coor.y, Math.sin(t)),-1,1,0,1) * 4 + 1, 0, PI*2);
     ctx2.fill()
   }
+}
+function animate() {
+  ctx2.clearRect(0,0,dotCanvas.width,dotCanvas.height)
+
+  drawDot()
+  requestAnimationFrame(animate)
 }
 
 onMounted(() => {
   initCanvas()
   sampleCoordinates()
   drawDot()
+
+  animate()
 })
 </script>
 
 <style lang="less" scoped>
-.viewCon {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  background: #000;
-  .canvas {
-    border: 1px solid #fff;
-  }
+.canvas {
+  border: 1px solid #fff;
 }
 </style>

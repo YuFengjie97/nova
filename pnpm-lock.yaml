@@ -20,6 +20,9 @@ dependencies:
   p5:
     specifier: ^1.5.0
     version: 1.5.0
+  simplex-noise:
+    specifier: ^4.0.1
+    version: 4.0.1
   three:
     specifier: ^0.146.0
     version: 0.146.0
@@ -2800,6 +2803,10 @@ packages:
       simple-concat: 1.0.1
     dev: true
     optional: true
+
+  /simplex-noise@4.0.1:
+    resolution: {integrity: sha512-zl/+bdSqW7HJOQ0oDbxrNYaF4F5ik0i7M6YOYmEoIJNtg16NpvWaTTM1Y7oV/7T0jFljawLgYPS81Uu2rsfo1A==}
+    dev: false
 
   /sirv@2.0.4:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}

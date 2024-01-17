@@ -122,6 +122,8 @@ onMounted(() => {
     .public();
     // background-image: var(--front);// 因为filter会使整个dom模糊，所以将图片放到子img元素
     img {
+      width: 100%;
+      height: 100%;
       filter: drop-shadow(0 0 5px var(--light));
     }
     &:hover {

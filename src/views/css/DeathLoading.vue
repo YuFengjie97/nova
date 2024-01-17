@@ -1,5 +1,5 @@
 <template>
-  <div class="viewCon">
+  <div class=" w-full h-full flex justify-center align-items bg-#000">
     <DeathLoading />
   </div>
 </template>

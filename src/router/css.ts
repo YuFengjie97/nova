@@ -49,7 +49,7 @@ const css: RouteRecordRaw = {
       path: 'barChart',
       meta: {
         name: 'css条状表',
-        show: true,
+        show: false,
       },
       component: () => import('@/views/css/BarChart.vue')
     },

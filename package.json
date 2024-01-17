@@ -16,6 +16,7 @@
     "fontfaceobserver": "^2.3.0",
     "lodash": "^4.17.21",
     "p5": "^1.5.0",
+    "simplex-noise": "^4.0.1",
     "three": "^0.146.0",
     "vue": "^3.2.37",
     "vue-router": "4"

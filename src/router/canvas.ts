@@ -17,9 +17,20 @@ const canvas: RouteRecordRaw = {
       path: 'flowFieldLine',
       meta: {
         name: 'FlowFieldLine',
-        show: true
+        show: false
       },
       component: () => import('@/views/canvas/FlowFieldLine.vue')
+    },
+    {
+      path: 'canvasTextPoint',
+      meta: { name: 'canvasTextPoint', show: false }, component: () => import('@/views/canvas/CanvasTextPoint.vue')
+    },
+    {
+      path: 'canvasPoint',
+      meta: {
+        name: '图形点阵',show: true
+      },
+      component: () => import('@/views/canvas/canvasPoint.vue')
     },
   ]
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="starRate viewCon h-full flex justify-center items-center" ref="con">
+  <div class="starRate viewCon flex flex-wrap justify-center items-center" ref="con">
     <Card class="card">
       <StarRate v-bind="starItem" />
     </Card>

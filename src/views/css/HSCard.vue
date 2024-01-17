@@ -1,5 +1,5 @@
 <template>
-  <div class="viewCon">
+  <div class="w-full h-full flex flex-wrap justify-center items-center view-con">
     <HSCard :back-img="back" :front-img="card1" />
     <HSCard :back-img="back" :front-img="card2" />
     <HSCard :back-img="back" :front-img="card3" />
@@ -19,10 +19,7 @@ import back from '@/assets/img/hs/back.png'
 </script>
 
 <style lang="less" scoped>
-.viewCon {
+.view-con {
   background-image: linear-gradient(60deg, #c0392b 50%, #2980b9 80%);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
 }
 </style>

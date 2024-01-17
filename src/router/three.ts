@@ -20,10 +20,6 @@ const three: RouteRecordRaw = {
       meta: { name: 'allBufferGeo', show: true }, component: () => import('@/views/three/AllBufferGeo/AllBufferGeo.vue')
     },
     {
-      path: 'canvasTextPoint',
-      meta: { name: 'canvasTextPoint', show: true }, component: () => import('@/views/canvas/CanvasTextPoint.vue')
-    },
-    {
       path: 'threeTextPoint',
       meta: { name: 'threeTextPoint', show: true }, component: () => import('@/views/three/ThreeTextPoint.vue')
     },
