@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="con" class="starRate viewCon flex flex-wrap justify-center items-center">
+  <div ref="con" class="starRate w-full h-full flex flex-wrap justify-center items-center">
     <Card class="card">
       <StarRate v-bind="starItem" />
     </Card>
