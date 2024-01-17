@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { createNoise3D } from 'simplex-noise'
-import pic from '@/assets/img/bg.png'
+import pic from '@/assets/img/disco_kim.jpg'
 import { type Vec3, initPalette, map, vec3ToRgb } from '@/utils'
 
 const con = ref<HTMLElement>()
@@ -21,39 +21,43 @@ onMounted(async () => {
   const { width } = con.value!.getBoundingClientRect()
   const ctx = canvas.value?.getContext('2d') as CanvasRenderingContext2D
   const ctx2 = canvas2.value?.getContext('2d') as CanvasRenderingContext2D
+
   const w = Math.floor(width / 2)
-
-  canvas.value!.width = w
-  canvas.value!.height = w
-  canvas2.value!.width = w
-  canvas2.value!.height = w
-
-  function loadImg() {
+  function loadImg(): Promise<number> {
     return new Promise((resolve) => {
-    // pic正好时正方形，懒得自适配
       const img = new Image()
       img.src = pic
       img.onload = () => {
-        ctx.drawImage(img, 0, 0, w, w)
-        resolve(1)
+        const hw = img.height / img.width
+        const h = Math.floor(w * hw)
+
+        canvas.value!.width = w
+        canvas.value!.height = h
+        canvas2.value!.width = w
+        canvas2.value!.height = h
+
+        ctx.drawImage(img, 0, 0, w, h)
+        resolve(h)
       }
     })
   }
-  await loadImg()
+  const h = await loadImg()
 
-  const imgData = ctx.getImageData(0, 0, w, w).data
+  const imgData = ctx.getImageData(0, 0, w, h).data
 
   const sampletep = 6 // 取样跨度
 
   const rList: Array<{ x: number, y: number }> = []
-  for (let y = 0; y < w; y += sampletep) {
+  for (let y = 0; y < h; y += sampletep) {
     for (let x = 0; x < w; x += sampletep) {
       const i = (y * w + x) * 4
-      const r = imgData[i]
-      // const g = imgData[i + 1]
-      // const b = imgData[i + 2]
+      const r = imgData[i] / 255
+      const g = imgData[i + 1] / 255
+      const b = imgData[i + 2] / 255
 
-      if (r > 125)
+      const gray = 0.299 * r + 0.578 * g + 0.114 * b
+
+      if (gray > 0.4)
         rList.push({ x, y })
     }
   }
@@ -81,7 +85,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div ref="con" class="w-full h-full bg-#000 flex items-center">
+  <div ref="con" class="w-full bg-#000 flex items-center">
     <canvas ref="canvas" class="block w-50%" />
     <canvas ref="canvas2" class="block w-50%" />
   </div>
