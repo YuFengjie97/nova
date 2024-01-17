@@ -1,12 +1,11 @@
-# Nova(Am I a Blog?)
-> 这个项目包含了一些css或canvas的实现，一些我正在探索或者觉得有趣的东西。
-> 使用 `vite & vue3 & typeScript`搭建
+# Keyword
+  `vite` `vue3` `typeScript` `canvas` `threejs` `p5` `shader`
 
-## Preview👻
+## Prodution
 
-you can click here <a href="https://yufengjie97.github.io/nova/" target="_blank">👉NOVA👈</a>to preview.
+[预览页面](https://yufengjie97.github.io/nova/)
 
-## Start
+## Dev
 
     pnpm run dev
 
@@ -14,4 +13,5 @@ you can click here <a href="https://yufengjie97.github.io/nova/" target="_blank"
 
     pnpm run build
 
-
+## eslint
+[@antfu/eslint-config](https://github.com/antfu/eslint-config?tab=readme-ov-file)
