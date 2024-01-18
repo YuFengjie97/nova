@@ -1,13 +1,5 @@
-<template>
-  <div class="viewCon">
-    <div class="canvasCon" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -41,7 +33,7 @@ onMounted(() => {
 
 const params = {}
 function initGUI() {
-  let panel = new GUI()
+  const panel = new GUI()
 }
 
 function animate() {
@@ -54,7 +46,7 @@ function initTHREE() {
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   // renderer.setPixelRatio(window.devicePixelRatio) // 不推荐
@@ -76,13 +68,18 @@ function initTHREE() {
   orbitControls.object.position.set(120, 60, 100)
   orbitControls.update()
 }
+
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
+  animateId = requestAnimationFrame(render)
   stats.update()
   animate()
   renderer.render(scene, camera)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 // 自适应
 function onWindowResize() {
   width = window.innerWidth
@@ -92,6 +89,14 @@ function onWindowResize() {
   renderer.setSize(width, height)
 }
 </script>
+
+<template>
+  <div class="viewCon">
+    <div ref="canvasCon" class="canvasCon">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

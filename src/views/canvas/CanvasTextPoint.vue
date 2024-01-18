@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { createNoise3D } from 'simplex-noise'
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { map } from '@/utils/math'
 
 const { PI } = Math
@@ -88,13 +88,16 @@ function drawDot() {
     ctx2.fill()
   }
 }
+let animateId = 0
 function animate() {
   ctx2.clearRect(0, 0, dotCanvas.width, dotCanvas.height)
 
   drawDot()
-  requestAnimationFrame(animate)
+  animateId = requestAnimationFrame(animate)
 }
-
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 onMounted(() => {
   initCanvas()
   sampleCoordinates()

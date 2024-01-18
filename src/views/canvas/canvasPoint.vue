@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { createNoise3D } from 'simplex-noise'
 import pic from '@/assets/img/disco_kim.jpg'
 import { type Vec3, initPalette, map, vec3ToRgb } from '@/utils'
@@ -16,6 +16,10 @@ const c: Vec3 = [0.500, 0.000, 0.500]
 const d: Vec3 = [0.000, 0.000, 0.500]
 
 const palette = initPalette(a, b, c, d)
+let animateId = 0
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 
 onMounted(async () => {
   const { width } = con.value!.getBoundingClientRect()
@@ -77,7 +81,7 @@ onMounted(async () => {
 
   function animate() {
     draw()
-    requestAnimationFrame(animate)
+    animateId = requestAnimationFrame(animate)
   }
 
   animate()
@@ -85,8 +89,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div ref="con" class="w-full bg-#000 flex items-center">
-    <canvas ref="canvas" class="block w-50%" />
-    <canvas ref="canvas2" class="block w-50%" />
+  <div ref="con" class="w-full min-h-full bg-#000 flex items-center justify-center">
+    <canvas ref="canvas" class="block w-30%" />
+    <canvas ref="canvas2" class="block w-30%" />
   </div>
 </template>

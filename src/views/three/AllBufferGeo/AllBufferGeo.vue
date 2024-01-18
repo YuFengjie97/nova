@@ -1,13 +1,5 @@
-<template>
-  <div class="viewCon">
-    <div class="con" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -31,113 +23,111 @@ import {
   getTorus,
   getTorusKnot,
   getTube,
-  getWireframe
+  getWireframe,
 } from './object3D'
-const {cos, sin} = Math
+
+const { cos, sin } = Math
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
-let width = innerWidth
-let height = innerHeight
+const width = innerWidth
+const height = innerHeight
 let stats: Stats
 let orbitControls: OrbitControls
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 
-let viewCenter = {
+const viewCenter = {
   x: 120,
-  y: 60
+  y: 60,
 }
-let viewDistance = 100
+const viewDistance = 100
 
 const object3D: Array<THREE.Group> = []
 function addBuffer() {
-  let box = getBox()
+  const box = getBox()
   object3D.push(box)
 
-  let circle = getCircle()
+  const circle = getCircle()
   object3D.push(circle)
 
-  let cone = getCone()
+  const cone = getCone()
   object3D.push(cone)
 
-  let cylinder = getCylinder()
+  const cylinder = getCylinder()
   object3D.push(cylinder)
 
-  let dodecahedron = getDodecahedron()
+  const dodecahedron = getDodecahedron()
   object3D.push(dodecahedron)
 
-  let edges = getEdges()
+  const edges = getEdges()
   object3D.push(edges)
 
-  let extrude = getExtrude()
+  const extrude = getExtrude()
   object3D.push(extrude)
 
-  let icosahedron = getIcosahedron()
+  const icosahedron = getIcosahedron()
   object3D.push(icosahedron)
 
-  let lathe = getLathe()
+  const lathe = getLathe()
   object3D.push(lathe)
 
-  let octahedron = getOctahedron()
+  const octahedron = getOctahedron()
   object3D.push(octahedron)
 
-  let plane = getPlane()
+  const plane = getPlane()
   object3D.push(plane)
 
-  let polyhedron = getPolyhedron()
+  const polyhedron = getPolyhedron()
   object3D.push(polyhedron)
 
-  let ring = getRing()
+  const ring = getRing()
   object3D.push(ring)
 
-  let shape = getShape()
+  const shape = getShape()
   object3D.push(shape)
 
-  let sphere = getSphere()
+  const sphere = getSphere()
   object3D.push(sphere)
 
-  let tetrahedron = getTetrahedron()
+  const tetrahedron = getTetrahedron()
   object3D.push(tetrahedron)
 
-  let torus = getTorus()
+  const torus = getTorus()
   object3D.push(torus)
 
-  let torusKnot = getTorusKnot()
+  const torusKnot = getTorusKnot()
   object3D.push(torusKnot)
 
-  let tube = getTube()
+  const tube = getTube()
   object3D.push(tube)
 
-  let wireframe = getWireframe()
+  const wireframe = getWireframe()
   object3D.push(wireframe)
 
   object3D.forEach((o, i) => {
-    
-    let x = (i % 6) * 40
-    let y = Math.floor(i / 6) * 40
+    const x = (i % 6) * 40
+    const y = Math.floor(i / 6) * 40
     o.position.set(x, y, 0)
     scene.add(o)
     // console.log(o.position);
-
   })
-
 }
 
 let light1: THREE.PointLight // 垂直方向绕基准点旋转的点光源
 let light2: THREE.PointLight // 水品方向绕基准点旋转的点光源
-let r = 200
-function addLight(){
-  light1 = new THREE.PointLight( 0xffffff, 2, 300 );
-  light1.position.set( viewCenter.x, viewCenter.y, viewDistance );
-  light2 = new THREE.PointLight( 0xffffff, 2, 300 );
-  light2.position.set( viewCenter.x, viewCenter.y, viewDistance );
-  scene.add( light1 );
-  scene.add( light2 );
+const r = 200
+function addLight() {
+  light1 = new THREE.PointLight(0xFFFFFF, 2, 300)
+  light1.position.set(viewCenter.x, viewCenter.y, viewDistance)
+  light2 = new THREE.PointLight(0xFFFFFF, 2, 300)
+  light2.position.set(viewCenter.x, viewCenter.y, viewDistance)
+  scene.add(light1)
+  scene.add(light2)
 }
-function updateLight(){
-  let angle = Date.now()*0.005
+function updateLight() {
+  const angle = Date.now() * 0.005
   const y = sin(angle) * r
   const z1 = cos(angle) * r
   light1.position.y = y
@@ -149,7 +139,7 @@ function updateLight(){
   light2.position.z = z2
 }
 function updateBuffer() {
-  let time = Date.now() * 0.001
+  const time = Date.now() * 0.001
   object3D.forEach((o) => {
     o.rotation.y = time
     o.rotation.x = time
@@ -190,7 +180,7 @@ function initTHREE() {
   // scene.add( helper );
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   renderer.setPixelRatio(window.devicePixelRatio) // render的像素比设置为设备屏幕的像素比
@@ -204,13 +194,17 @@ function animate() {
   updateLight()
 }
 
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
+  animateId = requestAnimationFrame(render)
   stats.update()
   animate()
   renderer.render(scene, camera)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 
 onMounted(() => {
   initTHREE()
@@ -222,6 +216,14 @@ onMounted(() => {
   render()
 })
 </script>
+
+<template>
+  <div class="viewCon">
+    <div ref="canvasCon" class="con">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

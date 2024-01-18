@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -339,12 +339,13 @@ function initTHREE() {
   orbitControls.update()
 }
 // 绘制
+let animateId = 0
 function render() {
-  requestAnimationFrame(render)
   stats.update()
   animate()
   bloomRender()
   // renderer.render(scene, camera)
+  animateId = requestAnimationFrame(render)
 }
 // 自适应
 function onWindowResize() {
@@ -354,6 +355,9 @@ function onWindowResize() {
   camera.updateProjectionMatrix()
   renderer.setSize(width, height)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 </script>
 
 <template>

@@ -1,13 +1,5 @@
-<template>
-  <div class="viewCon">
-    <div class="canvasCon" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -34,7 +26,7 @@ let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 let composer: EffectComposer
-let clock = new THREE.Clock()
+const clock = new THREE.Clock()
 
 let uniforms: {
   fogDensity: { value: number }
@@ -56,12 +48,12 @@ onMounted(() => {
 
 const params = {}
 function initGUI() {
-  let panel = new GUI()
+  const panel = new GUI()
 }
 
 function animate() {
   const delta = 5 * clock.getDelta()
-  uniforms['time'].value += 0.2 * delta
+  uniforms.time.value += 0.2 * delta
 
   // mesh.rotation.y += 0.0125 * delta
   // mesh.rotation.x += 0.05 * delta
@@ -79,13 +71,13 @@ function initMesh() {
     time: { value: 1.0 },
     uvScale: { value: new THREE.Vector2(3.0, 1.0) },
     texture1: { value: textureLoader.load(imgCloud) },
-    texture2: { value: textureLoader.load(imgLavatile) }
+    texture2: { value: textureLoader.load(imgLavatile) },
   }
 
-  uniforms['texture1'].value.wrapS = uniforms['texture1'].value.wrapT =
-    THREE.RepeatWrapping
-  uniforms['texture2'].value.wrapS = uniforms['texture2'].value.wrapT =
-    THREE.RepeatWrapping
+  uniforms.texture1.value.wrapS = uniforms.texture1.value.wrapT
+    = THREE.RepeatWrapping
+  uniforms.texture2.value.wrapS = uniforms.texture2.value.wrapT
+    = THREE.RepeatWrapping
 
   const vertexShader = `
   uniform vec2 uvScale;
@@ -146,9 +138,9 @@ function initMesh() {
   `
 
   const material = new THREE.ShaderMaterial({
-    uniforms: uniforms,
+    uniforms,
     vertexShader,
-    fragmentShader
+    fragmentShader,
   })
 
   mesh = new THREE.Mesh(new THREE.SphereGeometry(0.65, 32, 16), material)
@@ -174,13 +166,13 @@ function initTHREE() {
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.autoClear = false
 
-  //自适应
+  // 自适应
   window.addEventListener('resize', onWindowResize)
   // 坐标轴
   scene.add(new THREE.AxesHelper(1000))
@@ -195,12 +187,16 @@ function initTHREE() {
   orbitControls.object.position.set(1, 1, 1)
   orbitControls.update()
 }
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
+  animateId = requestAnimationFrame(render)
   stats.update()
   animate()
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 // 自适应
 function onWindowResize() {
   width = window.innerWidth
@@ -210,6 +206,14 @@ function onWindowResize() {
   renderer.setSize(width, height)
 }
 </script>
+
+<template>
+  <div class="viewCon">
+    <div ref="canvasCon" class="canvasCon">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

@@ -1,11 +1,3 @@
-<template>
-  <div class="w-full h-full">
-    <div class="w-full h-full" ref="canvasCon" @pointermove="updateMouse">
-      <canvas class="block w-full h-full" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
 /**
  * num个精灵
@@ -15,13 +7,13 @@
  * 5个材质
  * 5个点云
  * 这里没有使用sprite来初始化精灵而是points，因为粒子数量太多
- * 
+ *
  */
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
-import Stats from 'three/examples/jsm/libs/stats.module.js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import type Stats from 'three/examples/jsm/libs/stats.module.js'
+import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 // 雪花材质图片
 import s1 from '@/assets/img/textures/snow/snowflake1.png?url'
@@ -46,7 +38,7 @@ const spritesNum = 10000
 const bufferGeo = new THREE.BufferGeometry() // 5个点云共用的几何体
 const materials: THREE.PointsMaterial[] = [] // 5个点云的材质
 const vertexes = new Float32Array(spritesNum * 3) // 几何体的顶点信息，三元组初始化为粒子总数的3倍
-const range = 1000 //雪花生成空间范围的一半
+const range = 1000 // 雪花生成空间范围的一半
 
 // 材质加载
 const textureLoader = new THREE.TextureLoader()
@@ -81,24 +73,23 @@ onMounted(() => {
 })
 
 function animate() {
-  const time = Date.now() * 0.00005 //以时间戳来配置点云参数
+  const time = Date.now() * 0.00005 // 以时间戳来配置点云参数
 
   camera.position.x += (mouseX - camera.position.x) * 0.05
   camera.position.y += (-mouseY - camera.position.y) * 0.05
   camera.lookAt(scene.position)
 
   for (let i = 0; i < scene.children.length; i++) {
-    let obj = scene.children[i]
+    const obj = scene.children[i]
     /**
      * 通过遍历scene.children和判断对象类型来找到点云
      * 也可以在点云初始化时，用额外变量保存来直接设置
      */
-    if (obj instanceof THREE.Points) {
+    if (obj instanceof THREE.Points)
       obj.rotation.y = time * (i < 4 ? i + 1 : -(i + 1))
-    }
   }
 
-  //根据时间参数，更新电源材质color
+  // 根据时间参数，更新电源材质color
   for (let i = 0; i < materials.length; i++) {
     const color = parameters[i][0]
     const h = ((360 * (color[0] + time)) % 360) / 360
@@ -107,7 +98,8 @@ function animate() {
 }
 function updateMouse(e: PointerEvent) {
   // 只有是主指针时，才会更新鼠标坐标，主指针区别于移动端，多点触控
-  if (!e.isPrimary) return
+  if (!e.isPrimary)
+    return
   mouseX = e.clientX - width / 2
   mouseY = e.clientY - height / 2
 }
@@ -128,7 +120,7 @@ function initSprites() {
 
     materials[i] = new THREE.PointsMaterial({
       color: new THREE.Color().setHSL(color[0], color[1], color[2]),
-      size: size,
+      size,
       map: texture,
       blending: THREE.AdditiveBlending,
       depthTest: false,
@@ -136,7 +128,7 @@ function initSprites() {
     })
 
     const spritesCloud = new THREE.Points(bufferGeo, materials[i])
-    spritesCloud.rotation.set(random() * 6, random() * 6, random() * 6) //给点云一个随机旋转角度，营造乱序氛围
+    spritesCloud.rotation.set(random() * 6, random() * 6, random() * 6) // 给点云一个随机旋转角度，营造乱序氛围
     scene.add(spritesCloud)
   }
 }
@@ -161,13 +153,17 @@ function initTHREE() {
   // orbitControls.target = new THREE.Vector3(0, 0, 0)
   // orbitControls.update()
 }
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
   // stats.update()
   animate()
   renderer.render(scene, camera)
+  animateId = requestAnimationFrame(render)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 // 自适应
 function onWindowResize() {
   const conInfo = canvasCon.value?.getBoundingClientRect()
@@ -178,3 +174,11 @@ function onWindowResize() {
   renderer.setSize(width, height)
 }
 </script>
+
+<template>
+  <div class="w-full h-full">
+    <div ref="canvasCon" class="w-full h-full" @pointermove="updateMouse">
+      <canvas ref="canvasDom" class="block w-full h-full" />
+    </div>
+  </div>
+</template>

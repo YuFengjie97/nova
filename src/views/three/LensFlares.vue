@@ -1,31 +1,24 @@
-<template>
-  <div class="viewCon">
-    <div class="canvasCon" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GUI } from 'dat.gui'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { FlyControls } from 'three/examples/jsm/controls/FlyControls'
-import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader'
+import type { Font } from 'three/examples/jsm/loaders/FontLoader'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
 
 import { Mat } from 'threePatch'
 import {
   Lensflare,
-  LensflareElement
+  LensflareElement,
 } from 'three/examples/jsm/objects/Lensflare'
 
 // 材质图片引入，格式为url
+import type { PointLight } from 'three'
 import textures0 from '@/assets/img/textures/lensflare/lensflare0.png?url'
 import textures3 from '@/assets/img/textures/lensflare/lensflare3.png?url'
 import fontJsonUrl from '@/assets/typeFace/helvetiker_regular.typeface.json?url'
-import { PointLight } from 'three'
 
 const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
@@ -40,7 +33,7 @@ let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 
 let meshGroup: THREE.Group
-let meshArr: Array<THREE.Mesh> = []
+const meshArr: Array<THREE.Mesh> = []
 const range = 600
 const meshNum = 200
 
@@ -53,10 +46,10 @@ let cameraLight: PointLight
 // 光源透镜配置
 const lfParams = {
   // 点光源配置
-  color: 0x0984e3,
+  color: 0x0984E3,
   intensity: 1,
   distance: range,
-  decay: 0.4
+  decay: 0.4,
 }
 
 onMounted(async () => {
@@ -70,7 +63,7 @@ onMounted(async () => {
 })
 
 function initGUI() {
-  let panel = new GUI()
+  const panel = new GUI()
   const folder1 = panel.addFolder('lfParams')
   folder1.open()
   folder1.addColor(lfParams, 'color').onChange((val) => {
@@ -98,13 +91,13 @@ function loadFont(fontJsonUrl: string): Promise<Font> {
   return new Promise((resolve, reject) => {
     loader.load(
       fontJsonUrl,
-      function (res) {
+      (res) => {
         resolve(res)
       },
       undefined,
-      function (err) {
+      (err) => {
         reject(err)
-      }
+      },
     )
   })
 }
@@ -112,7 +105,7 @@ function loadFont(fontJsonUrl: string): Promise<Font> {
 // 根据材质与字符串内容初始化文字mesh
 function createTextMesh(
   text: string,
-  textMat: Array<THREE.Material>
+  textMat: Array<THREE.Material>,
 ): THREE.Mesh<TextGeometry, THREE.Material[]> {
   const textGeo = new TextGeometry(text, {
     font,
@@ -122,7 +115,7 @@ function createTextMesh(
     bevelEnabled: true,
     bevelThickness: 2,
     bevelSize: 2.4,
-    bevelSegments: 3
+    bevelSegments: 3,
   })
   const textMesh = new THREE.Mesh(textGeo, textMat)
   return textMesh
@@ -136,8 +129,8 @@ function initMeshs() {
   scene.add(meshGroup)
 
   const textMat = [
-    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
-    new THREE.MeshPhongMaterial({ color: 0xffffff }), // side
+    new THREE.MeshPhongMaterial({ color: 0xFFFFFF, flatShading: true }), // front
+    new THREE.MeshPhongMaterial({ color: 0xFFFFFF }), // side
   ]
 
   for (let i = 0, textArrLen = textArr.length; i < meshNum; i++) {
@@ -160,7 +153,7 @@ function initLensFlare() {
     lfParams.color,
     lfParams.intensity,
     lfParams.distance,
-    lfParams.decay
+    lfParams.decay,
   )
   // 透镜耀斑材质的加载与设置
   lensflare = new Lensflare()
@@ -168,7 +161,7 @@ function initLensFlare() {
   const textureFlare0 = textureLoader.load(textures0)
   const textureFlare3 = textureLoader.load(textures3)
   // prettier-ignore
-  lensflare.addElement(new LensflareElement(textureFlare0,700,0,new THREE.Color().setHex(lfParams.color)))
+  lensflare.addElement(new LensflareElement(textureFlare0, 700, 0, new THREE.Color().setHex(lfParams.color)))
   lensflare.addElement(new LensflareElement(textureFlare3, 60, 0.6))
   lensflare.addElement(new LensflareElement(textureFlare3, 70, 0.7))
   lensflare.addElement(new LensflareElement(textureFlare3, 120, 0.9))
@@ -181,13 +174,13 @@ function initLensFlare() {
 function initTHREE() {
   scene = new THREE.Scene()
   scene.background = new THREE.Color().setHSL(0.51, 0.4, 0.01)
-  scene.fog = new THREE.Fog(scene.background, 1, range*2)
-  camera = new THREE.PerspectiveCamera(75, width / height, 1, range*2)
-  camera.position.set(range/2,range/2,range/2)
-  camera.lookAt(0,0,0)
+  scene.fog = new THREE.Fog(scene.background, 1, range * 2)
+  camera = new THREE.PerspectiveCamera(75, width / height, 1, range * 2)
+  camera.position.set(range / 2, range / 2, range / 2)
+  camera.lookAt(0, 0, 0)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   // renderer.setPixelRatio(window.devicePixelRatio)
@@ -208,13 +201,17 @@ function initTHREE() {
   flyControls.autoForward = false
   flyControls.dragToLook = false
 }
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
+  animateId = requestAnimationFrame(render)
   stats.update()
   animate()
   renderer.render(scene, camera)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 // 自适应
 function onWindowResize() {
   width = window.innerWidth
@@ -224,6 +221,14 @@ function onWindowResize() {
   renderer.setSize(width, height)
 }
 </script>
+
+<template>
+  <div class="viewCon">
+    <div ref="canvasCon" class="canvasCon">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

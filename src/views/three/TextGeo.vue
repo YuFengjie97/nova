@@ -1,26 +1,13 @@
-<template>
-  <div class="viewCon">
-    <div class="canvasCon" ref="canvasCon">
-      <canvas
-        class="canvas"
-        ref="canvasDom"
-        @pointerdown="pointerDown"
-        @pointermove="pointerMove"
-        @pointerup="pointerUp"
-      />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
-import fontjson from '@/assets/typeFace/helvetiker_regular.typeface.json?url'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
 import { GUI } from 'dat.gui'
+import fontjson from '@/assets/typeFace/helvetiker_regular.typeface.json?url'
+
 const { PI, random, floor } = Math
 
 const canvasDom = ref<HTMLElement>()
@@ -42,34 +29,34 @@ let pointerDownX = 0
 let textGeo: TextGeometry
 let textMat: Array<THREE.MeshPhongMaterial>
 let textMesh: THREE.Mesh
-let isMirror = true
+const isMirror = true
 let mirrorTextMesh: THREE.Mesh
 let plane: THREE.Mesh
 let planeDis = 40 // plane距离上方文字的距离
 let pointLight: THREE.PointLight
 
 function keyDown(e: KeyboardEvent) {
-  let char = e.key
+  const char = e.key
   console.log(char)
 
-  if (char === 'Backspace') {
+  if (char === 'Backspace')
     str = str.slice(0, -1)
-  } else {
+  else
     str += char
-  }
+
   refreshText()
 }
 
 // 对点光源设置随机颜色
 function setRandomHex() {
-  let h = random() * 100
-  let s = 1
-  let l = 0.5
+  const h = random() * 100
+  const s = 1
+  const l = 0.5
   pointLight.color.setHSL(h, s, l)
 }
 
-let options = {
-  changeColor: function () {
+const options = {
+  changeColor() {
     setRandomHex()
   },
   fontSize: 50,
@@ -78,7 +65,7 @@ let options = {
   bevelEnabled: true,
   bevelThickness: 4,
   bevelSize: 3.2,
-  bevelSegments: 1
+  bevelSegments: 1,
 }
 function initGUI() {
   const panel = new GUI({ width: 300 })
@@ -87,13 +74,12 @@ function initGUI() {
     planeDis = val * 0.8
     refreshText()
   })
-  panel.add(options, 'height', 1, 30,1).onFinishChange(refreshText)
-  panel.add(options, 'curveSegments', 1, 10,1).onFinishChange(refreshText)
+  panel.add(options, 'height', 1, 30, 1).onFinishChange(refreshText)
+  panel.add(options, 'curveSegments', 1, 10, 1).onFinishChange(refreshText)
   panel.add(options, 'bevelEnabled').onChange(refreshText)
-  panel.add(options, 'bevelThickness', 1, 10,1).onFinishChange(refreshText)
+  panel.add(options, 'bevelThickness', 1, 10, 1).onFinishChange(refreshText)
   panel.add(options, 'bevelSize', 0.1, 5, 0.1).onFinishChange(refreshText)
-  panel.add(options, 'bevelSegments', 1, 10,1).onFinishChange(refreshText)
-
+  panel.add(options, 'bevelSegments', 1, 10, 1).onFinishChange(refreshText)
 }
 
 function refreshText() {
@@ -111,8 +97,8 @@ function pointerDown(e: PointerEvent) {
 }
 function pointerMove(e: PointerEvent) {
   if (isPointerDown) {
-    textGroupRatation =
-      ((e.clientX - pointerDownX) / halfWindowWidth) * PI * 0.04
+    textGroupRatation
+      = ((e.clientX - pointerDownX) / halfWindowWidth) * PI * 0.04
   }
 }
 function pointerUp() {
@@ -124,13 +110,13 @@ function loadFont() {
   return new Promise((resolve, reject) => {
     loader.load(
       fontjson,
-      function (res) {
+      (res) => {
         resolve(res)
       },
       undefined,
-      function (err) {
+      (err) => {
         reject(err)
-      }
+      },
     )
   })
 }
@@ -139,25 +125,25 @@ function initTextMesh() {
   scene.add(textGroup)
 
   textGeo = new TextGeometry(str, {
-    font: font,
+    font,
     size: options.fontSize,
     height: options.height,
     curveSegments: options.curveSegments,
     bevelEnabled: options.bevelEnabled,
     bevelThickness: options.bevelThickness,
     bevelSize: options.bevelSize,
-    bevelSegments: options.bevelSegments
+    bevelSegments: options.bevelSegments,
   })
   textMat = [
-    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
-    new THREE.MeshPhongMaterial({ color: 0xffffff }) // side
+    new THREE.MeshPhongMaterial({ color: 0xFFFFFF, flatShading: true }), // front
+    new THREE.MeshPhongMaterial({ color: 0xFFFFFF }), // side
   ]
   textMesh = new THREE.Mesh(textGeo, textMat)
   textGroup.add(textMesh)
 
   textGeo.computeBoundingBox()
-  const centerOffset =
-    -0.5 * (textGeo.boundingBox?.max.x! - textGeo.boundingBox?.min.x!)
+  const centerOffset
+    = -0.5 * (textGeo.boundingBox?.max.x! - textGeo.boundingBox?.min.x!)
   const yOffset = textGeo.boundingBox?.min.y! + planeDis
   textMesh.position.set(centerOffset, yOffset, 0)
 
@@ -172,10 +158,10 @@ function addPlane() {
   plane = new THREE.Mesh(
     new THREE.PlaneGeometry(10000, 10000),
     new THREE.MeshBasicMaterial({
-      color: 0xffffff,
+      color: 0xFFFFFF,
       opacity: 0.5,
-      transparent: true
-    })
+      transparent: true,
+    }),
   )
   plane.position.y = 0
   plane.rotation.x = -PI / 2
@@ -217,7 +203,7 @@ function initTHREE() {
   camera.lookAt(new THREE.Vector3(0, 50, 0))
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   window.addEventListener('resize', onWindowResize)
@@ -225,10 +211,10 @@ function initTHREE() {
 
 // 光源
 function initLight() {
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.125)
+  const dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.125)
   dirLight.position.set(0, -100, 1).normalize()
   scene.add(dirLight)
-  pointLight = new THREE.PointLight(0x6c5ce7, 1.5)
+  pointLight = new THREE.PointLight(0x6C5CE7, 1.5)
   pointLight.position.set(0, -100, 90)
   scene.add(pointLight)
 }
@@ -239,13 +225,17 @@ function animate() {
   // textGroup.
 }
 
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
+  animateId = requestAnimationFrame(render)
   stats.update()
   animate()
   renderer.render(scene, camera)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 
 onMounted(async () => {
   document.addEventListener('keydown', keyDown)
@@ -265,6 +255,20 @@ onMounted(async () => {
   render()
 })
 </script>
+
+<template>
+  <div class="viewCon">
+    <div ref="canvasCon" class="canvasCon">
+      <canvas
+        ref="canvasDom"
+        class="canvas"
+        @pointerdown="pointerDown"
+        @pointermove="pointerMove"
+        @pointerup="pointerUp"
+      />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

@@ -1,25 +1,10 @@
-<template>
-  <div class="viewCon">
-    <textarea
-      class="input"
-      type="text"
-      rows="5"
-      cols="50"
-      v-model="inputVal"
-      @keyup="handleInputChange"
-    />
-    <div class="canvasCon" ref="canvasCon">
-      <canvas class="canvas" ref="canvasDom" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { Mat } from 'threePatch'
+
 const { random, PI } = Math
 
 let str = `Hello World`
@@ -42,7 +27,7 @@ let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 
 let parseString: Function
-const fontSize = 20 //fontSize只会影响取样的样本数量，字体越大，在画布中占用的像素就越多，取样就越多
+const fontSize = 20 // fontSize只会影响取样的样本数量，字体越大，在画布中占用的像素就越多，取样就越多
 const fontName = 'Verdana'
 const fontScaleFactor = 0.5 // 文字画布坐标到three坐标系，坐标缩放因数
 let textureCoors: Array<Particle> = []
@@ -58,16 +43,16 @@ let particlesMat: THREE.MeshNormalMaterial
 let particlesInstanceMesh: THREE.InstancedMesh
 let dummy: THREE.Object3D
 
-let stringBox = {
-  width: 0, //最右文字粒子的x
-  height: 0 //最下文字粒子的y
+const stringBox = {
+  width: 0, // 最右文字粒子的x
+  height: 0, // 最下文字粒子的y
 }
 
 function getInfo() {
   console.log(orbitControls)
 }
 
-//像素粒子对应的类
+// 像素粒子对应的类
 class Particle {
   x: number
   y: number
@@ -83,13 +68,13 @@ class Particle {
     this.x = x
     this.y = y
   }
+
   update() {
     this.rotationX += this.deltaRotation
     this.rotationY += this.deltaRotation
     this.rotationZ += this.deltaRotation
-    if (this.scale < 1) {
+    if (this.scale < 1)
       this.scale += this.deltaScale
-    }
   }
 }
 
@@ -127,51 +112,51 @@ function getTextCanvasInfo() {
     canvas.height = canvasHeigh
     ctx.font = `${fontSize}px ${fontName}`
     ctx.fillStyle = 'red'
-    for (let i = 0, len = strArr.length; i < len; i++) {
+    for (let i = 0, len = strArr.length; i < len; i++)
       ctx.fillText(strArr[i], 0, (i + 0.8) * (canvasHeigh / len))
-    }
 
     // 收集画布像素数据
     const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeigh)
     // const coorArr = [] // 点云mesh用
 
     // 对像素数据进行分析，得到粒子位置数据
-    let samplingStep = 1
-    let index = 0
+    const samplingStep = 1
+    const index = 0
     for (let y = 0; y < canvasHeigh; y += samplingStep) {
       for (let x = 0; x < canvasWidth; x += samplingStep) {
-        let key = `x:${x}y:${y}`
+        const key = `x:${x}y:${y}`
         // 只需要判断像素的R即可
         if (imageData.data[(x + y * canvasWidth) * 4] > 0) {
           // 点云mesh用
-          // coorArr[index++] = x * fontScaleFactor 
+          // coorArr[index++] = x * fontScaleFactor
           // coorArr[index++] = -y * fontScaleFactor
           // coorArr[index++] = random() * 10 * fontScaleFactor
 
-          if (x > stringBox.width) {
+          if (x > stringBox.width)
             stringBox.width = x
-          }
-          if (y > stringBox.height) {
-            stringBox.height = y
-          }
 
-          if(coorMap[key]){
+          if (y > stringBox.height)
+            stringBox.height = y
+
+          if (coorMap[key]) {
             // 之前有，现在也要有
             coorMap[key].toKeep = true
-          } else{
+          }
+          else {
             // 之前没有，现在要有
-            let particle = new Particle(x * fontScaleFactor, -y * fontScaleFactor) 
+            const particle = new Particle(x * fontScaleFactor, -y * fontScaleFactor)
             textureCoors.push(particle) // 使用map过滤旧粒子，不需要再push
             coorMap[key] = particle
           }
-        }else{
-          if(coorMap[key]) {
+        }
+        else {
+          if (coorMap[key]) {
             // 之前有，现在要没有
             coorMap[key].toKeep = false
             delete coorMap[key]
           }
         }
-        textureCoors = textureCoors.filter(p=>p.toKeep) // 数组过滤出现在需要显示的粒子
+        textureCoors = textureCoors.filter(p => p.toKeep) // 数组过滤出现在需要显示的粒子
 
         // 两种遍历方法，coorMap的数据量和textureCoors相同，对象的遍历就是比数组filter慢，有明显卡顿
         // let arr = []
@@ -220,7 +205,7 @@ function initParticles() {
   particlesInstanceMesh = new THREE.InstancedMesh(
     particlesGeo,
     particlesMat,
-    textureCoors.length
+    textureCoors.length,
   )
   particlesInstanceMesh.position.x = -0.5 * stringBox.width * fontScaleFactor
   particlesInstanceMesh.position.y = -1.5 * stringBox.height * fontScaleFactor
@@ -235,7 +220,7 @@ function reAddParticles() {
   particlesInstanceMesh = new THREE.InstancedMesh(
     particlesGeo,
     particlesMat,
-    textureCoors.length
+    textureCoors.length,
   )
   particlesInstanceMesh.position.x = -0.5 * stringBox.width * fontScaleFactor
   particlesInstanceMesh.position.y = -1.5 * stringBox.height * fontScaleFactor
@@ -289,7 +274,7 @@ function initTHREE() {
   camera = new THREE.PerspectiveCamera(75, width / height, 1, 4000)
   renderer = new THREE.WebGLRenderer({
     canvas: canvasDom.value,
-    antialias: true
+    antialias: true,
   })
   renderer.setSize(width, height)
   window.addEventListener('resize', onWindowResize)
@@ -306,13 +291,17 @@ function animate() {
   updateParticles()
 }
 
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
+  animateId = requestAnimationFrame(render)
   stats.update()
   animate()
   renderer.render(scene, camera)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 
 onMounted(() => {
   initTHREE()
@@ -330,6 +319,22 @@ onMounted(() => {
   render()
 })
 </script>
+
+<template>
+  <div class="viewCon">
+    <textarea
+      v-model="inputVal"
+      class="input"
+      type="text"
+      rows="5"
+      cols="50"
+      @keyup="handleInputChange"
+    />
+    <div ref="canvasCon" class="canvasCon">
+      <canvas ref="canvasDom" class="canvas" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .viewCon {

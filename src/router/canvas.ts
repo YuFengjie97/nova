@@ -34,6 +34,14 @@ const canvas: RouteRecordRaw = {
       },
       component: () => import('@/views/canvas/canvasPoint.vue'),
     },
+    {
+      path: 'flow',
+      meta: {
+        name: 'mac锁屏flow',
+        show: true,
+      },
+      component: () => import('@/views/canvas/flow.vue'),
+    },
   ],
 }
 

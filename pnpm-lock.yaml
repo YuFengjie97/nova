@@ -23,6 +23,9 @@ dependencies:
   simplex-noise:
     specifier: ^4.0.1
     version: 4.0.1
+  stats.js:
+    specifier: ^0.17.0
+    version: 0.17.0
   three:
     specifier: ^0.146.0
     version: 0.146.0
@@ -55,6 +58,9 @@ devDependencies:
   '@types/p5':
     specifier: ^1.4.3
     version: 1.4.3
+  '@types/stats.js':
+    specifier: ^0.17.3
+    version: 0.17.3
   '@types/three':
     specifier: ^0.146.0
     version: 0.146.0
@@ -1136,6 +1142,10 @@ packages:
 
   /@types/semver@7.5.6:
     resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
+    dev: true
+
+  /@types/stats.js@0.17.3:
+    resolution: {integrity: sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==}
     dev: true
 
   /@types/three@0.146.0:
@@ -4415,6 +4425,10 @@ packages:
   /spdx-license-ids@3.0.16:
     resolution: {integrity: sha512-eWN+LnM3GR6gPu35WxNgbGl8rmY1AEmoMDvL/QD6zYmPWgywxWqJWNdLGT+ke8dKNWrcYgYjPpG5gbTfghP8rw==}
     dev: true
+
+  /stats.js@0.17.0:
+    resolution: {integrity: sha512-hNKz8phvYLPEcRkeG1rsGmV5ChMjKDAWU7/OJJdDErPBNChQXxCo3WZurGpnWc6gZhAzEPFad1aVgyOANH1sMw==}
+    dev: false
 
   /string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}

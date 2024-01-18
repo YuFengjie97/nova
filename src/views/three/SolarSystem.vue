@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import * as THREE from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
@@ -287,16 +287,20 @@ function initLight() {
   helper.push(pointLightHelper)
   scene.add(pointLightHelper)
 }
+let animateId = 0
 // 绘制
 function render() {
-  requestAnimationFrame(render)
   stats.update()
   animate()
 
   renderGlowAndScene()
   renderer.render(scene, camera)
   bloomComposer.render()
+  animateId = requestAnimationFrame(render)
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 </script>
 
 <template>
