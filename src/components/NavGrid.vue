@@ -5,7 +5,7 @@ import FontFaceObserver from 'fontfaceobserver'
 
 import NavItem from './NavItem.vue'
 import type { NavItemProp } from './NavItem.vue'
-import { routes } from '@/router'
+import { outlink, routes } from '@/router'
 import bg from '@/assets/img/bg.png'
 
 const navList = ref<NavItemProp[]>([])
@@ -29,14 +29,16 @@ function resolveRoutes() {
     })
   })
 
-  // 外链
-  navList.value.push({
-    name: '像素鸟(phaser)',
-    link: 'https://yufengjie97.github.io/learning-phaser/#/flappyBird',
-    conDomRect: navGrid.value!.getBoundingClientRect(),
-    outLink: true,
-    show: true,
-    bg,
+  outlink.forEach((l) => {
+    const item = {
+      name: l.meta.name,
+      link: l.path,
+      conDomRect: navGrid.value!.getBoundingClientRect(),
+      outLink: true,
+      show: l.meta.show,
+      bg,
+    }
+    navList.value.push(item)
   })
 }
 

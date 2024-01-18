@@ -77,7 +77,7 @@ const p5: RouteRecordRaw = {
     },
     {
       path: 'flappyBird',
-      meta: { name: 'flappyBird', show: true },
+      meta: { name: '像素鸟(canvas)', show: true },
       component: () => import('@/views/p5/FlappyBird.vue'),
     },
     {

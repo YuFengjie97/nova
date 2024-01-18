@@ -22,3 +22,5 @@ export const router = createRouter({
   history: createWebHashHistory(import.meta.env.VITE_BASE_URL),
   routes,
 })
+
+export * from './outlink'
