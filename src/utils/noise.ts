@@ -4,8 +4,8 @@ const PERLIN_ZWRAPB = 8
 const PERLIN_ZWRAP = 1 << PERLIN_ZWRAPB
 const PERLIN_SIZE = 4095
 
-let perlin_octaves = 4 // default to medium smooth
-let perlin_amp_falloff = 0.5 // 50% reduction/octave
+const perlin_octaves = 4 // default to medium smooth
+const perlin_amp_falloff = 0.5 // 50% reduction/octave
 
 const scaled_cosine = (i: number) => 0.5 * (1.0 - Math.cos(i * Math.PI))
 
@@ -13,25 +13,23 @@ let perlin: number[]
 
 export function noise(x: number, y = 0, z = 0) {
   if (perlin == null) {
-    perlin = new Array(PERLIN_SIZE + 1)
-    for (let i = 0; i < PERLIN_SIZE + 1; i++) {
+    perlin = Array.from({ length: PERLIN_SIZE + 1 })
+    for (let i = 0; i < PERLIN_SIZE + 1; i++)
       perlin[i] = Math.random()
-    }
   }
 
-  if (x < 0) {
+  if (x < 0)
     x = -x
-  }
-  if (y < 0) {
-    y = -y
-  }
-  if (z < 0) {
-    z = -z
-  }
 
-  let xi = Math.floor(x),
-    yi = Math.floor(y),
-    zi = Math.floor(z)
+  if (y < 0)
+    y = -y
+
+  if (z < 0)
+    z = -z
+
+  let xi = Math.floor(x)
+  let yi = Math.floor(y)
+  let zi = Math.floor(z)
   let xf = x - xi
   let yf = y - yi
   let zf = z - zi

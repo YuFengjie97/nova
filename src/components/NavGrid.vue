@@ -48,11 +48,11 @@ function initNavGridDomRect() {
 }
 
 onMounted(() => {
+  resolveRoutes()
+
   // 字体加载，更新容器信息，防止前后不同字体导致的容器信息错误，由此导致navItem的background-position计算错误
   const myFont = new FontFaceObserver('Patrick Hand')
   myFont.load().then(initNavGridDomRect)
-
-  resolveRoutes()
 
   // 适配响应式
   window.addEventListener('resize', debounce(initNavGridDomRect, 500))

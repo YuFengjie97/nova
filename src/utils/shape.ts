@@ -1,23 +1,23 @@
 import p5 from 'p5'
 
-const { sin, cos, floor } = Math
+const { sin, cos } = Math
 
 // 以pos为原点，以range为半径，画圆，在这个圆内随机取三个点，形成三角形的三个顶点
 export function getRandomTriangle($p: p5, pos: p5.Vector, range: number) {
-  let { x, y } = pos
-  let xRange = [x - range, x + range]
-  let yRange = [y - range, y + range]
-  let { x: x1, y: y1 } = $p.createVector(
+  const { x, y } = pos
+  const xRange = [x - range, x + range]
+  const yRange = [y - range, y + range]
+  const { x: x1, y: y1 } = $p.createVector(
     $p.random(xRange[0], xRange[1]),
-    $p.random(yRange[0], yRange[1])
+    $p.random(yRange[0], yRange[1]),
   )
-  let { x: x2, y: y2 } = $p.createVector(
+  const { x: x2, y: y2 } = $p.createVector(
     $p.random(xRange[0], xRange[1]),
-    $p.random(yRange[0], yRange[1])
+    $p.random(yRange[0], yRange[1]),
   )
-  let { x: x3, y: y3 } = $p.createVector(
+  const { x: x3, y: y3 } = $p.createVector(
     $p.random(xRange[0], xRange[1]),
-    $p.random(yRange[0], yRange[1])
+    $p.random(yRange[0], yRange[1]),
   )
 
   return [x1, y1, x2, y2, x3, y3]
@@ -31,9 +31,9 @@ export function pointInPolygon(polygon: Array<p5.Vector>, point: Point) {
   for (let i = 0, j = polygon.length - 1; i < polygon.length; i++) {
     // prettier-ignore
     if (((polygon[i].y > point[1]) !== (polygon[j].y > point[1]))
-      && (point[0] < ((polygon[j].x - polygon[i].x) * (point[1] - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))) {
-      odd = !odd;
-    }
+      && (point[0] < ((polygon[j].x - polygon[i].x) * (point[1] - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x)))
+      odd = !odd
+
     j = i
   }
   return odd
@@ -44,12 +44,12 @@ export function pointInPolygon(polygon: Array<p5.Vector>, point: Point) {
  * @returns 多边形面积
  */
 function getArea(vertexs: Array<p5.Vector>): number {
-  let area = 0,
-    i,
-    j,
-    point1,
-    point2
-  let len = vertexs.length
+  let area = 0
+  let i
+  let j
+  let point1
+  let point2
+  const len = vertexs.length
 
   for (i = 0, j = len - 1; i < len; j = i, i++) {
     point1 = vertexs[i]
@@ -68,14 +68,14 @@ function getArea(vertexs: Array<p5.Vector>): number {
  * https://stackoverflow.com/questions/16282330/find-centerpoint-of-polygon-in-javascript
  */
 export function centroid(vertexs: Array<p5.Vector>): p5.Vector {
-  let x = 0,
-    y = 0,
-    i,
-    j,
-    f,
-    point1,
-    point2
-  let len = vertexs.length
+  let x = 0
+  let y = 0
+  let i
+  let j
+  let f
+  let point1
+  let point2
+  const len = vertexs.length
 
   for (i = 0, j = len - 1; i < len; j = i, i++) {
     point1 = vertexs[i]
@@ -96,7 +96,7 @@ export function centroid(vertexs: Array<p5.Vector>): p5.Vector {
  */
 export function rotateByPoint(p: p5.Vector, c: p5.Vector, a: number) {
   let { x, y } = p
-  let { x: ox, y: oy } = c
+  const { x: ox, y: oy } = c
   x = (x - ox) * cos(a) - (y - oy) * sin(a) + ox
   y = (x - ox) * sin(a) + (y - oy) * cos(a) + oy
   p.set(x, y)

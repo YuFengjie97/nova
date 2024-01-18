@@ -27,22 +27,21 @@ export class Particle {
     this.rangeWidth = option.rangeWidth
     this.rangeHeight = option.rangeHeight
     this.pos = option.position
-    if (option.r) {
+    if (option.r)
       this.r = option.r
-    }
-    if (option.color) {
+
+    if (option.color)
       this.color = option.color
-    }
   }
 
   draw(multiColor: boolean = true) {
     if (multiColor) {
       this.$p.stroke(this.h, 255, 255, 30)
       this.h = this.h + 1
-      if (this.h > 255) {
+      if (this.h > 255)
         this.h = 0
-      }
-    } else {
+    }
+    else {
       this.$p.stroke(this.color)
     }
     this.$p.strokeWeight(this.r)
@@ -73,10 +72,10 @@ export class ParticleFlow extends Particle {
     if (multiColor) {
       this.$p.stroke(this.h, 255, 255, 30)
       this.h = this.h + 1
-      if (this.h > 255) {
+      if (this.h > 255)
         this.h = 0
-      }
-    } else {
+    }
+    else {
       this.$p.stroke(this.color)
     }
     this.$p.strokeWeight(this.r)
@@ -120,31 +119,35 @@ export class ParticleGradientLine extends Particle {
     super(option)
     this.vel = vel
   }
+
   draw(multiColor: boolean = true) {
     if (multiColor) {
       this.$p.fill(this.h, 255, 255, 30)
       this.h = this.h + 1
-      if (this.h > 255) {
+      if (this.h > 255)
         this.h = 0
-      }
-    } else {
+    }
+    else {
       this.$p.fill(this.color)
     }
     this.$p.noStroke()
     this.$p.circle(this.pos.x, this.pos.y, this.r * 2)
   }
+
   updateColor() {
     this.color = getRandomColor()
   }
+
   update() {
     this.pos.add(this.vel)
     this.edge()
   }
+
   edge() {
     const {
       pos: { x, y },
       rangeHeight,
-      rangeWidth
+      rangeWidth,
     } = this
     if (x <= 0 || x >= rangeWidth) {
       this.updateColor()

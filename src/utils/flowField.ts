@@ -1,7 +1,5 @@
 import p5 from 'p5'
 
-const { random, cos, sin, PI } = Math
-
 export class FlowField {
   position: Position
   size: number

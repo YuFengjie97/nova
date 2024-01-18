@@ -6,6 +6,14 @@ const css: RouteRecordRaw = {
   component: AppVue,
   children: [
     {
+      path: 'reverseCard',
+      meta: {
+        name: '反转卡片图片',
+        show: true,
+      },
+      component: () => import('@/views/css/reverseCardPic.vue'),
+    },
+    {
       path: 'starRate',
       meta: {
         name: '图案评分',

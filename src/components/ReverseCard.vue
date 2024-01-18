@@ -1,50 +1,37 @@
 <script lang="ts" setup>
 import { computed, ref, watch, watchEffect } from 'vue'
-import { router } from '@/router'
 
-export interface NavItemProp {
+export interface CardProp {
   name: string
-  link: string
-  conDomRect: DOMRect
+  conDomRect: DOMRect | undefined
   bg: string
   show: boolean
-  outLink?: boolean
 }
 
-const props = withDefaults(defineProps<NavItemProp>(), {
-  outLink: false,
-})
-const navItem = ref<HTMLElement>()
-const bgPos = ref('')
+const props = defineProps<CardProp>()
+const card = ref<HTMLElement>()
 
+const bgPos = ref('')
 watchEffect(() => {
-  if (!props.conDomRect || !navItem.value)
+  if (!props.conDomRect || !card.value)
     return
-  const { top, left } = navItem.value!.getBoundingClientRect()
+  const { top, left } = card.value!.getBoundingClientRect()
   const { top: baseTop, left: baseLeft } = props.conDomRect
 
   bgPos.value = `-${left - baseLeft}px -${top - baseTop}px`
 })
 
-function go() {
-  if (props.outLink) {
-    window.open(props.link, '_blank')
-    return
-  }
-
-  // const routeLocation = router.resolve({ path: props.link })
-  // window.open(routeLocation.href, '_blank')
-  router.push(props.link)
-}
-
 const isHover = ref(!!props.show)
+watch(() => props.show, (val) => {
+  isHover.value = val
+})
 function mousemove() {
   isHover.value = true
 }
 function mouseout() {
   isHover.value = false
 }
-const navItemStyle = computed(() => {
+const cardStyle = computed(() => {
   return {
     'box-shadow': isHover.value
       ? '0px 0px 10px rgb(210, 175, 210)'
@@ -64,21 +51,15 @@ const bgStyle = computed(() => {
     'background-image': `url(${props.bg})`,
   }
 })
-defineExpose({
-  isHover,
-  mousemove,
-  mouseout,
-})
 </script>
 
 <template>
   <div
-    ref="navItem"
-    class="navItem font-ani"
-    :style="navItemStyle"
+    ref="card"
+    class="card font-ani"
+    :style="cardStyle"
     @mousemove="mousemove"
     @mouseout="mouseout"
-    @click="go"
   >
     <div class="bg  pointer-events-none" :style="bgStyle" />
     <div class="content  pointer-events-none" :style="contentStyle">
@@ -91,7 +72,7 @@ defineExpose({
 </template>
 
 <style lang="less" scoped>
-.navItem {
+.card {
   --color-light: #f4cbdf;
   font-size: 1.2rem;
   min-height: fit-content;
