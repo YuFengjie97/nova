@@ -37,12 +37,25 @@ const sunCon = ref<HTMLElement>()
 function updateSunPos() {
   if (!sunCon.value)
     return
+
+  const easingFactor = 0.1
+
   const { width, height } = sunCon.value.getBoundingClientRect()
-  const x = per.value * width
-  const y = abs(per.value - 0.5) * height
-  sunPos.value.x = x
-  sunPos.value.y = y
+  const deltaX = (per.value * width - sunPos.value.x) * easingFactor
+  const deltaY = (abs(per.value - 0.5) * height - sunPos.value.y) * easingFactor
+
+  sunPos.value.x += deltaX
+  sunPos.value.y += deltaY
 }
+// 动画不圆滑，鼠标的移动同样是不圆滑（满帧率）的，所以不能这样直接设置
+// function updateSunPos() {
+//   if (!sunCon.value)
+//     return
+
+//   const { width, height } = sunCon.value.getBoundingClientRect()
+//   sunPos.value.x = (per.value * width)
+//   sunPos.value.y = (abs(per.value - 0.5) * height)
+// }
 let animateId = 0
 onUnmounted(() => {
   cancelAnimationFrame(animateId)
@@ -51,12 +64,15 @@ function animate() {
   updateSunPos()
   animateId = requestAnimationFrame(animate)
 }
+onMounted(() => {
+  animate()
+})
+
 function handleMousemove(event: MouseEvent) {
   const { offsetX: x } = event
   let val = x / width
   val = val < 0.1 ? 0.1 : val > 0.9 ? 0.9 : val
   per.value = val
-  animate()
 }
 
 const sunColor = computed(() => {
