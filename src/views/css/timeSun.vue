@@ -34,6 +34,7 @@ const timeShadow = computed(() => {
 
 const sunPos = ref({ x: 0, y: 0 })
 const sunCon = ref<HTMLElement>()
+const bgLight = ref(0)
 function updateSunPos() {
   if (!sunCon.value)
     return
@@ -70,13 +71,16 @@ onMounted(() => {
 
 function handleMousemove(event: MouseEvent) {
   const { offsetX: x } = event
-  let val = x / width
-  val = val < 0.1 ? 0.1 : val > 0.9 ? 0.9 : val
+  const val = x / width
+  // val = val < 0.1 ? 0.1 : val > 0.9 ? 0.9 : val
   per.value = val
+
+  bgLight.value = map(-abs(val - 0.5), -0.5, 0, 20, 100)
 }
 
 const sunColor = computed(() => {
-  return `--color: rgba(243, 156, 18, ${map(-abs(per.value - 0.5), -0.5, 0, 0.1, 1)})`
+  // return `--color: rgba(243, 156, 18, ${map(-abs(per.value - 0.5), -0.5, 0, 0.1, 1)})`
+  return `--color: hsl(37, 90%,${map(-abs(per.value - 0.5), -0.5, 0, 10, 50)}%)`
 })
 
 function format(val: number) {
@@ -123,18 +127,19 @@ function getShadow(x: number, y: number) {
 </script>
 
 <template>
-  <div ref="con" class="w-full min-h-full bg-#e0e0e0" @mousemove="handleMousemove">
+  <div ref="con" class="w-full min-h-full" :style="`background: hsl(0,0%,${bgLight}%)`" @mousemove="handleMousemove">
     <div ref="sunCon" class="relative w-full h-40vh overflow-hidden">
       <div class="sun" :style="[`transform: translate(calc(${sunPos.x}px - 50%), ${sunPos.y}px)`, sunColor]" />
     </div>
     <div class="time w-full h-30vh flex justify-center font-size-8rem color-#e0e0e0 select-none" :style="timeShadow">
-      {{ `${hour > 12 ? 'PM' : 'AM'} ${time}` }}
+      {{ `${hour >= 12 ? 'PM' : 'AM'} ${time}` }}
     </div>
   </div>
 </template>
 
 <style lang="less" scoped>
 .sun {
+  color: hsl(37, 90%, 0%);
   position: absolute;
   pointer-events: none;
   transform-origin: center;
@@ -143,7 +148,7 @@ function getShadow(x: number, y: number) {
   border-radius: 50%;
   background: url('@/assets/img/pikachu.svg') no-repeat 0 0 / 100%;
   background-color: var(--color);
-  box-shadow: 0 0 10px #FFFFFF;
+  box-shadow: 0 0 30px var(--color), 0 0 60px #e0e0e0;
 }
 .time{
   text-rendering: optimizeLegibility;
