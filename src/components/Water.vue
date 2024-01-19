@@ -1,31 +1,14 @@
-<template>
-  <div class="water" ref="con">
-    <div
-      class="base"
-      :style="{
-        transform: `translate(-50%, -50%) scale(${scale})`
-      }"
-    ></div>
-    <div class="clickMe" @click="handleMerge">Click Me</div>
-    <div
-      class="drop"
-      v-for="(item, i) in dropArr"
-      :key="i"
-      :style="{
-        top: `${item.top}%`,
-        left: `${item.left}%`,
-        width: `${item.size}px`,
-        height: `${item.size}px`,
-        'transition-delay': `${transitionDelay * i}s`,
-        'transition-duration': `${transitionDuration}s`
-      }"
-    ></div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { myRandom } from '@/utils'
+
+const props = withDefaults(
+  defineProps<{
+    dropNum: number
+  }>(),
+  { dropNum: 40 },
+)
+
 const { random, floor } = Math
 
 interface Drop {
@@ -34,16 +17,9 @@ interface Drop {
   size: number
 }
 
-const props = withDefaults(
-  defineProps<{
-    dropNum: number
-  }>(),
-  { dropNum: 40 }
-)
-
 const con = ref<HTMLElement>()
-let dropSizeMin = 20
-let dropSizeMax = 100
+const dropSizeMin = 20
+const dropSizeMax = 100
 const transitionDelay = ref(0.05)
 const transitionDuration = ref(0.3)
 const isMerge = ref(false)
@@ -55,14 +31,13 @@ const scale = ref(scaleMax)
 
 function initDrop() {
   scaleStep = (scaleMax - scaleMin) / props.dropNum
-  for (let i = 0; i < props.dropNum; i++) {
+  for (let i = 0; i < props.dropNum; i++)
     dropArr.value?.push({ top: 50, left: 50, size: 20 })
-  }
 }
 initDrop()
 
 function separateDrop() {
-  dropArr.value!.forEach((item, i) => {
+  dropArr.value!.forEach((item) => {
     item.left = floor(random() * 100)
     item.top = floor(random() * 100)
     item.size = myRandom(dropSizeMin, dropSizeMax)
@@ -70,7 +45,7 @@ function separateDrop() {
   })
 }
 function mergeDrop() {
-  dropArr.value!.forEach((item, i) => {
+  dropArr.value!.forEach((item) => {
     item.left = 50
     item.top = 50
     scale.value += scaleStep
@@ -78,14 +53,48 @@ function mergeDrop() {
 }
 
 function handleMerge() {
-  if (isMerge.value) {
+  if (isMerge.value)
     mergeDrop()
-  } else {
+  else
     separateDrop()
-  }
+
   isMerge.value = !isMerge.value
 }
+
+let timer: NodeJS.Timer
+onMounted(() => {
+  timer = setInterval(() => {
+    handleMerge()
+  }, 1700)
+})
+onUnmounted(() => {
+  clearInterval(timer)
+})
 </script>
+
+<template>
+  <div ref="con" class="water">
+    <div
+      class="base"
+      :style="{
+        transform: `translate(-50%, -50%) scale(${scale})`,
+      }"
+    />
+    <div
+      v-for="(item, i) in dropArr"
+      :key="i"
+      class="drop"
+      :style="{
+        'top': `${item.top}%`,
+        'left': `${item.left}%`,
+        'width': `${item.size}px`,
+        'height': `${item.size}px`,
+        'transition-delay': `${transitionDelay * i}s`,
+        'transition-duration': `${transitionDuration}s`,
+      }"
+    />
+  </div>
+</template>
 
 <style lang="less" scoped>
 .water {
@@ -95,6 +104,9 @@ function handleMerge() {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  // bg和contrast需要作用于同一个父级元素
+  background-color: #000;
   filter: contrast(30);
 
   .base {
@@ -102,6 +114,7 @@ function handleMerge() {
     z-index: 100;
     top: 50%;
     left: 50%;
+    filter: blur(20px);
 
     width: @baseSize;
     height: @baseSize;
@@ -112,25 +125,11 @@ function handleMerge() {
     align-items: center;
     color: #000;
     background: @color;
-    filter: blur(20px);
     transition-duration: 0.3s;
     transition-timing-function: ease-out;
   }
-  .clickMe {
-    cursor: pointer;
-    user-select: none;
-    color: #000;
-    position: absolute;
-    font-size: 1.2rem;
-    font-weight: 800;
-    z-index: 101;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
   .drop {
     filter: blur(20px);
-
     border-radius: 50%;
     background: @color;
     position: absolute;
