@@ -1,17 +1,7 @@
-<template>
-  <div class="flowField">
-    <Card class="card">
-      <div class="con" ref="con">
-        <canvas ref="canvasDom" />
-      </div>
-    </Card>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import Card from '@/components/Card.vue'
 import { fabric } from 'fabric'
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
+import Card from '@/components/Card.vue'
 import { noise } from '@/utils/index'
 
 const { sin, cos, PI, ceil, random } = Math
@@ -25,13 +15,13 @@ let width: number = 0
 let height: number = 0
 let rows: number = 0
 let cols: number = 0
-let flowFieldSize: number = 50
+const flowFieldSize: number = 50
 
-let xInc = 0.3
-let yInc = 0.3
-let zInc = 0.0008
+const xInc = 0.3
+const yInc = 0.3
+const zInc = 0.0008
 let zoff = 0
-let flowFieldBaseAngle = 360
+const flowFieldBaseAngle = 360
 
 class FlowField {
   position: Position
@@ -49,7 +39,7 @@ class FlowField {
     this.position = position // 左上角坐标
     this.size = size
 
-    let {
+    const {
       angle,
       lineWidth,
       borderWidth,
@@ -57,40 +47,40 @@ class FlowField {
       originRadius,
       triangleWidth,
       triangleHeight,
-      position: { x, y }
+      position: { x, y },
     } = this
 
-    let rect = new fabric.Rect({
+    const rect = new fabric.Rect({
       left: x,
       top: y,
       width: size,
       height: size,
       stroke: '#3498db',
       strokeWidth: borderWidth,
-      fill: '#fff'
+      fill: '#fff',
     })
     canvas?.add(rect)
 
-    let circle = new fabric.Circle({
+    const circle = new fabric.Circle({
       originX: 'center',
       originY: 'center',
       top: y,
       left: x,
       radius: originRadius,
-      fill: arrowColor
+      fill: arrowColor,
     })
     canvas?.add(circle)
 
-    let x2 = size * 0.7 + x
-    let y2 = y
-    let line = new fabric.Line([x, y, x2, y2], {
+    const x2 = size * 0.7 + x
+    const y2 = y
+    const line = new fabric.Line([x, y, x2, y2], {
       originX: 'left',
       originY: 'center',
       stroke: arrowColor,
       strokeWidth: lineWidth,
-      strokeLineCap: 'round'
+      strokeLineCap: 'round',
     })
-    let triangle = new fabric.Triangle({
+    const triangle = new fabric.Triangle({
       originX: 'center',
       originY: 'top',
       top: y2,
@@ -98,7 +88,7 @@ class FlowField {
       width: triangleWidth,
       height: triangleHeight,
       fill: arrowColor,
-      angle: 90
+      angle: 90,
     })
 
     this.group = new fabric.Group([line, triangle], {
@@ -106,7 +96,7 @@ class FlowField {
       left: x,
       angle,
       originX: 'left',
-      originY: 'center'
+      originY: 'center',
     })
 
     canvas?.add(this.group)
@@ -120,9 +110,8 @@ class FlowField {
 
 function initFlowFields() {
   for (let i = 0; i < height; i += flowFieldSize) {
-    for (let j = 0; j < width; j += flowFieldSize) {
+    for (let j = 0; j < width; j += flowFieldSize)
       flowFields.push(new FlowField({ x: j, y: i }, flowFieldSize))
-    }
   }
 }
 
@@ -134,23 +123,27 @@ function updateFlowFields() {
     let yoff = 0
     for (let x = 0; x < cols; x++) {
       yoff += yInc
-      let angle = noise(xoff, yoff, zoff) * flowFieldBaseAngle
-      let index = x + y * cols
+      const angle = noise(xoff, yoff, zoff) * flowFieldBaseAngle
+      const index = x + y * cols
       flowFields[index].updateAngle(angle)
     }
   }
   canvas?.renderAll()
 }
 
+let animateId = 0
 function animate() {
   updateFlowFields()
-  fabric.util.requestAnimFrame(animate)
+  animateId = requestAnimationFrame(animate)
   canvas?.renderAll()
 }
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 
 onMounted(() => {
-  const { width: conWidth, height: conHeight } =
-    con.value?.getBoundingClientRect() as DOMRect
+  const { width: conWidth, height: conHeight }
+    = con.value?.getBoundingClientRect() as DOMRect
   width = conWidth
   height = conHeight
   cols = ceil(width / flowFieldSize)
@@ -158,12 +151,22 @@ onMounted(() => {
   canvas = new fabric.StaticCanvas(canvasDom.value as HTMLCanvasElement, {
     width,
     height,
-    backgroundColor: '#3498db'
+    backgroundColor: '#3498db',
   })
   initFlowFields()
   animate()
 })
 </script>
+
+<template>
+  <div class="flowField">
+    <Card class="card">
+      <div ref="con" class="con">
+        <canvas ref="canvasDom" />
+      </div>
+    </Card>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .flowField {

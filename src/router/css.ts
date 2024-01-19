@@ -69,6 +69,14 @@ const css: RouteRecordRaw = {
       },
       component: () => import('@/views/css/Water.vue'),
     },
+    {
+      path: 'sun-time',
+      meta: {
+        name: '太阳与时间倒影',
+        show: true,
+      },
+      component: () => import('@/views/css/timeSun.vue'),
+    },
   ],
 }
 

@@ -8,7 +8,7 @@ const canvas: RouteRecordRaw = {
     {
       path: 'flowField',
       meta: {
-        name: 'FlowField',
+        name: 'FlowField(fabric)',
         show: true,
       },
       component: () => import('@/views/canvas/FlowField.vue'),

@@ -1,30 +1,5 @@
-<template>
-  <div class="sunCon">
-    <div
-      class="sun"
-      :style="{
-        '--baseColor': baseColor,
-        '--lightColor': lightColor
-      }"
-    >
-      <div class="lightCon">
-        <div
-          class="light"
-          v-for="n in lightNum"
-          :style="{
-            transform: `rotate(${n * (360 / lightNum)}deg)`
-          }"
-        ></div>
-      </div>
-      <div class="base"></div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-
-const { random, floor } = Math
+import { onMounted, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -33,16 +8,38 @@ const props = withDefaults(
   }>(),
   {
     baseColor: '#fee433',
-    lightColor: '#e41014'
-  }
+    lightColor: '#e41014',
+  },
 )
 
-const lightNum = ref(floor(random() * 6) + 6)
+const { random, floor } = Math
 
-onMounted(() => {
-  console.log(props)
-})
+const lightNum = ref(floor(random() * 6) + 6)
 </script>
+
+<template>
+  <div class="sunCon">
+    <div
+      class="sun"
+      :style="{
+        '--baseColor': baseColor,
+        '--lightColor': lightColor,
+      }"
+    >
+      <div class="lightCon">
+        <div
+          v-for="n in lightNum"
+          :key="n"
+          class="light"
+          :style="{
+            transform: `rotate(${n * (360 / lightNum)}deg)`,
+          }"
+        />
+      </div>
+      <div class="base" />
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .sunCon {
