@@ -2,13 +2,13 @@
 import { onMounted, ref } from 'vue'
 import Card from '@/components/Card.vue'
 import StarRate from '@/components/StarRate.vue'
-import { useGUI } from '@/hooks/useGUI'
+import { initGUI } from '@/hooks/initGUI'
 
 const con = ref<HTMLElement>()
 const starItem = ref({ title: 'Ghost', rate: 0.5, color: '#9b59b6', content: '👻' })
 
 onMounted(() => {
-  const { gui } = useGUI(con.value!)
+  const { gui } = initGUI(con.value!)
 
   gui.addColor(starItem.value, 'color')
   gui.add(starItem.value, 'content', ['字', '★', '👻', '🐯'])
@@ -33,4 +33,4 @@ onMounted(() => {
   }
 }
 </style>
-@/hooks/useGUI
+@/hooks/initGUI

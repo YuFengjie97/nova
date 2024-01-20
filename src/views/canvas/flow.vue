@@ -2,8 +2,8 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import { Vector } from 'p5'
 import { createNoise3D } from 'simplex-noise'
-import { useGUI } from '@/hooks/useGUI'
-import { useStats } from '@/hooks/useStats'
+import { initGUI } from '@/hooks/initGUI'
+import { initStats } from '@/hooks/initStats'
 
 import { map } from '@/utils'
 
@@ -77,7 +77,7 @@ onMounted(() => {
   window.addEventListener('resize', windowResize())
 
   function initUi() {
-    const { gui: panel } = useGUI(con.value!)
+    const { gui: panel } = initGUI(con.value!)
     panel.add(ui, 'hueBase', 1, 360, 1).onChange(val => hueBase = val)
     panel.add(ui, 'hueRange', 1, 360, 1).onChange(val => hueRange = val)
     panel.add(ui, 'isGlow').name('isGlow(laggy)').onChange(val => isGlow = val)
@@ -165,7 +165,7 @@ onMounted(() => {
     }
   }
 
-  const { stats } = useStats(con.value!)
+  const { stats } = initStats(con.value!)
 
   function animate() {
     stats.update()

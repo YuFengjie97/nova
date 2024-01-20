@@ -7,14 +7,14 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import ProgressCube from '@/components/ProgressCube.vue'
-import { useGUI } from '@/hooks/useGUI'
+import { initGUI } from '@/hooks/initGUI'
 
 const val = ref(0.4)
 const color = ref('#e308cd')
 
 const con = ref<HTMLElement>()
 onMounted(() => {
-  const {gui} = useGUI(con.value!)
+  const {gui} = initGUI(con.value!)
   gui.addColor(color, 'value').name('color')
   gui.add(val, 'value', 0, 1, 0.1).name('progress')
 })

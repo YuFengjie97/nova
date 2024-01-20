@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import p5 from 'p5'
-import { useGUI } from '@/hooks/useGUI'
+import { initGUI } from '@/hooks/initGUI'
 import Loading from '@/components/Loading.vue'
 import P5 from '@/components/P5.vue'
 import defaultImg from '@/assets/img/test.jpg'
@@ -39,7 +39,7 @@ function handleImgChange() {
 const con = ref<HTMLElement>()
 onMounted(() => {
 // gui
-  const { gui: panel } = useGUI(con.value!)
+  const { gui: panel } = initGUI(con.value!)
   panel.add(options, 'sampleNum', 10, 100, 1).name('sampleNum').onFinishChange((val) => {
     initPixelArr(imgUrl)
   })

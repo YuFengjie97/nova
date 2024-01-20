@@ -9,7 +9,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
-import { useGUI } from '@/hooks/useGUI'
+import { initGUI } from '@/hooks/initGUI'
 
 const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
@@ -70,7 +70,7 @@ function animate() {
 
 const con = ref<HTMLElement>()
 function initGUI() {
-  const { gui: panel } = useGUI(con.value!)
+  const { gui: panel } = initGUI(con.value!)
 
   panel.add(params, 'showAxes').onChange((val) => {
     axesHelper.visible = val

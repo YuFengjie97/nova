@@ -8,7 +8,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { GUI } from 'dat.gui'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { useGUI } from '@/hooks/useGUI'
+import { initGUI } from '@/hooks/initGUI'
 
 const { random, PI, floor, ceil, min, max, sin, cos } = Math
 
@@ -78,7 +78,7 @@ const options = {
 const con = ref<HTMLElement>()
 
 function initPanle() {
-  const { gui: panel } = useGUI(con.value!)
+  const { gui: panel } = initGUI(con.value!)
   panel.add(options, 'showHelper').onChange((val) => {
     helper.forEach(h => (h.visible = val))
   })

@@ -1,6 +1,6 @@
 import Stats from 'stats.js'
 
-export function useStats(container: HTMLElement) {
+export function initStats(container: HTMLElement) {
   const stats = new Stats()
   container.append(stats.dom)
 
