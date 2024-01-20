@@ -1,41 +1,7 @@
-<template>
-  <div class="con">
-    <div class="audioControlCon" :class="{ disable: !canPlay }">
-      <img
-        class="houtui"
-        v-show="showBackward"
-        src="@/assets/iconSvg/houtui.svg"
-      />
-      <img
-        class="bofang"
-        v-show="!playing"
-        @click="play"
-        src="@/assets/iconSvg/bofang.svg"
-      />
-      <img
-        class="zanting"
-        v-show="playing"
-        @click="pause"
-        src="@/assets/iconSvg/zanting.svg"
-      />
-      <img
-        class="tingzhi"
-        v-show="showStop"
-        src="@/assets/iconSvg/tingzhi.svg"
-      />
-      <img
-        class="kuaijin"
-        v-show="showForward"
-        src="@/assets/iconSvg/kuaijin.svg"
-      />
-    </div>
-    <audio ref="audioDom" loop></audio>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { AudioAnalyser } from '@/utils'
+import audioSrc from '@/assets/audio/audio1.mp3'
 
 const props = withDefaults(
   defineProps<{
@@ -49,8 +15,9 @@ const props = withDefaults(
     showStop: false,
     showForward: false,
     showBackward: false,
-    fftSize: 512
-  }
+    fftSize: 512,
+    audioSrc,
+  },
 )
 const emit = defineEmits([
   'backward',
@@ -58,11 +25,14 @@ const emit = defineEmits([
   'pause',
   'stop',
   'forward',
-  'initAudioAnalyser'
+  'initAudioAnalyser',
 ])
 
 let aa: AudioAnalyser
 const playing = ref(false)
+const audioDom = ref<HTMLAudioElement>()
+const canPlay = ref(false)
+
 function play() {
   playing.value = true
   audioDom.value?.play()
@@ -77,18 +47,50 @@ function pause() {
   audioDom.value?.pause()
 }
 
-const audioDom = ref<HTMLAudioElement>()
-const canPlay = ref(false)
 onMounted(() => {
   if (audioDom.value) {
     audioDom.value.src = props.audioSrc
     audioDom.value.oncanplay = function () {
       canPlay.value = true
-      console.log('audio load ok')
     }
   }
 })
 </script>
+
+<template>
+  <div class="con">
+    <div class="audioControlCon" :class="{ disable: !canPlay }">
+      <img
+        v-show="showBackward"
+        class="houtui"
+        src="@/assets/iconSvg/houtui.svg"
+      >
+      <img
+        v-show="!playing"
+        class="bofang"
+        src="@/assets/iconSvg/bofang.svg"
+        @click="play"
+      >
+      <img
+        v-show="playing"
+        class="zanting"
+        src="@/assets/iconSvg/zanting.svg"
+        @click="pause"
+      >
+      <img
+        v-show="showStop"
+        class="tingzhi"
+        src="@/assets/iconSvg/tingzhi.svg"
+      >
+      <img
+        v-show="showForward"
+        class="kuaijin"
+        src="@/assets/iconSvg/kuaijin.svg"
+      >
+    </div>
+    <audio ref="audioDom" loop />
+  </div>
+</template>
 
 <style lang="less" scoped>
 .disable {

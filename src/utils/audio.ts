@@ -1,35 +1,38 @@
 export class AudioAnalyser {
   dataArray: Uint8Array
   analyser: AnalyserNode
+  source: MediaElementAudioSourceNode | null
+  ctx: AudioContext
+  audioDom: HTMLAudioElement
+  fftSize: number
 
   constructor(audioDom: HTMLAudioElement, fftSize = 512) {
     // 创建 AudioContext
     const AudioContext = window.AudioContext
-    const ctx = new AudioContext()
-
+    this.fftSize = fftSize
+    this.ctx = new AudioContext()
+    this.source = null
+    this.audioDom = audioDom
     // 创建 AnalyserNode
-    const analyser = ctx.createAnalyser()
-    analyser.fftSize = fftSize
-    this.analyser = analyser
+    this.analyser = this.ctx.createAnalyser()
+    this.analyser.fftSize = fftSize
 
-    // 设置 SourceNode
-    const source = ctx.createMediaElementSource(audioDom) // 通过<audio>节点创建音频源
-    source.connect(analyser) // 将音频源关联到分析器
-    analyser.connect(ctx.destination) // 将分析器关联到输出设备（耳机、扬声器）
+    this.updateSource()
 
-    // 获取数据
-    const bufferLength = analyser.frequencyBinCount
+    // 初始化数据源
+    const bufferLength = this.analyser.frequencyBinCount
     this.dataArray = new Uint8Array(bufferLength)
-    // analyser.getByteFrequencyData(this.dataArray);
+  }
+
+  updateSource() {
+    // 设置 SourceNode
+    const source = this.ctx.createMediaElementSource(this.audioDom) // 通过<audio>节点创建音频源
+    source.connect(this.analyser) // 将音频源关联到分析器
+    this.analyser.connect(this.ctx.destination) // 将分析器关联到输出设备（耳机、扬声器）
   }
 
   getAudioData() {
     this.analyser.getByteFrequencyData(this.dataArray)
-    // let max = this.dataArray.reduce((pre,cur)=>{
-    //   return cur > pre ? cur : pre
-    // },-Infinity)
-    // console.log(max);
-    // console.log(this.dataArray.length);
 
     return this.dataArray
   }
