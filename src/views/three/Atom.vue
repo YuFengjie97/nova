@@ -57,7 +57,7 @@ const params = {
 }
 
 onMounted(() => {
-  initGUI()
+  getGUI()
   initTHREE()
   initEffectComposer()
   initMesh()
@@ -69,7 +69,7 @@ function animate() {
 }
 
 const con = ref<HTMLElement>()
-function initGUI() {
+function getGUI() {
   const { gui: panel } = initGUI(con.value!)
 
   panel.add(params, 'showAxes').onChange((val) => {
