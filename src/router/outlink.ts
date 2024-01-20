@@ -29,7 +29,7 @@ export const outlink = [
   },
   {
     path: 'https://www.shadertoy.com/view/lcfGzH',
-    meta: { name: 'shader-domainWraping', show: true },
+    meta: { name: 'shader-domainWraping', show: false },
   },
   {
     path: 'https://www.shadertoy.com/view/mtVBDD',

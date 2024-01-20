@@ -7,7 +7,6 @@ export function initGUI(container: HTMLElement) {
   container.append(gui.domElement)
   gui.domElement.style.cssText = 'position: fixed; top: 0; right: 0;'
 
-  return {
-    gui,
-  }
+  const res: { gui: GUI } = { gui }
+  return res
 }

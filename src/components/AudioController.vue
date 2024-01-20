@@ -8,7 +8,7 @@ const props = withDefaults(
     showStop?: boolean
     showForward?: boolean
     showBackward?: boolean
-    audioSrc: string
+    audioSrc?: string
     fftSize?: number
   }>(),
   {
