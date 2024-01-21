@@ -26,7 +26,7 @@ onMounted(() => {
       value: 0,
     },
     size: {
-      value: 20,
+      value: 16,
     },
     texture1: {
       value: new TextureLoader().load(pic),
