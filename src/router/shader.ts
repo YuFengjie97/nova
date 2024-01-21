@@ -10,6 +10,11 @@ const shader: RouteRecordRaw = {
       meta: { name: 'music-domainwrapping', show: true },
       component: () => import('@/views/shader/music_domainwrapping/index.vue'),
     },
+    {
+      path: 'tiktok',
+      meta: { name: 'icon-tiktok', show: true },
+      component: () => import('@/views/shader/tiktok/index.vue'),
+    },
   ],
 }
 
