@@ -15,6 +15,11 @@ const shader: RouteRecordRaw = {
       meta: { name: 'icon-tiktok', show: true },
       component: () => import('@/views/shader/tiktok/index.vue'),
     },
+    {
+      path: 'gamepad',
+      meta: { name: 'icon-gamepad', show: true },
+      component: () => import('@/views/shader/gamepad/index.vue'),
+    },
   ],
 }
 
