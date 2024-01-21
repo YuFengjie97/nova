@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Component, ShallowRef } from 'vue'
 import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
-import { createNoise2D } from 'simplex-noise'
 import RectHollow from './RectHollow.vue'
 import Rect from './Rect.vue'
 import RectPoint from './RectPoint.vue'
@@ -11,11 +10,9 @@ import CircleHollow from './CircleHollow.vue'
 import Cross from './Cross.vue'
 import Link1 from './Link1.vue'
 import Link2 from './Link2.vue'
-import { map } from '@/utils/math'
 
 const { random, floor } = Math
 
-const noise = createNoise2D()
 const components = [RectHollow, Rect, RectPoint, Circle, CircleDouble, CircleHollow, Cross, Link1, Link2]
 const componentList = ref<Array<{
   x: number
@@ -33,7 +30,7 @@ onUnmounted(() => {
 
 const transitionDuration = ref(350)
 const gap = ref(0)
-const size = ref(40)
+const size = ref(60)
 
 onMounted(() => {
   const { width, height } = con.value!.getBoundingClientRect()
@@ -59,11 +56,9 @@ onMounted(() => {
 
   function animate() {
     animateId = setInterval(() => {
-      const t = performance.now() / 1000
-
       for (let x = 0; x < col; x += 1) {
         for (let y = 0; y < row; y += 1)
-          scaleList.value[y * col + x] = map(noise(x + t, y + t), -1, 1, 0, 1) * 0.8 + 0.2
+          scaleList.value[y * col + x] = random() * 0.8 + 0.2
       }
     }, transitionDuration.value)
   }
@@ -78,7 +73,6 @@ onMounted(() => {
       v-for="(item, i) in componentList"
       :key="i"
       :style="`
-                will-change: transform;
                 width: ${size}px; height: ${size}px;
                 transform: scale(${scaleList[i]});
                 transition-duration: ${transitionDuration}ms`"
