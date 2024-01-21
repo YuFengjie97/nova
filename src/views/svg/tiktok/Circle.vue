@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const props = withDefaults(defineProps<{ color: string }>(), {
+withDefaults(defineProps<{ color?: string }>(), {
   color: '#fff',
 })
 </script>
