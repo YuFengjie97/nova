@@ -7,8 +7,8 @@ uniform float size;
 
 float PI = 3.1415926;
 float random(vec2 uv) {
-  // return fract(sin(dot(uv.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-  return fract((sin(dot(uv.xy, vec2(12.9898, 78.233)))) * 43758.5453123);
+  // return fract(dot(sin(uv), vec2(1.)));
+  return fract(sin(dot(uv.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 float noise(vec2 uv) {
   vec2 i = floor(uv);
@@ -26,29 +26,14 @@ float noise(vec2 uv) {
   return mix(v1, v2, u.y);
 }
 
-
+float patternSize = 3.;
 vec2 getTexture(vec2 uv, float i) {
-  uv = uv / 3.;
-  float n = 1. / 3.;
+  uv = uv / patternSize;
+  float n = 1. / patternSize;
 
-  if(i == 0.)
-    return uv;
-  if(i == 1.)
-    return vec2(uv.x + n, uv.y);
-  if(i == 2.)
-    return vec2(uv.x + n * 2., uv.y);
-  if(i == 3.)
-    return vec2(uv.x, uv.y + n);
-  if(i == 4.)
-    return vec2(uv.x + n, uv.y + n);
-  if(i == 5.)
-    return vec2(uv.x + n * 2., uv.y + n);
-  if(i == 6.)
-    return vec2(uv.x, uv.y + n * 2.);
-  if(i == 7.)
-    return vec2(uv.x + n, uv.y + n * 2.);
-  if(i == 8.)
-    return vec2(uv.x + n * 2., uv.y + n * 2.);
+  float x = mod(i, patternSize);
+  float y = floor(i / patternSize);
+  return vec2(uv.x + n * x, uv.y + n * y);
 }
 
 void main() {
@@ -57,7 +42,7 @@ void main() {
   vec2 xy = floor(uv / size);
   vec2 uv2 = fract(uv / size);
 
-  vec2 uv_texture = getTexture(uv2, floor(noise(xy+iTime) * 9.));
+  vec2 uv_texture = getTexture(uv2, floor(random(xy) * 9.0));
 
   gl_FragColor = vec4(0.) + texture2D(texture1, uv_texture);
 }
