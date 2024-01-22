@@ -22,14 +22,12 @@ import s3 from '@/assets/img/textures/snow/snowflake3.png?url'
 import s4 from '@/assets/img/textures/snow/snowflake4.png?url'
 import s5 from '@/assets/img/textures/snow/snowflake5.png?url'
 
-const { random, PI, floor, ceil, min, max, sin, cos } = Math
+const { random } = Math
 
 const canvasDom = ref<HTMLElement>()
 const canvasCon = ref<HTMLElement>()
 let width: number
 let height: number
-let stats: Stats
-let orbitControls: OrbitControls
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
@@ -59,15 +57,14 @@ const parameters: materialInfo[] = [
 ]
 
 // 鼠标基准位置，以屏幕中心点为基准计算
-let mouseX: number
-let mouseY: number
+let mouseX: number = 0
+let mouseY: number = 0
 
 onMounted(() => {
   // initGUI()
+
   initTHREE()
-  onWindowResize()
-  mouseX = width / 2
-  mouseY = height / 2
+  // onWindowResize()
   initSprites()
   render()
 })
@@ -135,6 +132,10 @@ function initSprites() {
 // three初始化
 function initTHREE() {
   scene = new THREE.Scene()
+  const { width: w, height: h } = canvasCon.value!.getBoundingClientRect()
+  width = w
+  height = h
+
   camera = new THREE.PerspectiveCamera(75, width / height, 1, 2000)
   camera.position.z = 1000
   renderer = new THREE.WebGLRenderer({
@@ -143,7 +144,7 @@ function initTHREE() {
   })
   renderer.setSize(width, height)
   renderer.setPixelRatio(window.devicePixelRatio)
-  window.addEventListener('resize', onWindowResize)
+  // window.addEventListener('resize', onWindowResize)
   // scene.add(new THREE.AxesHelper(1000))
   scene.add(new THREE.AmbientLight(0x404040))
   // stats = Stats()
@@ -165,14 +166,14 @@ onUnmounted(() => {
   cancelAnimationFrame(animateId)
 })
 // 自适应
-function onWindowResize() {
-  const conInfo = canvasCon.value?.getBoundingClientRect()
-  width = conInfo!.width
-  height = conInfo!.height
-  camera.aspect = width / height
-  camera.updateProjectionMatrix()
-  renderer.setSize(width, height)
-}
+// function onWindowResize() {
+//   const conInfo = canvasCon.value!.getBoundingClientRect()
+//   width = conInfo.width
+//   height = conInfo.height
+//   camera.aspect = width / height
+//   camera.updateProjectionMatrix()
+//   renderer.setSize(width, height)
+// }
 </script>
 
 <template>

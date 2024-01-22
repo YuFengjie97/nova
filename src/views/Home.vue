@@ -4,19 +4,8 @@ import NavGrid from '@/components/NavGrid.vue'
 </script>
 
 <template>
-  <div class="home min-h-100vh flex justify-center items-center">
+  <div class="bg-#b4286c relative w-full h-full overflow-hidden flex justify-center items-center">
     <SnowyBg class="snowBg absolute top-0 left-0" />
-    <NavGrid />
+    <NavGrid class="h-full overflow-scroll" />
   </div>
 </template>
-
-<style lang="less" scoped>
-.home {
-  background: #b4286c;
-  .title {
-    color: #e84393;
-    font-size: 3rem;
-    font-family: 'Patrick Hand';
-  }
-}
-</style>
