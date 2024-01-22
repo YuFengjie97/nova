@@ -4,6 +4,7 @@ uniform vec2 iResolution;
 uniform float iTime;
 uniform sampler2D texture1;
 uniform float size;
+uniform vec2 iMouse;
 
 float PI = 3.1415926;
 float random(vec2 uv) {
@@ -41,8 +42,12 @@ void main() {
 
   vec2 xy = floor(uv / size);
   vec2 uv2 = fract(uv / size);
+  vec2 center = floor(iResolution.xy * 0.5 / size);
 
-  vec2 uv_texture = getTexture(uv2, floor(random(xy) * 9.0));
+  vec2 mouse = floor(iMouse/size);
+  float d = distance(xy, mouse)+iTime*0.1;
 
-  gl_FragColor = vec4(0.) + texture2D(texture1, uv_texture);
+  vec2 uv_texture = getTexture(uv2, floor(noise(vec2(d)) * 9.));
+
+  gl_FragColor = vec4(0., 0., 0., 1.) + texture2D(texture1, uv_texture);
 }

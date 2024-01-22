@@ -1,15 +1,21 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { Mesh, PlaneGeometry, ShaderMaterial, TextureLoader, Vector2, Vector3 } from 'three'
-import { textureSize } from 'fabric/fabric-impl'
 import vertexShader from './vert.vs?raw'
 import fragmentShader from './frag.fs?raw'
 import { initThree } from '@/hooks/initThree'
 import { map } from '@/utils'
 
-import pic from '@/assets/img/tiktok_icon_all.png'
+import pic from '@/assets/img/textures_icon_3x3.png'
 
 const con = ref<HTMLElement>()
+
+const mouse = new Vector2(0, 0)
+function handleMousemove(e: MouseEvent) {
+  const { height } = con.value!.getBoundingClientRect()
+  mouse.x = e.x
+  mouse.y = height - e.y
+}
 
 onMounted(() => {
   const { scene, renderWrap } = initThree(con.value!)
@@ -18,11 +24,14 @@ onMounted(() => {
     iResolution: {
       value: new Vector2(width, height),
     },
+    iMouse: {
+      value: mouse,
+    },
     iTime: {
       value: 0,
     },
     size: {
-      value: 40,
+      value: 20,
     },
     texture1: {
       value: new TextureLoader().load(pic),
@@ -47,5 +56,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="con" class="w-full h-full relative" />
+  <div ref="con" class="w-full h-full relative" @mousemove="handleMousemove" />
 </template>

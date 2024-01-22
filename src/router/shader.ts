@@ -11,13 +11,13 @@ const shader: RouteRecordRaw = {
       component: () => import('@/views/shader/music_domainwrapping/index.vue'),
     },
     {
-      path: 'tiktok',
-      meta: { name: 'icon-tiktok', show: true },
-      component: () => import('@/views/shader/tiktok/index.vue'),
+      path: 'texture-icon',
+      meta: { name: 'texture-icon', show: true },
+      component: () => import('@/views/shader/textureIcon/index.vue'),
     },
     {
       path: 'gamepad',
-      meta: { name: 'icon-gamepad', show: true },
+      meta: { name: 'icon-gamepad', show: false },
       component: () => import('@/views/shader/gamepad/index.vue'),
     },
   ],

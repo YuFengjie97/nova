@@ -42,7 +42,7 @@ void main() {
   vec2 xy = floor(uv / size);
   vec2 uv2 = fract(uv / size);
 
-  vec2 uv_texture = getTexture(uv2, floor(noise(xy+iTime*0.1) * 4.0));
+  vec2 uv_texture = getTexture(uv2, floor(noise(xy + iTime * 0.1) * patternSize*2.));
 
-  gl_FragColor = vec4(0.,0.,0.,1.) + texture2D(texture1, uv_texture);
+  gl_FragColor = vec4(0., 0., 0., 1.) + texture2D(texture1, uv_texture);
 }
