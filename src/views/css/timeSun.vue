@@ -11,7 +11,7 @@ onMounted(() => {
   width = w
 })
 
-const per = ref(0)
+const per = ref(0) // 鼠标水平位置百分比
 
 const hour = ref(0)
 const time = computed(() => {
