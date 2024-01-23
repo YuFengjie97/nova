@@ -5,7 +5,7 @@ import NavGrid from '@/components/NavGrid.vue'
 
 <template>
   <div class="bg-#b4286c relative w-full h-full overflow-hidden flex justify-center items-center">
-    <SnowyBg class="snowBg absolute top-0 left-0" />
-    <NavGrid class="h-full overflow-scroll" />
+    <SnowyBg class="snowBg absolute top-0 left-0 pointer-events-none" />
+    <NavGrid />
   </div>
 </template>

@@ -1,38 +1,22 @@
-<template>
-  <div
-    class="hsCard"
-    :style="{
-      '--front': `url(${frontImg})`,
-      '--back': `url(${backImg})`
-    }"
-    @mousemove="mousemove"
-    @mouseout="mouseout"
-  >
-    <div class="front" :style="styleFront" ref="front">
-      <img :src="`${frontImg}`" />
-    </div>
-    <div class="back" :style="styleBack" @click="show"></div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { map } from '@/utils'
-
-const { floor } = Math
 
 const props = defineProps<{
   frontImg: string
   backImg: string
 }>()
-let cardInfo = {
+
+const { floor } = Math
+
+const cardInfo = {
   startX: 0,
   endX: 0,
   startY: 0,
-  endY: 0
+  endY: 0,
 }
-let rotateXBase = 12 // 最大x轴y轴旋转角度是7deg
-let rotateYBase = 20 // 最大x轴y轴旋转角度是7deg
+const rotateXBase = 12 // 最大x轴y轴旋转角度是7deg
+const rotateYBase = 20 // 最大x轴y轴旋转角度是7deg
 
 // 正面是否展示
 const isShow = ref(false)
@@ -69,20 +53,20 @@ const styleFront = computed(() => {
   }
 
   return {
-    transform: `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(${s},${s},${s})`
+    transform: `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(${s},${s},${s})`,
   }
 })
 const styleBack = computed(() => {
-  let rx = 0
+  const rx = 0
   let ry = 0
-  if (isShow.value) {
+  if (isShow.value)
     ry = -180
-  }
+
   return { transform: `rotateX(${rx}deg) rotateY(${ry}deg)` }
 })
 
 function initCardPos() {
-  let { x, y, width, height } = front.value!.getBoundingClientRect()
+  const { x, y, width, height } = front.value!.getBoundingClientRect()
   cardInfo.startX = x
   cardInfo.endX = x + width
   cardInfo.startY = y
@@ -94,6 +78,23 @@ onMounted(() => {
   window.onresize = initCardPos
 })
 </script>
+
+<template>
+  <div
+    class="hsCard"
+    :style="{
+      '--front': `url(${frontImg})`,
+      '--back': `url(${backImg})`,
+    }"
+    @mousemove="mousemove"
+    @mouseout="mouseout"
+  >
+    <div ref="front" class="front" :style="styleFront">
+      <img :src="`${frontImg}`">
+    </div>
+    <div class="back" :style="styleBack" @click="show" />
+  </div>
+</template>
 
 <style lang="less" scoped>
 .hsCard {

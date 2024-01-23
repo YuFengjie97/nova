@@ -60,10 +60,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="navGrid" class="max-w-600px p-y-2rem flex flex-wrap justify-center gap-2px">
-    <NavItem
-      v-for="(item, index) in navList" :key="index" v-bind="item"
-      :con-dom-rect="navGridDomRect as DOMRect"
-    />
+  <div class="w-full h-full flex justify-center overflow-y-scroll">
+    <div ref="navGrid" class="max-w-600px h-fit p-y-2rem flex flex-wrap justify-center gap-2px">
+      <NavItem
+        v-for="(item, index) in navList" :key="index" v-bind="item"
+        :con-dom-rect="navGridDomRect as DOMRect"
+      />
+    </div>
   </div>
 </template>
