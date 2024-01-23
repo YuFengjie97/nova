@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import Delaunator from 'delaunator'
 import { createNoise2D } from 'simplex-noise'
 import { Vector2 } from 'three'
@@ -15,6 +15,11 @@ const b: Vec3 = [0.500, 0.500, 0.500]
 const c: Vec3 = [0.750, 1.000, 0.667]
 const d: Vec3 = [0.800, 1.000, 0.333]
 const palette = initPalette(a, b, c, d)
+
+let animateId = 0
+onUnmounted(() => {
+  cancelAnimationFrame(animateId)
+})
 
 onMounted(() => {
   if (!canvas.value)
@@ -80,7 +85,7 @@ onMounted(() => {
       ctx.fill()
     })
 
-    requestAnimationFrame(animate)
+    animateId = requestAnimationFrame(animate)
   }
   animate()
 })
