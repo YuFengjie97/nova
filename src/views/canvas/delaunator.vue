@@ -2,11 +2,10 @@
 import { onMounted, ref } from 'vue'
 import Delaunator from 'delaunator'
 import { createNoise2D } from 'simplex-noise'
-import { getTriangleCenter } from '@/utils/math'
 import { type Vec3, initPalette, vec3ToRgb } from '@/utils/color'
 
 const noise = createNoise2D()
-const { random, floor } = Math
+const { random } = Math
 const canvas = ref<HTMLCanvasElement>()
 
 const a: Vec3 = [0.000, 0.500, 0.500]
