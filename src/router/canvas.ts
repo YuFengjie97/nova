@@ -42,6 +42,14 @@ const canvas: RouteRecordRaw = {
       },
       component: () => import('@/views/canvas/flow.vue'),
     },
+    {
+      path: 'delaunator',
+      meta: {
+        name: '三角切分',
+        show: true,
+      },
+      component: () => import('@/views/canvas/delaunator.vue'),
+    },
   ],
 }
 

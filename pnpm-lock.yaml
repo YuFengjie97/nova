@@ -11,6 +11,9 @@ dependencies:
   dat.gui:
     specifier: ^0.7.9
     version: 0.7.9
+  delaunator:
+    specifier: ^5.0.0
+    version: 5.0.0
   fontfaceobserver:
     specifier: ^2.3.0
     version: 2.3.0
@@ -43,6 +46,9 @@ devDependencies:
   '@types/dat.gui':
     specifier: ^0.7.7
     version: 0.7.7
+  '@types/delaunator':
+    specifier: ^5.0.2
+    version: 5.0.2
   '@types/fabric':
     specifier: ^4.5.12
     version: 4.5.12
@@ -1100,6 +1106,10 @@ packages:
 
   /@types/dat.gui@0.7.7:
     resolution: {integrity: sha512-CxLCme0He5Jk3uQwfO/fGZMyNhb/ypANzqX0yU9lviBQMlen5SOvQTBQ/Cd9x5mFlUAK5Tk8RgvTyLj1nYkz+w==}
+    dev: true
+
+  /@types/delaunator@5.0.2:
+    resolution: {integrity: sha512-lqBrFSZT+7NYMtz454avpNJaAJYz4TAxsR99HOYqZLXYTduPYjpcmm8BonGGHXsE3L67yk5qO6qxKcrHpxXPMA==}
     dev: true
 
   /@types/estree@1.0.5:
@@ -2211,6 +2221,12 @@ packages:
   /defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
     dev: true
+
+  /delaunator@5.0.0:
+    resolution: {integrity: sha512-AyLvtyJdbv/U1GkiS6gUUzclRoAY4Gs75qkMygJJhU75LW4DNuSF2RMzpxs9jw9Oz1BobHjTdkG3zdP55VxAqw==}
+    dependencies:
+      robust-predicates: 3.0.2
+    dev: false
 
   /delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
@@ -4236,6 +4252,10 @@ packages:
     dependencies:
       glob: 7.2.3
     dev: true
+
+  /robust-predicates@3.0.2:
+    resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
+    dev: false
 
   /rollup@4.9.5:
     resolution: {integrity: sha512-E4vQW0H/mbNMw2yLSqJyjtkHY9dslf/p0zuT1xehNRqUTBOFMqEjguDvqhXr7N7r/4ttb2jr4T41d3dncmIgbQ==}

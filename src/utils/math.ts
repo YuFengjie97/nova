@@ -53,3 +53,11 @@ export function map(v: number, s1: number, s2: number, t1: number, t2: number) {
 
   return (v - s1) / (s2 - s1) * (t2 - t1) + t1
 }
+
+interface Point { x: number, y: number }
+export function getTriangleCenter(p1: Point, p2: Point, p3: Point) {
+  return {
+    x: (p1.x + p2.x + p3.x) / 3,
+    y: (p1.y + p2.y + p3.y) / 3,
+  }
+}
