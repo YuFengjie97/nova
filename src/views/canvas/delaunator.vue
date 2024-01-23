@@ -7,7 +7,7 @@ import { getTriangleCenter } from '@/utils/math'
 import { type Vec3, initPalette, vec3ToRgb } from '@/utils/color'
 
 const noise = createNoise2D()
-const { random, sin } = Math
+const { random } = Math
 const canvas = ref<HTMLCanvasElement>()
 
 const a: Vec3 = [1.000, 0.500, 0.500]
@@ -25,7 +25,7 @@ onMounted(() => {
   ctx.strokeStyle = 'transparent'
   canvas.value.width = width
   canvas.value.height = height
-  const total = 300
+  const total = 1000
 
   const trianglePoints: Array<{
     p1: Vector2
