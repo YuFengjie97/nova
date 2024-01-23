@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import Delaunator from 'delaunator'
 import { createNoise2D } from 'simplex-noise'
+import { Vector2 } from 'three'
 import { getTriangleCenter } from '@/utils/math'
 import { type Vec3, initPalette, vec3ToRgb } from '@/utils/color'
 
@@ -26,20 +27,19 @@ onMounted(() => {
   canvas.value.height = height
   const total = 300
 
-  interface Point { x: number, y: number }
   const trianglePoints: Array<{
-    p1: Point
-    p2: Point
-    p3: Point
+    p1: Vector2
+    p2: Vector2
+    p3: Vector2
   }> = []
-  const triangleCenter: Array<Point> = []
+  const triangleCenter: Array<Vector2> = []
 
   initTrianglePoints()
   function initTrianglePoints() {
     const coords = []
     for (let i = 0; i < total; i += 1) {
-      const x = random() * width
-      const y = random() * height
+      const x = random() * (width + 200) - 100
+      const y = random() * (height + 200) - 100
       coords.push(x, y)
     }
     const delaunay = new Delaunator(coords)
@@ -50,21 +50,21 @@ onMounted(() => {
       const i2 = triangles[i + 1]
       const i3 = triangles[i + 2]
 
-      const p1 = { x: coords[i1 * 2], y: coords[i1 * 2 + 1] }
-      const p2 = { x: coords[i2 * 2], y: coords[i2 * 2 + 1] }
-      const p3 = { x: coords[i3 * 2], y: coords[i3 * 2 + 1] }
+      const p1 = new Vector2(coords[i1 * 2], coords[i1 * 2 + 1])
+      const p2 = new Vector2(coords[i2 * 2], coords[i2 * 2 + 1])
+      const p3 = new Vector2(coords[i3 * 2], coords[i3 * 2 + 1])
 
-      const center = getTriangleCenter(p1, p2, p3)
-      triangleCenter.push(center)
       trianglePoints.push({ p1, p2, p3 })
+
+      const center = getTriangleCenter(p1, p2, p3).multiply(new Vector2(0.001, 0.001))
+      triangleCenter.push(center)
     }
   }
 
   function animate() {
-    let t = performance.now() / 5000
-    t = sin(t) + 1
-    // ctx.fillStyle = 'rgba(0,0,0,0.2)'
-    ctx.fillStyle = '#000'
+    const t = performance.now() / 8000
+    ctx.fillStyle = 'rgba(0,0,0,0.02)'
+    // ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, width, height)
 
     trianglePoints.forEach(({ p1, p2, p3 }, i) => {
