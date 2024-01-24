@@ -2,16 +2,23 @@
 import { onMounted, ref } from 'vue'
 import Delaunator from 'delaunator'
 import { gsap } from 'gsap'
+import { Vector2 } from 'three'
+import { getTriangleCenter } from '@/utils'
 import pic from '@/assets/img/disco_communism.jpg'
 
 const { random, sqrt } = Math
 
 const pointsNum = 30
+const triangles: Array<{
+  p1: Vector2
+  p2: Vector2
+  p3: Vector2
+}> = []
 const clips = ref<string[]>([])
 const picCon = ref<HTMLElement>()
 const img = ref<HTMLImageElement>()
 const imgs = ref<HTMLImageElement[]>([])
-const randomStates: Array<{ x: number, y: number, z: number, rx: number, ry: number, rz: number }> = []
+const randomStates: Array<{ x: number, y: number, z: number, rx: number, ry: number }> = []
 
 function getImgWH(): Promise<{ width: number, height: number }> {
   return new Promise((resolve) => {
@@ -28,61 +35,68 @@ onMounted(async () => {
     return
 
   const { width, height } = await getImgWH()
+  const o = new Vector2(width / 2, height / 2)
 
   getTriangles()
   setTimeout(() => {
-    initRandomStates()
-    animate()
+    initGsap()
   }, 1000)
 
   function getTriangles() {
-    const coords = []
-
+    // 根据容器尺寸生成一组分布比较平均的坐标
+    const coords: Vector2[] = []
     const xn = sqrt(pointsNum)
     const yn = pointsNum / xn
     const xStep = width / xn
     const yStep = height / yn
     for (let x = 0; x < width; x += xStep) {
       for (let y = 0; y < height; y += yStep) {
-        const coord = [random() * xStep + x, random() * yStep + y]
+        const coord = new Vector2(random() * xStep + x, random() * yStep + y)
         coords.push(coord)
       }
     }
 
-    const delaunay = Delaunator.from(coords)
+    // 坐标-->三角
+    const delaunay = Delaunator.from(coords.map(item => [item.x, item.y]))
     const triangleInds = delaunay.triangles
 
-    const res = []
     for (let i = 0; i < triangleInds.length; i += 3) {
       const p1 = coords[triangleInds[i]]
       const p2 = coords[triangleInds[i + 1]]
       const p3 = coords[triangleInds[i + 2]]
-      const triangle = [p1, p2, p3]
-
-      const clip = `clip-path: polygon(${p1[0]}px ${p1[1]}px,${p2[0]}px ${p2[1]}px,${p3[0]}px ${p3[1]}px)`
+      triangles.push({ p1, p2, p3 })
+      const clip = `clip-path: polygon(${p1.x}px ${p1.y}px,${p2.x}px ${p2.y}px,${p3.x}px ${p3.y}px)`
       clips.value.push(clip)
-      res.push(triangle)
+
+      // 根据三角形中心点与容器中心点初始化动画目标状态
+      const t = getTriangleCenter(p1, p2, p3)
+      const ot = t.sub(o)
+      const d = ot.length() / new Vector2(width / 2, height / 2).length()
+
+      const otxy = new Vector2().copy(ot.normalize()).multiply(new Vector2(0.3, 0.3))
+      const x = otxy.x * width / 2
+      const y = otxy.y * height / 2
+      const z = d * 200
+      const rx = otxy.x * 200
+      const ry = otxy.y * 200
+      randomStates.push({ x, y, z, rx, ry })
     }
   }
 
-  function initRandomStates() {
-    const { width, height } = picCon.value!.getBoundingClientRect()
-    imgs.value.forEach(() => {
-      randomStates.push({ x: random() * width - width / 2, y: random() * height - height / 2, z: random() * 800 - 400, rx: random() * 40, ry: random() * 40, rz: random() * 40 })
-    })
-  }
-
-  function animate() {
-    imgs.value.forEach((item, i) => {
+  function initGsap() {
+    randomStates.forEach((item, i) => {
       // gsap.fromTo(item, { xPercent: -50, yPercent: -50 }, { x: randomPos[i].x, y: randomPos[i].y, duration: 3, repeat: -1, yoyo: true })
-      const { x, y, z, rx, ry, rz } = randomStates[i]
+      const { x, y, z, rx, ry } = item
+
       const tl = gsap.timeline({
         repeat: -1,
       })
-      tl.to(item, { x, y, z, rotateX: rx, rotateY: ry, rotateZ: rz, duration: 4, ease: 'elastic.out' })
-      tl.to(item, { x, y, z, rotateX: rx, rotateY: ry, rotateZ: rz, duration: 0.5 }, '>')
-      tl.to(item, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, duration: 4, ease: 'elastic.out' }, '>')
-      tl.to(item, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, duration: 1.5 }, '>')
+      const dom = imgs.value[i]
+      const isR = random() > 0.8
+      tl.to(dom, { x, y, z, rotateX: isR ? rx : 0, rotateY: isR ? ry : 0, duration: 4, ease: 'elastic.out' })
+      tl.to(dom, { x, y, z, rotateX: isR ? rx : 0, rotateY: isR ? ry : 0, duration: 0.5 }, '>')
+      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 4, ease: 'elastic.out' }, '>')
+      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 1.5 }, '>')
     })
   }
 })

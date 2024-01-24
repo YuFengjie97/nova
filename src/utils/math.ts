@@ -57,5 +57,5 @@ export function map(v: number, s1: number, s2: number, t1: number, t2: number) {
 }
 
 export function getTriangleCenter(p1: Vector2, p2: Vector2, p3: Vector2) {
-  return new Vector2().copy(p1).add(p2).add(p3).multiply(new Vector2(1 / 3))
+  return new Vector2().copy(p1).add(p2).add(p3).multiply(new Vector2(1 / 3, 1 / 3))
 }
