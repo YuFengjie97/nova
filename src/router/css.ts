@@ -33,7 +33,7 @@ const css: RouteRecordRaw = {
       path: 'progressCube',
       meta: {
         name: '立体进度条',
-        show: true,
+        show: false,
       },
       component: () => import('@/views/css/ProgressCube.vue'),
     },
@@ -76,6 +76,14 @@ const css: RouteRecordRaw = {
         show: true,
       },
       component: () => import('@/views/css/timeSun.vue'),
+    },
+    {
+      path: 'crush-pic',
+      meta: {
+        name: '破碎图片',
+        show: true,
+      },
+      component: () => import('@/views/css/crushPic.vue'),
     },
   ],
 }
