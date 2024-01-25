@@ -7,7 +7,6 @@ export interface NavItemProp {
   link: string
   conDomRect: DOMRect
   bg: string
-  show: boolean
   outLink?: boolean
 }
 
@@ -26,23 +25,25 @@ watchEffect(() => {
   bgPos.value = `-${left - baseLeft}px -${top - baseTop}px`
 })
 
+let watched = false
 function go() {
+  watched = true
   if (props.outLink) {
     window.open(props.link, '_blank')
     return
   }
 
-  // const routeLocation = router.resolve({ path: props.link })
-  // window.open(routeLocation.href, '_blank')
-  router.push(props.link)
+  const routeLocation = router.resolve({ path: props.link })
+  window.open(routeLocation.href, '_blank')
+  // router.push(props.link)
 }
 
-const isHover = ref(!!props.show)
+const isHover = ref(true)
 function mousemove() {
   isHover.value = true
 }
 function mouseout() {
-  isHover.value = false
+  isHover.value = !watched
 }
 const navItemStyle = computed(() => {
   return {
@@ -64,11 +65,11 @@ const bgStyle = computed(() => {
     'background-image': `url(${props.bg})`,
   }
 })
-defineExpose({
-  isHover,
-  mousemove,
-  mouseout,
-})
+// defineExpose({
+//   isHover,
+//   mousemove,
+//   mouseout,
+// })
 </script>
 
 <template>

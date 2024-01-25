@@ -7,7 +7,7 @@ const svg: RouteRecordRaw = {
   children: [
     {
       path: 'tiktok',
-      meta: { name: 'tiktok_anima', show: true },
+      meta: { name: 'tiktok_anima', visable: true },
       component: () => import('@/views/svg/tiktok/index.vue'),
     },
   ],

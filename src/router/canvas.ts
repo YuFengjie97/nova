@@ -9,7 +9,7 @@ const canvas: RouteRecordRaw = {
       path: 'flowField',
       meta: {
         name: 'FlowField(fabric)',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/canvas/FlowField.vue'),
     },
@@ -17,20 +17,20 @@ const canvas: RouteRecordRaw = {
       path: 'flowFieldLine',
       meta: {
         name: 'FlowFieldLine',
-        show: false,
+        visable: false,
       },
       component: () => import('@/views/canvas/FlowFieldLine.vue'),
     },
     {
       path: 'canvasTextPoint',
-      meta: { name: 'canvasTextPoint', show: false },
+      meta: { name: 'canvasTextPoint', visable: false },
       component: () => import('@/views/canvas/CanvasTextPoint.vue'),
     },
     {
       path: 'canvasPoint',
       meta: {
         name: '图片点阵化',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/canvas/canvasPoint.vue'),
     },
@@ -38,7 +38,7 @@ const canvas: RouteRecordRaw = {
       path: 'flow',
       meta: {
         name: 'mac锁屏flow',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/canvas/flow.vue'),
     },
@@ -46,7 +46,7 @@ const canvas: RouteRecordRaw = {
       path: 'delaunator',
       meta: {
         name: '三角切分',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/canvas/delaunator.vue'),
     },

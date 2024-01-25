@@ -12,10 +12,10 @@ import Home from '@/views/Home.vue'
 
 const home: RouteRecordRaw = {
   path: '/',
-  meta: { name: 'home', show: false },
+  meta: { name: 'home', visable: false },
   component: Home,
 }
-const notfound: RouteRecordRaw = { path: '/:path(.*)', meta: { name: 'notfound', show: false }, component: NotFound }
+const notfound: RouteRecordRaw = { path: '/:path(.*)', meta: { name: 'notfound', visable: false }, component: NotFound }
 
 export const routes: RouteRecordRaw[] = [home, css, canvas, p5, three, shader, svg, notfound]
 

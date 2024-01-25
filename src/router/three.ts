@@ -8,52 +8,52 @@ const three: RouteRecordRaw = {
 
     {
       path: 'threeTemplate',
-      meta: { name: 'threejs模板', show: false },
+      meta: { name: 'threejs模板', visable: false },
       component: () => import('@/views/three/THREE-template.vue'),
     },
     {
       path: 'cubeLine',
-      meta: { name: 'cubeLine', show: false },
+      meta: { name: 'cubeLine', visable: false },
       component: () => import('@/views/three/CubeLine.vue'),
     },
     {
       path: 'allBufferGeo',
-      meta: { name: 'allBufferGeo', show: false },
+      meta: { name: 'allBufferGeo', visable: false },
       component: () => import('@/views/three/AllBufferGeo/AllBufferGeo.vue'),
     },
     {
       path: 'threeTextPoint',
-      meta: { name: 'threeTextPoint', show: false },
+      meta: { name: 'threeTextPoint', visable: false },
       component: () => import('@/views/three/ThreeTextPoint.vue'),
     },
     {
       path: 'threeText',
-      meta: { name: 'threeText', show: false },
+      meta: { name: 'threeText', visable: false },
       component: () => import('@/views/three/TextGeo.vue'),
     },
     {
       path: 'solarSystem',
-      meta: { name: 'threejs太阳系', show: true },
+      meta: { name: 'threejs太阳系', visable: true },
       component: () => import('@/views/three/SolarSystem.vue'),
     },
     {
       path: 'glowBall',
-      meta: { name: 'glowBall', show: false },
+      meta: { name: 'glowBall', visable: false },
       component: () => import('@/views/three/GlowBall.vue'),
     },
     {
       path: 'atom',
-      meta: { name: '原子', show: true },
+      meta: { name: '原子', visable: true },
       component: () => import('@/views/three/Atom.vue'),
     },
     {
       path: 'lavaBall',
-      meta: { name: 'lavaBall', show: false },
+      meta: { name: 'lavaBall', visable: false },
       component: () => import('@/views/three/LavaBall.vue'),
     },
     {
       path: 'lensFlares',
-      meta: { name: '透镜光线', show: false },
+      meta: { name: '透镜光线', visable: false },
       component: () => import('@/views/three/LensFlares.vue'),
     },
 

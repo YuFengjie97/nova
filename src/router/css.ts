@@ -9,7 +9,7 @@ const css: RouteRecordRaw = {
       path: 'reverseCard',
       meta: {
         name: '反转卡片图片',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/reverseCardPic.vue'),
     },
@@ -17,7 +17,7 @@ const css: RouteRecordRaw = {
       path: 'starRate',
       meta: {
         name: '图案评分',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/StarRate.vue'),
     },
@@ -25,7 +25,7 @@ const css: RouteRecordRaw = {
       path: 'sun',
       meta: {
         name: '小太阳',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/Sun.vue'),
     },
@@ -33,7 +33,7 @@ const css: RouteRecordRaw = {
       path: 'progressCube',
       meta: {
         name: '立体进度条',
-        show: false,
+        visable: false,
       },
       component: () => import('@/views/css/ProgressCube.vue'),
     },
@@ -41,7 +41,7 @@ const css: RouteRecordRaw = {
       path: 'deathLoading',
       meta: {
         name: '死亡搁浅loading',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/DeathLoading.vue'),
     },
@@ -49,7 +49,7 @@ const css: RouteRecordRaw = {
       path: 'hsCard',
       meta: {
         name: '炉石卡片',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/HSCard.vue'),
     },
@@ -57,7 +57,7 @@ const css: RouteRecordRaw = {
       path: 'barChart',
       meta: {
         name: 'css条状表',
-        show: false,
+        visable: false,
       },
       component: () => import('@/views/css/BarChart.vue'),
     },
@@ -65,7 +65,7 @@ const css: RouteRecordRaw = {
       path: 'water',
       meta: {
         name: '模拟水滴',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/Water.vue'),
     },
@@ -73,7 +73,7 @@ const css: RouteRecordRaw = {
       path: 'sun-time',
       meta: {
         name: '太阳与时间倒影',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/timeSun.vue'),
     },
@@ -81,7 +81,7 @@ const css: RouteRecordRaw = {
       path: 'crush-pic',
       meta: {
         name: '破碎图片',
-        show: true,
+        visable: true,
       },
       component: () => import('@/views/css/crushPic.vue'),
     },

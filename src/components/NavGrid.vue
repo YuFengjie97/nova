@@ -8,7 +8,11 @@ import type { NavItemProp } from './NavItem.vue'
 import { outlink, routes } from '@/router'
 import bg from '@/assets/img/bg.png'
 
-const navList = ref<NavItemProp[]>([])
+interface NavItemEx extends NavItemProp {
+  visable: boolean
+}
+
+const navList = ref<NavItemEx[]>([])
 
 const navGrid = ref<HTMLElement>()
 const navGridDomRect = ref<DOMRect>()
@@ -16,12 +20,12 @@ const navGridDomRect = ref<DOMRect>()
 function resolveRoutes() {
   routes.forEach((r) => {
     r.children && r.children?.forEach((rc) => {
-      if (rc.meta?.show) {
-        const item: NavItemProp = {
-          name: rc.meta!.name as string,
+      if (rc.meta?.visable) {
+        const item: NavItemEx = {
+          name: rc.meta.name as string,
           link: `${r.path}/${rc.path}`,
           conDomRect: navGrid.value!.getBoundingClientRect(),
-          show: rc.meta!.show as boolean,
+          visable: rc.meta.visable as boolean,
           bg,
         }
         navList.value.push(item)
@@ -35,7 +39,7 @@ function resolveRoutes() {
       link: l.path,
       conDomRect: navGrid.value!.getBoundingClientRect(),
       outLink: true,
-      show: l.meta.show,
+      visable: l.meta.visable,
       bg,
     }
     navList.value.push(item)
@@ -62,10 +66,15 @@ onMounted(() => {
 <template>
   <div class="w-full h-full flex justify-center overflow-y-scroll">
     <div ref="navGrid" class="max-w-600px h-fit p-y-2rem flex flex-wrap justify-center gap-2px">
-      <NavItem
-        v-for="(item, index) in navList" :key="index" v-bind="item"
-        :con-dom-rect="navGridDomRect as DOMRect"
-      />
+      <div
+        v-for="(item, index) in navList" :key="index"
+      >
+        <NavItem
+          v-if="item.visable"
+          v-bind="item"
+          :con-dom-rect="navGridDomRect as DOMRect"
+        />
+      </div>
     </div>
   </div>
 </template>
