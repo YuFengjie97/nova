@@ -6,9 +6,9 @@ import { Vector2 } from 'three'
 import { getTriangleCenter } from '@/utils'
 import pic from '@/assets/img/disco_communism.jpg'
 
-const { random, sqrt } = Math
+const { random, sqrt, floor, ceil } = Math
 
-const pointsNum = 30
+const pointsNum = 30 // 不一定就是这个数量的点呦
 const triangles: Array<{
   p1: Vector2
   p2: Vector2
@@ -45,13 +45,13 @@ onMounted(async () => {
   function getTriangles() {
     // 根据容器尺寸生成一组分布比较平均的坐标
     const coords: Vector2[] = []
-    const xn = sqrt(pointsNum)
-    const yn = pointsNum / xn
+    const xn = floor(sqrt(pointsNum))
+    const yn = ceil(pointsNum / xn)
     const xStep = width / xn
     const yStep = height / yn
-    for (let x = -xStep; x < width; x += xStep) {
-      for (let y = -yStep; y < height; y += yStep) {
-        const coord = new Vector2(random() * xStep + x, random() * yStep + y)
+    for (let x = 0; x < xn; x += 1) {
+      for (let y = 0; y < yn; y += 1) {
+        const coord = new Vector2((x + random()) * xStep, (y + random()) * yStep)
         coords.push(coord)
       }
     }
@@ -76,7 +76,7 @@ onMounted(async () => {
       const otxy = new Vector2().copy(ot.normalize()).multiply(new Vector2(0.3, 0.3))
       const x = otxy.x * width / 2
       const y = otxy.y * height / 2
-      const z = d * 200
+      const z = d * -200
       const isR = random() > 0.8
       const rx = isR ? otxy.x * 200 : 0
       const ry = isR ? otxy.y * 200 : 0
@@ -103,7 +103,7 @@ onMounted(async () => {
     // 依次聚合
     randomStates.forEach((item, i) => {
       const dom = imgs.value[i]
-      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 0.07 }, '>')
+      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 0.3, ease: 'bounce.out' }, '>')
     })
     // 保持聚合状态
     randomStates.forEach((item, i) => {
