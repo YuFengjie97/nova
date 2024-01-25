@@ -49,8 +49,8 @@ onMounted(async () => {
     const yn = pointsNum / xn
     const xStep = width / xn
     const yStep = height / yn
-    for (let x = 0; x < width; x += xStep) {
-      for (let y = 0; y < height; y += yStep) {
+    for (let x = -xStep; x < width; x += xStep) {
+      for (let y = -yStep; y < height; y += yStep) {
         const coord = new Vector2(random() * xStep + x, random() * yStep + y)
         coords.push(coord)
       }
@@ -77,26 +77,38 @@ onMounted(async () => {
       const x = otxy.x * width / 2
       const y = otxy.y * height / 2
       const z = d * 200
-      const rx = otxy.x * 200
-      const ry = otxy.y * 200
+      const isR = random() > 0.8
+      const rx = isR ? otxy.x * 200 : 0
+      const ry = isR ? otxy.y * 200 : 0
       randomStates.push({ x, y, z, rx, ry })
     }
   }
 
   function initGsap() {
+    const tl = gsap.timeline({
+      repeat: -1,
+    })
+    // 全部同时破碎分离
     randomStates.forEach((item, i) => {
-      // gsap.fromTo(item, { xPercent: -50, yPercent: -50 }, { x: randomPos[i].x, y: randomPos[i].y, duration: 3, repeat: -1, yoyo: true })
       const { x, y, z, rx, ry } = item
-
-      const tl = gsap.timeline({
-        repeat: -1,
-      })
       const dom = imgs.value[i]
-      const isR = random() > 0.8
-      tl.to(dom, { x, y, z, rotateX: isR ? rx : 0, rotateY: isR ? ry : 0, duration: 4, ease: 'elastic.out' })
-      tl.to(dom, { x, y, z, rotateX: isR ? rx : 0, rotateY: isR ? ry : 0, duration: 0.5 }, '>')
-      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 4, ease: 'elastic.out' }, '>')
-      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 1.5 }, '>')
+      tl.to(dom, { x, y, z, rotateX: rx, rotateY: ry, duration: 1, ease: 'bounce.out' }, '<')
+    })
+    // 保持破碎状态
+    randomStates.forEach((item, i) => {
+      const { x, y, z, rx, ry } = item
+      const dom = imgs.value[i]
+      tl.to(dom, { x, y, z, rotateX: rx, rotateY: ry, duration: 1 }, i === 0 ? '>' : '<')
+    })
+    // 依次聚合
+    randomStates.forEach((item, i) => {
+      const dom = imgs.value[i]
+      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 0.07 }, '>')
+    })
+    // 保持聚合状态
+    randomStates.forEach((item, i) => {
+      const dom = imgs.value[i]
+      tl.to(dom, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, duration: 1 }, i === 0 ? '>' : '<')
     })
   }
 })
