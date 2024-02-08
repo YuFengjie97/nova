@@ -56,7 +56,11 @@ const three: RouteRecordRaw = {
       meta: { name: '透镜光线', visable: false },
       component: () => import('@/views/three/LensFlares.vue'),
     },
-
+    {
+      path: 'crush-pic',
+      meta: { name: '破碎图片-threejs', visable: true },
+      component: () => import('@/views/three/crushPic.vue'),
+    },
   ],
 }
 
