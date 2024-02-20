@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { computed, ref, watch, watchEffect } from 'vue'
 import { router } from '@/router'
+import iconOutlink from '@/assets/iconSvg/nav-type-icon/outlink.png'
+import iconCss from '@/assets/iconSvg/nav-type-icon/css.png'
+import iconCanvas from '@/assets/iconSvg/nav-type-icon/canvas.png'
+import iconThreejs from '@/assets/iconSvg/nav-type-icon/threejs.png'
+
+export type NavType = 'css' | 'canvas' | 'threejs' | 'outlink'
 
 export interface NavItemProp {
   name: string
@@ -8,11 +14,31 @@ export interface NavItemProp {
   conDomRect: DOMRect
   bg: string
   outLink?: boolean
+  type?: NavType
 }
-
 const props = withDefaults(defineProps<NavItemProp>(), {
   outLink: false,
 })
+
+const iconType = ref({
+  outlink: {
+    color: '#00b894',
+    img: iconOutlink,
+  },
+  css: {
+    color: '#00cec9',
+    img: iconCss,
+  },
+  canvas: {
+    color: '#6c5ce7',
+    img: iconCanvas,
+  },
+  threejs: {
+    color: '#fdcb6e',
+    img: iconThreejs,
+  },
+})
+
 const navItem = ref<HTMLElement>()
 const bgPos = ref('')
 
@@ -84,7 +110,13 @@ const bgStyle = computed(() => {
     <div class="bg  pointer-events-none" :style="bgStyle" />
     <div class="content  pointer-events-none" :style="contentStyle">
       <div class="fit-content flex flex-col items-center pointer-events-none">
-        {{ name }}
+        <div class="flex items-center m-r-10px">
+          <div v-if="type" class="rounded p-4px flex items-center justify-center m-r-4px" :style="{ background: iconType[type].color }">
+            <img class="h-20px" :src="iconType[type].img" alt="">
+          </div>
+          {{ name }}
+        </div>
+
         <div class="h-2px m-t-2px bg-#fff transition-duration-0.35s transition-delay-0.3s" :class="isHover ? 'w-full' : 'w-0'" />
       </div>
     </div>

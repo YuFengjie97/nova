@@ -8,6 +8,7 @@ const css: RouteRecordRaw = {
     {
       path: 'reverseCard',
       meta: {
+        type: 'css',
         name: '反转卡片图片',
         visable: true,
       },
@@ -16,6 +17,7 @@ const css: RouteRecordRaw = {
     {
       path: 'starRate',
       meta: {
+        type: 'css',
         name: '图案评分',
         visable: true,
       },
@@ -24,6 +26,7 @@ const css: RouteRecordRaw = {
     {
       path: 'sun',
       meta: {
+        type: 'css',
         name: '小太阳',
         visable: true,
       },
@@ -32,6 +35,7 @@ const css: RouteRecordRaw = {
     {
       path: 'progressCube',
       meta: {
+        type: 'css',
         name: '立体进度条',
         visable: false,
       },
@@ -40,6 +44,7 @@ const css: RouteRecordRaw = {
     {
       path: 'deathLoading',
       meta: {
+        type: 'css',
         name: '死亡搁浅loading',
         visable: true,
       },
@@ -48,6 +53,7 @@ const css: RouteRecordRaw = {
     {
       path: 'hsCard',
       meta: {
+        type: 'css',
         name: '炉石卡片',
         visable: true,
       },
@@ -56,6 +62,7 @@ const css: RouteRecordRaw = {
     {
       path: 'barChart',
       meta: {
+        type: 'css',
         name: 'css条状表',
         visable: false,
       },
@@ -64,6 +71,7 @@ const css: RouteRecordRaw = {
     {
       path: 'water',
       meta: {
+        type: 'css',
         name: '模拟水滴',
         visable: true,
       },
@@ -72,6 +80,7 @@ const css: RouteRecordRaw = {
     {
       path: 'sun-time',
       meta: {
+        type: 'css',
         name: '太阳与时间倒影',
         visable: true,
       },
@@ -80,6 +89,7 @@ const css: RouteRecordRaw = {
     {
       path: 'crush-pic',
       meta: {
+        type: 'css',
         name: '破碎图片',
         visable: true,
       },

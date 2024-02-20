@@ -4,7 +4,7 @@ import debounce from 'lodash/debounce'
 import FontFaceObserver from 'fontfaceobserver'
 
 import NavItem from './NavItem.vue'
-import type { NavItemProp } from './NavItem.vue'
+import type { NavItemProp, NavType } from './NavItem.vue'
 import { outlink, routes } from '@/router'
 import bg from '@/assets/img/bg.png'
 
@@ -27,6 +27,7 @@ function resolveRoutes() {
           conDomRect: navGrid.value!.getBoundingClientRect(),
           visable: rc.meta.visable as boolean,
           bg,
+          type: rc.meta.type as NavType,
         }
         navList.value.push(item)
       }
@@ -41,6 +42,7 @@ function resolveRoutes() {
       outLink: true,
       visable: l.meta.visable,
       bg,
+      type: l.meta.type as NavType,
     }
     navList.value.push(item)
   })
