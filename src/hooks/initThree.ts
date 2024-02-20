@@ -46,7 +46,7 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
     orbitControls.update()
   }
 
-  function renderWrap(animate: () => void) {
+  function renderWrap(animate: () => void = () => {}) {
     let animateId = 0
     function render() {
       animateId = requestAnimationFrame(render)
