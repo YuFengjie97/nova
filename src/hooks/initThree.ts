@@ -38,7 +38,7 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
   const { stats } = initStats(con)
 
   // 轨道控制器
-  let orbitControls
+  let orbitControls: OrbitControls
   if (needControl) {
     orbitControls = new OrbitControls(camera, renderer.domElement)
     orbitControls.target = new Vector3(0, 0, 0)
