@@ -1,42 +1,5 @@
-<template>
-  <div class="barChart">
-    <div class="chartCon">
-      <div
-        class="item"
-        v-for="(item, i) in dataCom"
-        :key="i"
-        :style="{ background: item.color,width: `${item.ratio! * 100}%` }"
-        @mousemove="mousemove(i, $event)"
-        @mouseout="pop.isShow = false"
-      >
-        {{ item.name }}
-      </div>
-    </div>
-    <div
-      class="pop"
-      v-show="pop.isShow"
-      :style="{
-        top: `${pop.pos.top}px`,
-        left: `${pop.pos.left}px`,
-        '--color': pop.color
-      }"
-    >
-      <div class="titleCon">
-        <div class="point"></div>
-        <div class="val">{{ pop.name }} {{ pop.ratio * 100 }}%</div>
-      </div>
-      <div class="childCon">
-        <div class="child" v-for="(item, i) in pop.childs" :key="i">
-          <div class="point"></div>
-          <div class="val">{{ item.name }}--{{ item.val }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, reactive, computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 export interface dataItem {
   name: string
@@ -46,6 +9,10 @@ export interface dataItem {
   ratio?: number
   color?: string
 }
+const props = defineProps<{
+  dataArr: Array<dataItem>
+}>()
+
 const colors = [
   '#00b894',
   '#00cec9',
@@ -56,23 +23,19 @@ const colors = [
   '#e17055',
   '#d63031',
   '#e84393',
-  '#2d3436'
+  '#2d3436',
 ]
 
-const props = defineProps<{
-  dataArr: Array<dataItem>
-}>()
-
 const dataCom = computed(() => {
-  let total = props.dataArr.reduce(
+  const total = props.dataArr.reduce(
     (pre, acc) => {
       return { val: pre.val + acc.val }
     },
-    { val: 0 }
+    { val: 0 },
   ).val
   return props.dataArr.map((item, i) => {
     item.total = total
-    item.ratio = parseFloat((item.val / item.total).toFixed(3))
+    item.ratio = Number.parseFloat((item.val / item.total).toFixed(3))
     item.color = colors[i % colors.length]
     return item
   })
@@ -94,11 +57,11 @@ const pop = reactive<{
   name: '',
   ratio: 0,
   childs: [],
-  color: '#fff'
+  color: '#fff',
 })
 
 function mousemove(i: number, e: MouseEvent) {
-  let data = props.dataArr[i]
+  const data = props.dataArr[i]
   pop.isShow = true
   pop.name = data.name
   pop.ratio = data.ratio!
@@ -109,6 +72,47 @@ function mousemove(i: number, e: MouseEvent) {
   pop.color = data.color!
 }
 </script>
+
+<template>
+  <div class="barChart">
+    <div class="chartCon">
+      <div
+        v-for="(item, i) in dataCom"
+        :key="i"
+        class="item"
+        :style="{ background: item.color, width: `${item.ratio! * 100}%` }"
+        @mousemove="mousemove(i, $event)"
+        @mouseout="pop.isShow = false"
+      >
+        {{ item.name }}
+      </div>
+    </div>
+    <div
+      v-show="pop.isShow"
+      class="pop"
+      :style="{
+        'top': `${pop.pos.top}px`,
+        'left': `${pop.pos.left}px`,
+        '--color': pop.color,
+      }"
+    >
+      <div class="titleCon">
+        <div class="point" />
+        <div class="val">
+          {{ pop.name }} {{ pop.ratio * 100 }}%
+        </div>
+      </div>
+      <div class="childCon">
+        <div v-for="(item, i) in pop.childs" :key="i" class="child">
+          <div class="point" />
+          <div class="val">
+            {{ item.name }}--{{ item.val }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .barChart {

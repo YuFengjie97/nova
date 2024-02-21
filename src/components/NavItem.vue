@@ -5,8 +5,9 @@ import iconOutlink from '@/assets/iconSvg/nav-type-icon/outlink.png'
 import iconCss from '@/assets/iconSvg/nav-type-icon/css.png'
 import iconCanvas from '@/assets/iconSvg/nav-type-icon/canvas.png'
 import iconThreejs from '@/assets/iconSvg/nav-type-icon/threejs.png'
+import iconSvg from '@/assets/iconSvg/nav-type-icon/svg.png'
 
-export type NavType = 'css' | 'canvas' | 'threejs' | 'outlink'
+export type NavType = 'css' | 'canvas' | 'threejs' | 'outlink' | 'svg'
 
 export interface NavItemProp {
   name: string
@@ -36,6 +37,10 @@ const iconType = ref({
   threejs: {
     color: '#fdcb6e',
     img: iconThreejs,
+  },
+  svg: {
+    color: '#576574',
+    img: iconSvg,
   },
 })
 
