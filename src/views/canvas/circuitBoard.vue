@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { initGUI } from '@/hooks/initGUI'
 
 const { floor, random, PI } = Math
 const canvas = ref<HTMLCanvasElement>()
@@ -12,8 +11,6 @@ const settings = {
 }
 
 onMounted(() => {
-  const gui = initGUI(con.value!)
-
   const { width, height } = canvas.value!.getBoundingClientRect()
   canvas.value!.width = width
   canvas.value!.height = height
