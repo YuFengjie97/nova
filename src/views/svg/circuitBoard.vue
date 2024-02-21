@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import svg from '@/router/svg'
 
 const { floor, random } = Math
 const con = ref<HTMLElement>()
