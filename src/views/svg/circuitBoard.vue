@@ -5,7 +5,7 @@ const { floor, random } = Math
 const con = ref<HTMLElement>()
 const svgCon = ref<SVGElement>()
 const settings = {
-  size: 10,
+  size: 6,
   leave: 10,
   wireMaxLen: 40,
   stroke: '#ff9f43',
@@ -137,14 +137,14 @@ onMounted(() => {
 
       let d = ''
       const s = settings.size
-      const r = s / 3
+      const r = random() * (s / 6) + s / 6
 
       circle1.setAttribute('r', `${r}`)
       circle2.setAttribute('r', `${r}`)
       circle1.setAttribute('stroke', `#fff`)
       circle2.setAttribute('stroke', `#fff`)
-      circle1.setAttribute('fill', `#ff9f43`)
-      circle2.setAttribute('fill', `#ff9f43`)
+      circle1.setAttribute('fill', random() > 0.5 ? `#ff9f43` : '#10ac84')
+      circle2.setAttribute('fill', random() > 0.5 ? `#ff9f43` : '#10ac84')
       for (let i = 0; i < this.cells.length; i += 1) {
         const cur = this.cells[i]
         if (i === 0) {
@@ -165,7 +165,7 @@ onMounted(() => {
       path.setAttribute('d', d)
       path.setAttribute('fill', 'none')
       path.setAttribute('stroke', settings.stroke)
-      path.setAttribute('stroke-width', `${settings.size / 4}`)
+      path.setAttribute('stroke-width', `${r * 2}`)
       const length = path.getTotalLength()
       path.setAttribute('stroke-dasharray', `${length}, ${length}`)
       path.setAttribute('stroke-dashoffset', `${length}`)
