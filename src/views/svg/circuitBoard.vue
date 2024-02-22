@@ -5,11 +5,12 @@ const { floor, random } = Math
 const con = ref<HTMLElement>()
 const svgCon = ref<SVGElement>()
 const settings = {
-  size: 6,
-  leave: 10,
+  size: 10,
   wireMaxLen: 40,
   stroke: '#ff9f43',
-  fill: '#10ac84',
+  fill: '#b2bec3',
+  blank: '#10ac84',
+  straightness: 2, // 线条直线度，数值越大，越趋向于直线
 }
 
 onMounted(() => {
@@ -19,13 +20,12 @@ onMounted(() => {
 
   const rows = floor(height / settings.size)
   const cols = floor(width / settings.size)
-  const wireNum = floor(rows * cols / (settings.wireMaxLen + settings.leave))
+  let availableNum = floor(rows * cols)
   const cells: Cell[] = []
   const cellsMap: { [k: string]: Cell } = {} // {'x,y': Cell}
   const wires: Wire[] = []
   // 方向是顺时针旋转定义的，反正只要连续的方向就行，为了给cell依次指定方向
-  const dirs = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
-  const tryMax = dirs.length
+  const dirs: Array<[number, number]> = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
 
   class Cell {
     x = 0
@@ -43,6 +43,7 @@ onMounted(() => {
     constructor(start: Cell) {
       start.available = false
       this.cells.push(start)
+      availableNum -= 1
     }
 
     validNoCrossOver(c1: Cell, dirInd: number) {
@@ -79,54 +80,41 @@ onMounted(() => {
     }
 
     generate() {
-      let hasSpace = true
-      while (this.cells.length < settings.wireMaxLen && hasSpace) {
-        hasSpace = true
+      // 每个last节点尝试生成
+      while (this.cells.length < settings.wireMaxLen) {
+        const last = this.cells[this.cells.length - 1] // 当前线条的最后一个节点
+        const tries = random() < 0.5 ? [0, 1, -1] : [0, -1, 1] // 线条生成的3个方向索引的增量选择集
 
-        let dirInc = 0
-        let tryNum = 0
-        while (tryNum < tryMax) {
-          const last = this.cells[this.cells.length - 1]
-          const dirInd = (last.dirInd + dirInc) % 8
-
+        // 该节点尝试方向
+        while (tries.length > 0) {
+          // 对random()进行幂指处理，所得值会趋近于0,所以节点的生成方向增量趋近于0，越逼近于直线（straightness）
+          let dirInd = last.dirInd + tries.splice(floor(random() ** settings.straightness * tries.length), 1)[0]
+          dirInd = dirInd < 0 ? 8 + dirInd : dirInd % 8
           const dir = dirs[dirInd]
+
           const x = last.x + dir[0]
           const y = last.y + dir[1]
           const index = y * cols + x
-          // 方向越界
-          if (x < 0 || x >= cols || y < 0 || y >= rows || index < 0 || index >= cells.length) {
-            dirInc += 1
-            tryNum += 1
+          const next = index >= 0 && index < cells.length ? cells[index] : false
+          /**
+           * x < 0 || x >= cols || y < 0 || y >= rows 方向越界
+           * !next 边界情况下，index数组越界
+           * !next.available next被占用
+           * 线路交叉
+           */
+          if (x < 0 || x >= cols || y < 0 || y >= rows || !next || !next.available || !this.validNoCrossOver(last, dirInd))
             continue
-          }
-          const next = cells[index]
-          // 节点占用
-          if (!next.available) {
-            dirInc += 1
-            tryNum += 1
-            continue
-          }
-          // 线路交叉判断
-          if (!this.validNoCrossOver(last, dirInd)) {
-            dirInc += 1
-            tryNum += 1
-            continue
-          }
 
           // ok
           next.available = false
           next.dirInd = dirInd
+          availableNum -= 1
           this.cells.push(next)
-          dirInc = 0
-          tryNum = 0
           break
         }
-        // 所有方向都试过，不成立
-        if (tryNum === tryMax) {
-          hasSpace = false
-          dirInc = 0
-          tryNum = 0
-        }
+        // 当前节点所有方向都试过，找不着
+        if (tries.length === 0)
+          break
       }
     }
 
@@ -143,8 +131,9 @@ onMounted(() => {
       circle2.setAttribute('r', `${r}`)
       circle1.setAttribute('stroke', `#fff`)
       circle2.setAttribute('stroke', `#fff`)
-      circle1.setAttribute('fill', random() > 0.5 ? `#ff9f43` : '#10ac84')
-      circle2.setAttribute('fill', random() > 0.5 ? `#ff9f43` : '#10ac84')
+      const isFill = random() > 0.5
+      circle1.setAttribute('fill', isFill ? settings.fill : settings.blank)
+      circle2.setAttribute('fill', isFill ? settings.fill : settings.blank)
       for (let i = 0; i < this.cells.length; i += 1) {
         const cur = this.cells[i]
         if (i === 0) {
@@ -167,9 +156,11 @@ onMounted(() => {
       path.setAttribute('stroke', settings.stroke)
       path.setAttribute('stroke-width', `${r * 2}`)
       const length = path.getTotalLength()
-      path.setAttribute('stroke-dasharray', `${length}, ${length}`)
-      path.setAttribute('stroke-dashoffset', `${length}`)
-      path.classList.add('animated-path')
+      // 在@keyframes中使用calc对css自定义变量进行计算有问题，动画不生效，在js里手动计算吧
+      path.style.cssText = `--len: ${length}; --len-1:${-length}; --len-3:${-3 * length}`
+      // path.setAttribute('stroke-dasharray', `${length}, ${length}`)
+      // path.setAttribute('stroke-dashoffset', `${length}`)
+      path.classList.add(random() > 0.5 ? 'animated-path-once' : 'animated-path-repeat')
       svgCon.value?.append(path)
       svgCon.value?.append(circle1)
       svgCon.value?.append(circle2)
@@ -184,7 +175,7 @@ onMounted(() => {
     }
   }
 
-  while (wires.length < wireNum) {
+  while (wires.length < availableNum) {
     const cell = cells[floor(random() * cells.length)]
     if (!cell.available)
       continue
@@ -199,21 +190,36 @@ onMounted(() => {
 
 <template>
   <div ref="con" class="w-full h-full bg-#10ac84">
-    <svg ref="svgCon" class="block" xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <!-- <path class="animated-path" d="M 615 545 L 615 545 L 625 555 L 635 565 L 645 575 L 655 585 L 665 595 L 675 605 L 685 615 L 695 625 L 705 635 L 715 645 L 725 655 L 735 655 L 745 655 L 755 655 L 765 655 L 775 655 L 785 655 L 785 645 L 785 635" fill="none" stroke="#ff9f43" stroke-width="2.5" /> -->
-    </svg>
+    <svg ref="svgCon" class="block" xmlns="http://www.w3.org/2000/svg" version="1.1" />
   </div>
 </template>
 
 <!-- vue中动态添加类需要禁用scoped -->
 <style lang="less">
-@keyframes drawLine {
+@keyframes drawLine-once {
   100% {
     stroke-dashoffset: 0;
   }
 }
 
-.animated-path {
-  animation: drawLine 1.5s linear forwards;
+@keyframes drawLine-repeat {
+  0% {
+    stroke-dashoffset: var(--len-1);
+  }
+
+  100% {
+    stroke-dashoffset: var(--len-3);
+  }
+}
+
+.animated-path-once {
+  stroke-dasharray: var(--len), var(--len);
+  stroke-dashoffset: var(--len);
+  animation: drawLine-once 1.5s ease-in forwards;
+}
+
+.animated-path-repeat {
+  stroke-dasharray: var(--len), var(--len);
+  animation: drawLine-repeat 1.5s linear infinite forwards;
 }
 </style>
