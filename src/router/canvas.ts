@@ -64,6 +64,24 @@ const canvas: RouteRecordRaw = {
       },
       component: () => import('@/views/canvas/circuitBoard.vue'),
     },
+    {
+      path: 'img-idle',
+      meta: {
+        type: 'canvas',
+        name: '图片做Idle',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/imgIdle.vue'),
+    },
+    {
+      path: 'nyan-cat',
+      meta: {
+        type: 'canvas',
+        name: '彩虹猫',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/nyanCat.vue'),
+    },
   ],
 }
 
