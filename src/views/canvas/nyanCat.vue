@@ -12,7 +12,7 @@ const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
 
 const curveWidth = 20
-const yRange = 20 // 屏幕左侧中点指向鼠标位置的向量“左右”(垂直方向的向量)取点范围
+const yRange = 30 // 屏幕彩虹左侧中点指向鼠标位置的向量“左右”(垂直方向的向量)取点范围，用来控制贝塞尔曲线是弯曲程度
 const xRange = 40 // 每隔多少距离取点
 
 let animateId = 0
@@ -35,6 +35,71 @@ onMounted(async () => {
   const scale = 105 / 68
   const catCanvasH = curveWidth * 9 // 按理说应该是*6但是我的彩虹猫的图片尺寸有点小
   const catCanvasW = catCanvasH * scale
+
+  class Star {
+    size = 10
+    type: number = 0 // 0123对应4种状态
+    pos: Vector2
+    isLive = true
+    lastTime = 0 // 上次更新type时间秒
+    interval = 0.1 // 更新type间隔秒
+    constructor() {
+      this.pos = new Vector2(random() * width + width, random() * height)
+      this.type = floor(random() * 4)
+    }
+
+    update(t: number) {
+      if (t - this.lastTime > this.interval) {
+        this.type = (this.type + 1) % 4
+        this.lastTime = t
+      }
+      this.pos.x -= 10
+      if (this.pos.x < -10)
+        this.isLive = false
+    }
+
+    draw() {
+      const p = this.pos
+      const s = this.size
+      ctx.fillStyle = '#fff'
+      // 一个点
+      if (this.type === 0)
+        ctx.fillRect(this.pos.x, this.pos.y, this.size, this.size)
+
+      // 十字
+      if (this.type === 1) {
+        ctx.fillRect(p.x, p.y, s, s)
+        ctx.fillRect(p.x - s, p.y, s, s)
+        ctx.fillRect(p.x + s, p.y, s, s)
+        ctx.fillRect(p.x, p.y - s, s, s)
+        ctx.fillRect(p.x, p.y + s, s, s)
+      }
+      // 长十字
+      if (this.type === 2) {
+        ctx.fillRect(p.x, p.y, s, s)
+        ctx.fillRect(p.x - s, p.y, s, s)
+        ctx.fillRect(p.x - 2 * s, p.y, s, s)
+        ctx.fillRect(p.x + s, p.y, s, s)
+        ctx.fillRect(p.x + 2 * s, p.y, s, s)
+        ctx.fillRect(p.x, p.y - s, s, s)
+        ctx.fillRect(p.x, p.y - 2 * s, s, s)
+        ctx.fillRect(p.x, p.y + s, s, s)
+        ctx.fillRect(p.x, p.y + 2 * s, s, s)
+      }
+      // 圆
+      if (this.type === 3) {
+        ctx.fillRect(p.x - 1.5 * s, p.y - 1.5 * s, s, s)
+        ctx.fillRect(p.x + 1.5 * s, p.y + 1.5 * s, s, s)
+        ctx.fillRect(p.x + 1.5 * s, p.y - 1.5 * s, s, s)
+        ctx.fillRect(p.x - 1.5 * s, p.y + 1.5 * s, s, s)
+
+        ctx.fillRect(p.x - 2 * s, p.y, s, s)
+        ctx.fillRect(p.x + 2 * s, p.y, s, s)
+        ctx.fillRect(p.x, p.y - 2 * s, s, s)
+        ctx.fillRect(p.x, p.y + 2 * s, s, s)
+      }
+    }
+  }
 
   class Curve {
     points: Array<Vector2> = []
@@ -110,14 +175,35 @@ onMounted(async () => {
   const rainbow = new Rainbow(catCanvas)
   timer = tim
 
+  const starNum = 10
+  const stars: Array<Star> = []
+  for (let i = 0; i < starNum; i++)
+    stars.push(new Star())
+
   function animate() {
-    ctx.fillStyle = '#000'
+    const t = performance.now() / 1000 // 秒
+
+    ctx.fillStyle = '#74b9ff'
     ctx.fillRect(0, 0, width, height)
     ctx.lineWidth = curveWidth
 
-    const t = performance.now() / 1000
     rainbow.update(t)
     rainbow.draw()
+
+    let i = 0
+    while (i < starNum) {
+      const s = stars[i]
+      s.update(t)
+      if (!s.isLive) {
+        stars.splice(i, 1)
+        stars.push(new Star())
+      }
+      else {
+        s.draw()
+        i++
+      }
+    }
+
     stats.update()
     animateId = requestAnimationFrame(animate)
   }
