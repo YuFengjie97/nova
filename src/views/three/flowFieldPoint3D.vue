@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { createNoise3D, createNoise4D } from 'simplex-noise'
-import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NoBlending, Points, PointsMaterial, Vector2, Vector3 } from 'three'
+import { createNoise4D } from 'simplex-noise'
+import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NoBlending, Points, PointsMaterial, ShaderMaterial, TextureLoader, Vector2, Vector3 } from 'three'
 import chroma from 'chroma-js'
 import { initThree } from '@/hooks/initThree'
 import { initStats } from '@/hooks/initStats'
+import picDot from '@/assets/img/textures/dotTexture.png'
 
 const { random, PI, sin, cos, floor } = Math
 const palette = chroma.scale(['#00b894', '#0984e3', '#6c5ce7', '#fdcb6e', '#e84393'])
@@ -16,9 +17,9 @@ const colors = new Float32Array(paricleNum * 3)
 
 let xRange = 0
 let yRange = 0
-const zRange = 500
+const zRange = 100
 let flowSize = 20
-const flowSizeZ = 100
+const flowSizeZ = 4
 
 const maxSpeed = 2
 const particles: Array<Particle> = []
@@ -45,19 +46,19 @@ class Particle {
 
   edge() {
     const { x, y, z } = this.getPos()
-    // if (x < 0)
-    //   positions[this.ind * 3] = xRange
-    // if (x > xRange)
-    //   positions[this.ind * 3] = 0
-    // if (y < 0)
-    //   positions[this.ind * 3 + 1] = yRange
-    // if (y > yRange)
-    //   positions[this.ind * 3 + 1] = 0
-    if (x < 0 || x > xRange || y < 0 || y > yRange) {
-      positions[this.ind * 3] = random() * xRange
-      positions[this.ind * 3 + 1] = random() * yRange
-      this.vel.setLength(0)
-    }
+    if (x < 0)
+      positions[this.ind * 3] = xRange
+    if (x > xRange)
+      positions[this.ind * 3] = 0
+    if (y < 0)
+      positions[this.ind * 3 + 1] = yRange
+    if (y > yRange)
+      positions[this.ind * 3 + 1] = 0
+    // if (x < 0 || x > xRange || y < 0 || y > yRange) {
+    //   positions[this.ind * 3] = random() * xRange
+    //   positions[this.ind * 3 + 1] = random() * yRange
+    //   this.vel.setLength(0)
+    // }
     if (z < 0)
       positions[this.ind * 3 + 2] = zRange
 
@@ -85,18 +86,18 @@ class Particle {
 
 onMounted(() => {
   const { width, height } = con.value!.getBoundingClientRect()
-  xRange = width
-  yRange = height
-  flowSize = height / 20
+  xRange = width / 4
+  yRange = height / 4
+  flowSize = height / 40
   const { stats } = initStats(con.value!)
   const { scene, camera, renderWrap, orbitControls } = initThree(con.value!, false, false, false)
-  camera.position.set(width / 2, height / 2, 530)// z轴距离是试出来的，所有粒子刚好能被看到
-  camera.lookAt(width / 2, height / 2, 0) // z轴距离是试出来的，所有粒子刚好能被看到
+  camera.position.set(xRange / 2, yRange / 2, zRange * 2)
+  camera.lookAt(xRange / 2, yRange / 2, 0)
 
   // 调试代码
-  orbitControls.target = new Vector3(width / 2, height / 2, 0)
-  orbitControls.object.position.set(width / 2, height / 2, 530)
-  orbitControls.update()
+  // orbitControls.target = new Vector3(xRange / 2, yRange / 2, 0)
+  // orbitControls.object.position.set(xRange / 2, yRange / 2, zRange * 2)
+  // orbitControls.update()
 
   scene.background = new Color(0x000)
 
@@ -116,7 +117,7 @@ onMounted(() => {
   for (let i = 0; i < paricleNum; i++) {
     const x = random() * xRange
     const y = random() * yRange
-    const z = 0
+    const z = random() * zRange
     positions[i * 3] = x
     positions[i * 3 + 1] = y
     positions[i * 3 + 2] = z
@@ -131,7 +132,8 @@ onMounted(() => {
   // SubtractiveBlending：将对象的颜色与背景颜色相减。
   // MultiplyBlending：将对象的颜色与背景颜色相乘。
   const mat = new PointsMaterial({
-    size: 3,
+    size: 1.5,
+    map: new TextureLoader().load(picDot), // 加载圆形纹理
     blending: AdditiveBlending,
     transparent: false,
     sizeAttenuation: true, // 是否受相机距离影响缩放
@@ -141,11 +143,11 @@ onMounted(() => {
   scene.add(mesh)
 
   // 使用xoff,yoff,zoff是因为使用粒子位置去做映射比较麻烦，不好控制
-  const xInc = 0.1
-  const yInc = 0.1
-  const zInc = 0.1
+  const xInc = 0.05
+  const yInc = 0.05
+  const zInc = 0.01
   let toff = 0
-  const tInc = 0.001
+  const tInc = 0.01
   renderWrap(() => {
     stats.update()
     // flowField更新
@@ -163,7 +165,7 @@ onMounted(() => {
           const angle = 4 * PI * n
           const length = maxSpeed * 0.1 * n
           flowField[`${x},${y},${z}`].n = n
-          flowField[`${x},${y},${z}`].v.set(cos(angle) * length, sin(angle) * length, cos(angle) * zRange * 0.0001)
+          flowField[`${x},${y},${z}`].v.set(cos(angle) * length, sin(angle) * length, sin(angle) * length)
         }
       }
     }

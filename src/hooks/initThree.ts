@@ -19,10 +19,13 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
   })
   // renderer.setPixelRatio(window.devicePixelRatio) // 不推荐
 
-  const orbitControls = new OrbitControls(camera, renderer.domElement)
-  orbitControls.target = new Vector3(0, 0, 0)
-  orbitControls.object.position.set(0, 0, 10) // 相机位置
-  orbitControls.update()
+  let orbitControls: OrbitControls | undefined
+  if (needControl) {
+    orbitControls = new OrbitControls(camera, renderer.domElement)
+    orbitControls.target = new Vector3(0, 0, 0)
+    orbitControls.object.position.set(0, 0, 10) // 相机位置
+    orbitControls.update()
+  }
 
   initSize()
 
@@ -48,13 +51,10 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
     function render() {
       animateId = requestAnimationFrame(render)
       stats.update()
-      needControl && orbitControls.update()
+      needControl && orbitControls!.update()
       animate()
       renderer.render(scene, camera)
     }
-    onMounted(() => {
-      render()
-    })
     onUnmounted(() => {
       cancelAnimationFrame(animateId)
     })

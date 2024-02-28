@@ -62,9 +62,9 @@ const three: RouteRecordRaw = {
       component: () => import('@/views/three/crushPic.vue'),
     },
     {
-      path: 'flowfield3d',
-      meta: { type: 'threejs', name: 'flowField-3D', visable: true },
-      component: () => import('@/views/three/flowField3D.vue'),
+      path: 'flowfield-point-3d',
+      meta: { type: 'threejs', name: 'flowField-粒子-3D', visable: true },
+      component: () => import('@/views/three/flowFieldPoint3D.vue'),
     },
   ],
 }
