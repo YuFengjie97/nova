@@ -4,7 +4,6 @@ import { createNoise4D } from 'simplex-noise'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NoBlending, Points, PointsMaterial, ShaderMaterial, TextureLoader, Vector2, Vector3 } from 'three'
 import chroma from 'chroma-js'
 import { initThree } from '@/hooks/initThree'
-import { initStats } from '@/hooks/initStats'
 import picDot from '@/assets/img/textures/dotTexture.png'
 
 const { random, PI, sin, cos, floor } = Math
@@ -89,7 +88,6 @@ onMounted(() => {
   xRange = width / 4
   yRange = height / 4
   flowSize = height / 40
-  const { stats } = initStats(con.value!)
   const { scene, camera, renderWrap, orbitControls } = initThree(con.value!, false, false, false)
   camera.position.set(xRange / 2, yRange / 2, zRange * 2)
   camera.lookAt(xRange / 2, yRange / 2, 0)
@@ -149,7 +147,6 @@ onMounted(() => {
   let toff = 0
   const tInc = 0.01
   renderWrap(() => {
-    stats.update()
     // flowField更新
     toff += tInc
     let xoff = 0
