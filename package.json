@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@unocss/reset": "^0.58.3",
+    "chroma-js": "^2.4.2",
     "dat.gui": "^0.7.9",
     "delaunator": "^5.0.0",
     "fontfaceobserver": "^2.3.0",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.2",
+    "@types/chroma-js": "^2.4.4",
     "@types/dat.gui": "^0.7.7",
     "@types/delaunator": "^5.0.2",
     "@types/fabric": "^4.5.12",
@@ -34,7 +36,7 @@
     "@types/p5": "^1.4.3",
     "@types/stats.js": "^0.17.3",
     "@types/three": "^0.146.0",
-    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitejs/plugin-vue": "^5.0.0",
     "autoprefixer": "^10.4.12",
     "eslint": "^8.56.0",
     "fabric": "^5.2.4",

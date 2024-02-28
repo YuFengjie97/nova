@@ -12,11 +12,17 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
   scene.background = new Color(0x000000)
   const camera = new PerspectiveCamera(75, width / height, 0.1, 2000)
   camera.position.set(0, 0, 10)
+
   const renderer = new WebGLRenderer({
     canvas,
     antialias: true,
   })
   // renderer.setPixelRatio(window.devicePixelRatio) // 不推荐
+
+  const orbitControls = new OrbitControls(camera, renderer.domElement)
+  orbitControls.target = new Vector3(0, 0, 0)
+  orbitControls.object.position.set(0, 0, 10) // 相机位置
+  orbitControls.update()
 
   initSize()
 
@@ -37,15 +43,6 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
   // 帧率状态
   const { stats } = initStats(con)
 
-  // 轨道控制器
-  let orbitControls: OrbitControls
-  if (needControl) {
-    orbitControls = new OrbitControls(camera, renderer.domElement)
-    orbitControls.target = new Vector3(0, 0, 0)
-    orbitControls.object.position.set(0, 0, 1000)
-    orbitControls.update()
-  }
-
   function renderWrap(animate: () => void = () => {}) {
     let animateId = 0
     function render() {
@@ -64,5 +61,5 @@ export function initThree(con: HTMLElement, needAxes = false, needAmbientLight =
     return render
   }
 
-  return { scene, camera, renderer, stats, renderWrap }
+  return { scene, camera, renderer, stats, renderWrap, orbitControls }
 }
