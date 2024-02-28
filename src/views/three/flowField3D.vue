@@ -1,25 +1,34 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { createNoise3D } from 'simplex-noise'
+import { createNoise3D, createNoise4D } from 'simplex-noise'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NoBlending, Points, PointsMaterial, Vector2, Vector3 } from 'three'
 import chroma from 'chroma-js'
 import { initThree } from '@/hooks/initThree'
 import { initStats } from '@/hooks/initStats'
 
 const { random, PI, sin, cos, floor } = Math
-
 const palette = chroma.scale(['#00b894', '#0984e3', '#6c5ce7', '#fdcb6e', '#e84393'])
-
-let noiseZ = 0
-const noise3D = createNoise3D()
-
+const noise4D = createNoise4D()
 const con = ref<HTMLElement>()
-
 const paricleNum = 10000
 const positions = new Float32Array(paricleNum * 3)
 const colors = new Float32Array(paricleNum * 3)
 
+let xRange = 0
+let yRange = 0
+const zRange = 500
+let flowSize = 20
+const flowSizeZ = 100
+
+const maxSpeed = 2
 const particles: Array<Particle> = []
+const flowField: {
+  [k in string]: {
+    n: number
+    v: Vector3
+  }
+} = {}
+
 class Particle {
   ind: number
   acc: Vector3
@@ -30,49 +39,84 @@ class Particle {
     this.vel = new Vector3(0, 0, 0)
   }
 
-  updatePos(acc: Vector3) {
+  getPos() {
+    return { x: positions[this.ind * 3], y: positions[this.ind * 3 + 1], z: positions[this.ind * 3 + 2] }
+  }
+
+  edge() {
+    const { x, y, z } = this.getPos()
+    // if (x < 0)
+    //   positions[this.ind * 3] = xRange
+    // if (x > xRange)
+    //   positions[this.ind * 3] = 0
+    // if (y < 0)
+    //   positions[this.ind * 3 + 1] = yRange
+    // if (y > yRange)
+    //   positions[this.ind * 3 + 1] = 0
+    if (x < 0 || x > xRange || y < 0 || y > yRange) {
+      positions[this.ind * 3] = random() * xRange
+      positions[this.ind * 3 + 1] = random() * yRange
+      this.vel.setLength(0)
+    }
+    if (z < 0)
+      positions[this.ind * 3 + 2] = zRange
+
+    if (z > zRange)
+      positions[this.ind * 3 + 2] = 0
+  }
+
+  update(n: number, acc: Vector3) {
+    this.edge()
+    const [r, g, b] = palette(n).gl()
+    colors[this.ind * 3] = r
+    colors[this.ind * 3 + 1] = g
+    colors[this.ind * 3 + 2] = b
+
     this.acc.add(acc)
     this.vel.add(this.acc)
-    positions[this.ind] += this.vel.x
-    positions[this.ind + 1] += this.vel.y
-    positions[this.ind + 2] += this.vel.z
+    if (this.vel.length() > maxSpeed)
+      this.vel.setLength(maxSpeed)
+    positions[this.ind * 3] += this.vel.x
+    positions[this.ind * 3 + 1] += this.vel.y
+    positions[this.ind * 3 + 2] += this.vel.z
     this.acc.setLength(0)
   }
-
-  updateCol(r: number, g: number, b: number) {
-    colors[this.ind] = r
-    colors[this.ind + 1] = g
-    colors[this.ind + 2] = b
-  }
 }
-onMounted(() => {
-  let xRange = 0
-  let yRange = 0
-  let flowSize = 0
-  const zRange = 100
-  const flowSizeZ = 10
-  const noiseSpeed = 0.01
 
+onMounted(() => {
   const { width, height } = con.value!.getBoundingClientRect()
   xRange = width
   yRange = height
-  flowSize = height / 10
+  flowSize = height / 20
   const { stats } = initStats(con.value!)
-  const { scene, camera, renderWrap, orbitControls } = initThree(con.value!, true, false, false)
-  camera.position.set(width / 2, height / 2, 430)// z轴距离是试出来的，所有粒子刚好能被看到
+  const { scene, camera, renderWrap, orbitControls } = initThree(con.value!, false, false, false)
+  camera.position.set(width / 2, height / 2, 530)// z轴距离是试出来的，所有粒子刚好能被看到
   camera.lookAt(width / 2, height / 2, 0) // z轴距离是试出来的，所有粒子刚好能被看到
 
   // 调试代码
   orbitControls.target = new Vector3(width / 2, height / 2, 0)
-  orbitControls.object.position.set(width / 2, height / 2, 430)
+  orbitControls.object.position.set(width / 2, height / 2, 530)
   orbitControls.update()
 
   scene.background = new Color(0x000)
 
+  // flowField初始化
+  for (let x = -1; x * flowSize < xRange + flowSize; x += 1) {
+    for (let y = -1; y * flowSize < yRange + flowSize; y += 1) {
+      for (let z = -1; z * flowSizeZ < zRange + flowSizeZ; z += 1) {
+        flowField[`${x},${y},${z}`] = {
+          n: 0,
+          v: new Vector3(0, 0, 0),
+        }
+      }
+    }
+  }
+
+  // 粒子初始化
   for (let i = 0; i < paricleNum; i++) {
     const x = random() * xRange
     const y = random() * yRange
-    const z = random() * zRange
+    const z = 0
     positions[i * 3] = x
     positions[i * 3 + 1] = y
     positions[i * 3 + 2] = z
@@ -96,34 +140,41 @@ onMounted(() => {
   const mesh = new Points(geo, mat)
   scene.add(mesh)
 
+  // 使用xoff,yoff,zoff是因为使用粒子位置去做映射比较麻烦，不好控制
+  const xInc = 0.1
+  const yInc = 0.1
+  const zInc = 0.1
+  let toff = 0
+  const tInc = 0.001
   renderWrap(() => {
     stats.update()
-    noiseZ += noiseSpeed
-
-    for (let i = 0; i < paricleNum; i++) {
-      const x = positions[i * 3]
-      const y = positions[i * 3 + 1]
-      // const [xoff, yoff, zoff] = noiseStates[`${floor(x / flowSize)},${floor(y / flowSize)},${floor(z / flowSizeZ)}`]
-
-      const nz = noise3D(x / xRange * 2, y / yRange * 2, noiseZ) * 0.5 + 0.5
-      positions[i * 3 + 2] = nz * zRange
-
-      const xf = floor(x / flowSize)
-      const yf = floor(y / flowSize)
-      const angle = 2 * PI * (noise3D(xf * 100 / xRange, yf * 100 / yRange, noiseZ) * 0.5 + 0.5)
-      const length = 10 * (noise3D(x / xRange + 100, y / yRange + 100, noiseZ) * 0.5 + 0.5)
-      let x2 = x + cos(angle) * length
-      let y2 = y + sin(angle) * length
-      x2 = x2 < 0 ? xRange : x2 > width ? 0 : x2
-      y2 = y2 < 0 ? yRange : y2 > height ? 0 : y2
-      positions[i * 3] = x2
-      positions[i * 3 + 1] = y2
-
-      const [r, g, b] = palette(nz).gl()
-      colors[i * 3] = r
-      colors[i * 3 + 1] = g
-      colors[i * 3 + 2] = b
+    // flowField更新
+    toff += tInc
+    let xoff = 0
+    for (let x = -1; x * flowSize < xRange + flowSize; x += 1) {
+      xoff += xInc
+      let yoff = 0
+      for (let y = -1; y * flowSize < yRange + flowSize; y += 1) {
+        yoff += yInc
+        let zoff = 0
+        for (let z = -1; z * flowSizeZ < zRange + flowSizeZ; z += 1) {
+          zoff += zInc
+          const n = noise4D(xoff, yoff, zoff, toff) * 0.5 + 0.5
+          const angle = 4 * PI * n
+          const length = maxSpeed * 0.1 * n
+          flowField[`${x},${y},${z}`].n = n
+          flowField[`${x},${y},${z}`].v.set(cos(angle) * length, sin(angle) * length, cos(angle) * zRange * 0.0001)
+        }
+      }
     }
+
+    // 粒子更新
+    particles.forEach((p) => {
+      const { x, y, z } = p.getPos()
+
+      const { n, v } = flowField[`${floor(x / flowSize)},${floor(y / flowSize)},${floor(z / flowSizeZ)}`]
+      p.update(n, v)
+    })
     mesh.geometry.attributes.position.needsUpdate = true
     mesh.geometry.attributes.color.needsUpdate = true
   })()
