@@ -31,11 +31,11 @@ const flowField: {
 
 class Particle {
   ind: number
-  acc: Vector3
+  // acc: Vector3
   vel: Vector3
   constructor(ind: number) {
     this.ind = ind
-    this.acc = new Vector3(0, 0, 0)
+    // this.acc = new Vector3(0, 0, 0)
     this.vel = new Vector3(0, 0, 0)
   }
 
@@ -72,14 +72,14 @@ class Particle {
     colors[this.ind * 3 + 1] = g
     colors[this.ind * 3 + 2] = b
 
-    this.acc.add(acc)
-    this.vel.add(this.acc)
+    // this.acc.add(acc)
+    this.vel.add(acc)
     if (this.vel.length() > maxSpeed)
       this.vel.setLength(maxSpeed)
     positions[this.ind * 3] += this.vel.x
     positions[this.ind * 3 + 1] += this.vel.y
     positions[this.ind * 3 + 2] += this.vel.z
-    this.acc.setLength(0)
+    // this.acc.setLength(0)
   }
 }
 
