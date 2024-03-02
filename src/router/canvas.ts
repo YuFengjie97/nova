@@ -82,6 +82,15 @@ const canvas: RouteRecordRaw = {
       },
       component: () => import('@/views/canvas/nyanCat.vue'),
     },
+    {
+      path: 'particle-life',
+      meta: {
+        type: 'canvas',
+        name: '粒子生命模拟',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/particleLife.vue'),
+    },
   ],
 }
 
