@@ -63,3 +63,7 @@ export function getTriangleCenter<T>(p1: T, p2: T, p3: T): T {
     return new Vector3().copy(p1).add(p2).add(p3).multiplyScalar(1 / 3) as T
   throw new Error('类型错误')
 }
+
+export function numFixed(val: number, tail: number) {
+  return Number.parseFloat(val.toFixed(tail))
+}

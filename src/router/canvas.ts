@@ -91,6 +91,15 @@ const canvas: RouteRecordRaw = {
       },
       component: () => import('@/views/canvas/particleLife.vue'),
     },
+    {
+      path: 'test',
+      meta: {
+        type: 'canvas',
+        name: 'test',
+        visable: false,
+      },
+      component: () => import('@/views/canvas/test.vue'),
+    },
   ],
 }
 

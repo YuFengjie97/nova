@@ -16,10 +16,14 @@
 .github{
   transform-origin: center;
   transform:translate(33%, -100%) rotate(-45deg) ;
-  box-shadow: 0 0 10px #eee;
+  box-shadow: 0 0 2px #eee;
+  transition: box-shadow .3s;
   a {
     color: #000;
     text-decoration: none;
+  }
+  &:hover {
+    box-shadow: 0 0 15px #eee;
   }
 }
 </style>
