@@ -66,6 +66,11 @@ const three: RouteRecordRaw = {
       meta: { type: 'threejs', name: 'flowField-粒子-3D', visable: true },
       component: () => import('@/views/three/flowFieldPoint3D.vue'),
     },
+    {
+      path: 'particle-life',
+      meta: { type: 'threejs', name: '粒子生命模拟', visable: true },
+      component: () => import('@/views/three/particleLife.vue'),
+    },
   ],
 }
 

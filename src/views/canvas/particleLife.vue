@@ -75,7 +75,9 @@ onMounted(() => {
         // this.y = random() * randomSize - randomSize / 2 + cy
         this.x = random() * width
         this.y = random() * height
+        return true
       }
+      return false
     }
 
     accletorForce(dist: number, a: number) {
@@ -92,7 +94,8 @@ onMounted(() => {
     }
 
     update(p: Particle) {
-      this.edge()
+      if (this.edge())
+        return
       const a = AGrid[this.type][p.type]
 
       // dx,dy的方向，即p-this或this-p决定了正负与吸引排斥的关系

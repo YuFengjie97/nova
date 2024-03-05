@@ -88,6 +88,7 @@ onMounted(() => {
   xRange = width / 4
   yRange = height / 4
   flowSize = height / 40
+
   const { scene, camera, renderWrap, orbitControls } = initThree(con.value!, false, false, false)
   camera.position.set(xRange / 2, yRange / 2, zRange * 2)
   camera.lookAt(xRange / 2, yRange / 2, 0)

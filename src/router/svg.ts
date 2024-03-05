@@ -15,6 +15,11 @@ const svg: RouteRecordRaw = {
       meta: { name: '电路板-svg', visable: true, type: 'svg' },
       component: () => import('@/views/svg/circuitBoard.vue'),
     },
+    {
+      path: 'circuit-board-2',
+      meta: { name: '电路板-svg-蓝', visable: true, type: 'svg' },
+      component: () => import('@/views/svg/circuitBoard2.vue'),
+    },
   ],
 }
 
