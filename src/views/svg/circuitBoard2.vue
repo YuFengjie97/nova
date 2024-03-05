@@ -5,13 +5,16 @@ const { floor, random } = Math
 const con = ref<HTMLElement>()
 const svgCon = ref<SVGElement>()
 const settings = {
-  size: 20,
-  wireMaxLen: 40,
-  stroke: '#ff9f43',
-  fill: '#b2bec3',
-  blank: '#10ac84',
+  size: 20, // 屏幕尺寸按着这个尺寸分割为cell
+  wireMaxLen: 40, // 每条焊线的最大节点数，即长度
+  stroke: '#81ecec', // 焊线和焊点的颜色
+  bg: '#000', // pcb板的颜色
+  pathBg: '#2d3436', // 动画path的背景色
+  pathBloomLength: 10, // 动画path的小光点的长度
+  bloomSpeed: 50, // 动画path的小光点的速度
   straightness: 2, // 线条直线度，数值越大，越趋向于直线
 }
+const bg = ref(settings.bg)
 
 onMounted(() => {
   const { width, height } = con.value!.getBoundingClientRect()
@@ -123,17 +126,19 @@ onMounted(() => {
       const circle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
       const circle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
 
-      let d = ''
+      let d = '' // path的d属性
       const s = settings.size
-      const r = random() * (s / 6) + s / 6
+      const r = random() * (s / 6) + s / 12
 
       circle1.setAttribute('r', `${r}`)
       circle2.setAttribute('r', `${r}`)
-      circle1.setAttribute('stroke', `#fff`)
-      circle2.setAttribute('stroke', `#fff`)
+      circle1.setAttribute('stroke', settings.stroke)
+      circle2.setAttribute('stroke', settings.stroke)
+      circle1.setAttribute('stroke-width', `${r / 4}`)
+      circle2.setAttribute('stroke-width', `${r / 2}`)
       const isFill = random() > 0.5
-      circle1.setAttribute('fill', isFill ? settings.fill : settings.blank)
-      circle2.setAttribute('fill', isFill ? settings.fill : settings.blank)
+      circle1.setAttribute('fill', isFill ? settings.stroke : settings.bg)
+      circle2.setAttribute('fill', isFill ? settings.stroke : settings.bg)
       for (let i = 0; i < this.cells.length; i += 1) {
         const cur = this.cells[i]
         if (i === 0) {
@@ -157,10 +162,19 @@ onMounted(() => {
       path.setAttribute('stroke-width', `${r * 2}`)
       const length = path.getTotalLength()
       // 在@keyframes中使用calc对css自定义变量进行计算有问题，动画不生效，在js里手动计算吧
-      path.style.cssText = `--len: ${length}; --len-1:${-length}; --len-3:${-3 * length}`
-      // path.setAttribute('stroke-dasharray', `${length}, ${length}`)
-      // path.setAttribute('stroke-dashoffset', `${length}`)
-      path.classList.add(random() > 0.5 ? 'animated-path-once' : 'animated-path-repeat')
+      path.style.cssText = `
+      --len: ${length}; 
+      --len-1:${-length};
+      --len_add_bloomLen:${length + settings.pathBloomLength};
+      --animate-time:${(length / settings.bloomSpeed).toFixed(1)}s
+      `
+      const isAnimated = random() > 0.5
+      if (isAnimated) {
+        const pathBg = path.cloneNode(false)
+        path.setAttribute('stroke', settings.pathBg)
+        svgCon.value?.append(pathBg)
+      }
+      path.classList.add(isAnimated ? 'animated-path-repeat' : 'animated-path-once')
       svgCon.value?.append(path)
       svgCon.value?.append(circle1)
       svgCon.value?.append(circle2)
@@ -189,7 +203,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="con" class="w-full h-full bg-#10ac84">
+  <div ref="con" class="w-full h-full" :style="{ background: bg }">
     <svg ref="svgCon" class="block" xmlns="http://www.w3.org/2000/svg" version="1.1" />
   </div>
 </template>
@@ -208,18 +222,18 @@ onMounted(() => {
   }
 
   100% {
-    stroke-dashoffset: var(--len-3);
+    stroke-dashoffset: var(--len_add_bloomLen);
   }
 }
 
 .animated-path-once {
   stroke-dasharray: var(--len), var(--len);
   stroke-dashoffset: var(--len);
-  animation: drawLine-once 1.5s ease-in forwards;
+  animation: drawLine-once 0.5s ease-in forwards;
 }
 
 .animated-path-repeat {
-  stroke-dasharray: var(--len), var(--len);
-  animation: drawLine-repeat 1.5s linear infinite forwards;
+  stroke-dasharray: var(--len), 10;
+  animation: drawLine-repeat var(--animate-time) linear infinite forwards;
 }
 </style>
