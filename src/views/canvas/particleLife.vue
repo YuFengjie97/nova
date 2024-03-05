@@ -13,7 +13,7 @@ const palette = chroma.scale(['#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffea
 
 const typeNum = 8
 const particleNum = typeNum * 100
-const particleRadius = 1.8
+const particleRadius = 2
 const frictionFactor = 0.98
 const AGrid: Array<Array<number>> = [] // 整数引力，负数斥力
 
@@ -161,7 +161,7 @@ onMounted(() => {
   function updateParticles() {
     for (let i = 0; i < particles.length; i++) {
       const p1 = particles[i]
-      for (let j = 0; j < particles.length; j++) {
+      for (let j = i + 1; j < particles.length; j++) {
         if (i === j)
           continue
         const p2 = particles[j]
@@ -181,9 +181,9 @@ onMounted(() => {
     animateId = requestAnimationFrame(animate)
   }
   animate()
-  setInterval(() => {
-    particles.forEach(p => console.log(p.x, p.vx))
-  }, 1000)
+  // setInterval(() => {
+  //   particles.forEach(p => console.log(p.x, p.vx))
+  // }, 1000)
 })
 onUnmounted(() => {
   cancelAnimationFrame(animateId)
