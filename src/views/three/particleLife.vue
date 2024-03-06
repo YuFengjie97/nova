@@ -13,7 +13,7 @@ const { PI, min, atan } = Math
 const con = ref<HTMLElement>()
 
 const typeNum = 8
-const typeParticleNum = 150
+const typeParticleNum = 100
 const particleNum = typeNum * typeParticleNum
 const palette = chroma.scale(['#00b894', '#0984e3', '#6c5ce7', '#fdcb6e', '#e84393'])
 
