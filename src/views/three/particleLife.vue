@@ -1,72 +1,82 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import { createNoise4D } from 'simplex-noise'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NoBlending, Points, PointsMaterial, ShaderMaterial, TextureLoader, Vector2, Vector3 } from 'three'
 import chroma from 'chroma-js'
+import workerjs from './particleLife.ts?url'
+import type { Settings } from './particleLife'
 import { initThree } from '@/hooks/initThree'
 import picDot from '@/assets/img/textures/dotTexture.png'
 
-const { random, PI, sin, cos, floor, sqrt, min } = Math
+const worker = new Worker(workerjs)
+
+const { PI, min, atan } = Math
 const con = ref<HTMLElement>()
 
-const typeNum = 4
-const typeParticleNum = 100
+const typeNum = 8
+const typeParticleNum = 150
 const particleNum = typeNum * typeParticleNum
 const palette = chroma.scale(['#00b894', '#0984e3', '#6c5ce7', '#fdcb6e', '#e84393'])
 
-const AGrid: Array<Array<number>> = []
-function initGrid() {
-  let off = -0
-  for (let i = 0; i < typeNum; i++) {
-    const arr = []
-    for (let j = 0; j < typeNum; j++) {
-      off += 0.1
-      off = off > 1 ? -1 : off
-      arr.push(off)
-    }
-    AGrid.push(arr)
-  }
-}
-initGrid()
-
-function resetGrid() {
-  for (let i = 0; i < typeNum; i++) {
-    for (let j = 0; j < typeNum; j++) {
-      // AGrid[i][j] = floor((random() * 20) - 10) * 0.1
-      let val = AGrid[i][j]
-      val += 0.1
-      AGrid[i][j] = val > 1 ? -1 : val
-    }
-  }
-}
-setInterval(resetGrid, 1500)
-
-onMounted(() => {
+onUnmounted(() => {
+  worker.postMessage('close')
+  worker.terminate()
+})
+onMounted(async () => {
   const { width, height } = con.value!.getBoundingClientRect()!
-  const { scene, camera, renderWrap, orbitControls } = initThree(con.value!, true, false, true)
+  const { scene, camera, renderWrap } = initThree(con.value!, true, false, false)
   const xRange = width
   const yRange = height
-  const distMin = 40
-  const distMax = 80
-  const frictionFactor = 0.98
+  const particleSize = 6
+  const frictionFactor = 0.8
+  const cellSize = min(width, height) / 30
+  const distMin = particleSize * 4 // 小于这个距离，所有力都会变成斥力
+  const distMax = cellSize * 5 // 在disMin - distMax范围内受AGrid定义的力的影响
+  const forceFactor = 0.5
+
+  async function initSettings() {
+    return new Promise((resolve) => {
+      worker.postMessage({
+        tag: 'init_settings',
+        data: {
+          typeNum,
+          typeParticleNum,
+          width,
+          height,
+          xRange,
+          yRange,
+          frictionFactor,
+          distMin,
+          distMax,
+          forceFactor,
+        } as Settings,
+      })
+      worker.onmessage = (e) => {
+        if (e.data.tag === 'init_settings_done') {
+          // eslint-disable-next-line no-console
+          console.log('init_settings_done')
+          resolve(1)
+        }
+      }
+    })
+  }
+  await initSettings()
 
   scene.background = new Color(0x000)
-  camera.position.set(xRange / 2, yRange / 2, 400)
-  camera.lookAt(xRange / 2, yRange / 2, min(xRange, yRange) * 0.6)
-
-  // 调试代码
-  orbitControls.target = new Vector3(xRange / 2, yRange / 2, 0)
-  orbitControls.object.position.set(xRange / 2, yRange / 2, min(xRange, yRange) * 0.6)
-  orbitControls.update()
+  const cameraZ = 800
+  camera.position.set(xRange / 2, yRange / 2, cameraZ)
+  // 适配
+  camera.aspect = width / height
+  camera.fov = atan(height / 2 / cameraZ) * 2 / PI * 180
+  camera.lookAt(xRange / 2, yRange / 2, 0)
+  camera.updateProjectionMatrix()
 
   class ParticleCloud {
-    positions = new Float32Array(typeNum * typeParticleNum * 3)
-    vels = new Float32Array(typeNum * typeParticleNum * 3)
-    colors = new Float32Array(typeNum * typeParticleNum * 3)
-    types = new Float32Array(typeNum * typeParticleNum)
+    positions: Float32Array
+    colors: Float32Array
+    types: Float32Array
     geo = new BufferGeometry()
     mat = new PointsMaterial({
-      size: 4.5,
+      size: particleSize,
       map: new TextureLoader().load(picDot), // 加载圆形纹理
       blending: AdditiveBlending,
       transparent: false,
@@ -75,27 +85,31 @@ onMounted(() => {
     })
 
     mesh: Points
-    constructor() {
+    constructor(positions: Float32Array, types: Float32Array) {
+      this.positions = new Float32Array(typeNum * typeParticleNum * 3)
+      this.types = new Float32Array(typeNum * typeParticleNum)
+      for (let i = 0; i < positions.length; i++)
+        this.positions[i] = positions[i]
+
+      for (let i = 0; i < types.length; i++)
+        this.types[i] = types[i]
+
+      this.positions = positions
+      this.types = types
+      this.colors = new Float32Array(particleNum * 3)
       this.geo.setAttribute('position', new BufferAttribute(this.positions, 3))
       this.geo.setAttribute('color', new BufferAttribute(this.colors, 3))
       for (let t = 0; t < typeNum; t++) {
         for (let n = 0; n < typeParticleNum; n++) {
           const i = t * typeParticleNum + n
-          this.types[i] = t
-          this.positions[i * 3] = random() * xRange
-          this.positions[i * 3 + 1] = random() * yRange
-          this.positions[i * 3 + 2] = 10
-          this.vels[i * 3] = 0
-          this.vels[i * 3 + 1] = 0
-          this.vels[i * 3 + 2] = 0
           const [r, g, b] = palette(t / typeNum).gl()
-
           this.colors[i * 3] = r
           this.colors[i * 3 + 1] = g
           this.colors[i * 3 + 2] = b
         }
       }
       this.mesh = new Points(this.geo, this.mat)
+      this.mesh.geometry.attributes.position.needsUpdate = true
       scene.add(this.mesh)
     }
 
@@ -113,57 +127,22 @@ onMounted(() => {
       return [this.positions[3 * i], this.positions[3 * i + 1], this.positions[3 * i + 2]]
     }
 
-    getVel(i: number) {
-      return [this.vels[3 * i], this.vels[3 * i + 1], this.vels[3 * i + 2]]
-    }
+    async update() {
+      return new Promise((resolve) => {
+        worker.postMessage({
+          tag: 'update_cloud',
+        })
+        worker.onmessage = (e) => {
+          const { data } = e.data
 
-    getRGB(i: number) {
-      return [this.colors[3 * i], this.colors[3 * i + 1], this.colors[3 * i + 2]]
-    }
-
-    edge(i: number) {
-      const [x, y] = this.getPos(i)
-
-      if (x < 0 || x > xRange || y < 0 || y > yRange) {
-        const angle = random() * 2 * PI
-        const length = random() * xRange / 4
-        this.positions[i * 3] = cos(angle) * length + xRange / 2
-        this.positions[i * 3 + 1] = sin(angle) * length + xRange / 2
-        return true
-      }
-      return false
-    }
-
-    update() {
-      for (let m = 0; m < particleNum; m++) {
-        for (let n = m + 1; n < particleNum; n++) {
-          if (this.edge(m) || this.edge(n))
-            continue
-          const [mx, my] = this.getPos(m)
-          const [nx, ny] = this.getPos(n)
-          const dx = mx - nx
-          const dy = my - ny
-          const dist = sqrt(dx ** 2 + dy ** 2)
-          const tm = this.types[m]
-          const tn = this.types[n]
-          const a = AGrid[tm][tn]
-          const f = this.accelatorForce(dist, a)
-
-          // console.log(this.positions[m * 3], this.positions[m * 3 + 1])
-
-          this.vels[m * 3] = dx / dist * f
-          this.vels[m * 3 + 1] = dy / dist * f
-
-          this.vels[m * 3] *= frictionFactor
-          this.vels[m * 3 + 1] *= frictionFactor
-
-          // console.log(this.vels[m * 3], this.vels[m * 3 + 1])
-
-          const [vx, vy] = this.getVel(m)
-          this.positions[m * 3] += vx
-          this.positions[m * 3 + 1] += vy
+          if (e.data.tag === 'update_cloud_done') {
+            const { positions } = data
+            for (let i = 0; i < positions.length; i++)
+              this.positions[i] = positions[i]
+            resolve(1)
+          }
         }
-      }
+      })
     }
 
     draw() {
@@ -172,17 +151,28 @@ onMounted(() => {
     }
   }
 
-  const cloud = new ParticleCloud()
+  async function initCloud(): Promise<ParticleCloud> {
+    worker.postMessage({
+      tag: 'init_cloud',
+    })
+    return new Promise((resolve) => {
+      worker.onmessage = (e) => {
+        if (e.data.tag === 'init_cloud_done') {
+          const { positions, types } = e.data.data
+          const cloud = new ParticleCloud(positions, types)
+          // eslint-disable-next-line no-console
+          console.log('init_cloud_done')
+          resolve(cloud)
+        }
+      }
+    })
+  }
+  const cloud = await initCloud()
 
   renderWrap(() => {
     cloud.update()
     cloud.draw()
   })()
-
-  // setInterval(() => {
-  //   cloud.update()
-  //   cloud.draw()
-  // }, 1000)
 })
 </script>
 

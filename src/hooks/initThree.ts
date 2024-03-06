@@ -3,6 +3,8 @@ import { onMounted, onUnmounted } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { initStats } from './initStats'
 
+const { max, min } = Math
+
 export function initThree(con: HTMLElement, needAxes = false, needAmbientLight = false, needControl = false) {
   const { width, height } = con.getBoundingClientRect()
 
