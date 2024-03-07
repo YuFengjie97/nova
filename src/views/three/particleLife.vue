@@ -2,64 +2,32 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NoBlending, Points, PointsMaterial, ShaderMaterial, TextureLoader, Vector2, Vector3 } from 'three'
 import chroma from 'chroma-js'
-import workerjs from './particleLife.ts?url'
+import MyWorker from './particleLife.ts?worker'
 import type { Settings } from './particleLife'
 import { initThree } from '@/hooks/initThree'
 import picDot from '@/assets/img/textures/dotTexture.png'
 
-const worker = new Worker(workerjs)
+const worker = new MyWorker()
 
 const { PI, min, atan } = Math
 const con = ref<HTMLElement>()
 
 const typeNum = 8
-const typeParticleNum = 100
+const typeParticleNum = 50
 const particleNum = typeNum * typeParticleNum
 const palette = chroma.scale(['#00b894', '#0984e3', '#6c5ce7', '#fdcb6e', '#e84393'])
 
-onUnmounted(() => {
-  worker.postMessage('close')
-  worker.terminate()
-})
 onMounted(async () => {
   const { width, height } = con.value!.getBoundingClientRect()!
   const { scene, camera, renderWrap } = initThree(con.value!, true, false, false)
   const xRange = width
   const yRange = height
-  const particleSize = 6
+  const particleSize = 8
   const frictionFactor = 0.8
-  const cellSize = min(width, height) / 30
-  const distMin = particleSize * 4 // 小于这个距离，所有力都会变成斥力
-  const distMax = cellSize * 5 // 在disMin - distMax范围内受AGrid定义的力的影响
+  const cellSize = min(width, height)
+  const distMin = particleSize * 2 // 小于这个距离，所有力都会变成斥力
+  const distMax = cellSize / 10 // 在disMin - distMax范围内受AGrid定义的力的影响
   const forceFactor = 0.5
-
-  async function initSettings() {
-    return new Promise((resolve) => {
-      worker.postMessage({
-        tag: 'init_settings',
-        data: {
-          typeNum,
-          typeParticleNum,
-          width,
-          height,
-          xRange,
-          yRange,
-          frictionFactor,
-          distMin,
-          distMax,
-          forceFactor,
-        } as Settings,
-      })
-      worker.onmessage = (e) => {
-        if (e.data.tag === 'init_settings_done') {
-          // eslint-disable-next-line no-console
-          console.log('init_settings_done')
-          resolve(1)
-        }
-      }
-    })
-  }
-  await initSettings()
 
   scene.background = new Color(0x000)
   const cameraZ = 800
@@ -127,21 +95,26 @@ onMounted(async () => {
       return [this.positions[3 * i], this.positions[3 * i + 1], this.positions[3 * i + 2]]
     }
 
-    async update() {
-      return new Promise((resolve) => {
-        worker.postMessage({
-          tag: 'update_cloud',
-        })
-        worker.onmessage = (e) => {
-          const { data } = e.data
+    // async update() {
+    //   return new Promise((resolve) => {
+    //     worker.postMessage({
+    //       tag: 'update_cloud',
+    //     })
+    //     worker.onmessage = (e) => {
+    //       const { data } = e.data
 
-          if (e.data.tag === 'update_cloud_done') {
-            const { positions } = data
-            for (let i = 0; i < positions.length; i++)
-              this.positions[i] = positions[i]
-            resolve(1)
-          }
-        }
+    //       if (e.data.tag === 'update_cloud_done') {
+    //         const { positions } = data
+    //         for (let i = 0; i < positions.length; i++)
+    //           this.positions[i] = positions[i]
+    //         resolve(1)
+    //       }
+    //     }
+    //   })
+    // }
+    update() {
+      worker.postMessage({
+        tag: 'update_cloud',
       })
     }
 
@@ -150,6 +123,35 @@ onMounted(async () => {
       this.mesh.geometry.attributes.color.needsUpdate = true
     }
   }
+
+  async function initSettings() {
+    return new Promise((resolve) => {
+      worker.postMessage({
+        tag: 'init_settings',
+        data: {
+          typeNum,
+          typeParticleNum,
+          width,
+          height,
+          xRange,
+          yRange,
+          frictionFactor,
+          distMin,
+          distMax,
+          forceFactor,
+        } as Settings,
+      })
+      worker.onmessage = (e) => {
+        if (e.data.tag === 'init_settings_done') {
+          // eslint-disable-next-line no-console
+          console.log('init_settings_done')
+          resolve(1)
+        }
+      }
+    })
+  }
+
+  await initSettings()
 
   async function initCloud(): Promise<ParticleCloud> {
     worker.postMessage({
@@ -168,11 +170,24 @@ onMounted(async () => {
     })
   }
   const cloud = await initCloud()
+  worker.onmessage = (e) => {
+    const { data } = e.data
 
+    if (e.data.tag === 'update_cloud_done') {
+      const { positions } = data
+      for (let i = 0; i < positions.length; i++)
+        cloud.positions[i] = positions[i]
+    }
+  }
   renderWrap(() => {
     cloud.update()
     cloud.draw()
   })()
+})
+
+onUnmounted(() => {
+  worker.postMessage('close')
+  worker.terminate()
 })
 </script>
 

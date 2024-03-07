@@ -33,7 +33,6 @@ class ParticleCloud {
   AGrid: Array<Array<number>> = []
 
   /**
-   *
    * @param typeNum 几类粒子
    * @param typeParticleNum 每类多少个
    */
@@ -57,13 +56,13 @@ class ParticleCloud {
       }
     }
 
-    let off = -0
+    let off = -0.5
     for (let i = 0; i < typeNum; i++) {
       const arr = []
       for (let j = 0; j < typeNum; j++) {
         off += 0.1
         off = off > 1 ? -1 : off
-        arr.push(off)
+        arr.push(random() * 2 - 1)
       }
       this.AGrid.push(arr)
     }
@@ -116,7 +115,7 @@ class ParticleCloud {
     for (let m = 0; m < this.particleNum; m++) {
       let dfx = 0
       let dfy = 0
-      for (let n = m + 1; n < this.particleNum; n++) {
+      for (let n = 0; n < this.particleNum; n++) {
         if (this.edge(m) || this.edge(n) || m === n)
           continue
         const [mx, my] = this.getPos(m)
@@ -143,8 +142,10 @@ addEventListener('message', (e) => {
     data: Settings
   }
 
-  if (tag === 'close')
+  if (tag === 'close') {
     close()
+    postMessage({ tag: 'close_done' })
+  }
 
   if (tag === 'init_settings') {
     for (const key in data) {
