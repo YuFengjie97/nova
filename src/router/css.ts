@@ -95,6 +95,15 @@ const css: RouteRecordRaw = {
       },
       component: () => import('@/views/css/crushPic.vue'),
     },
+    {
+      path: 'hack-text',
+      meta: {
+        type: 'css',
+        name: '绿色终端',
+        visable: false,
+      },
+      component: () => import('@/views/css/hackText.vue'),
+    },
   ],
 }
 
