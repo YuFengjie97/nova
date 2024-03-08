@@ -33,7 +33,7 @@ const three: RouteRecordRaw = {
     },
     {
       path: 'solarSystem',
-      meta: { type: 'threejs', name: 'threejs太阳系', visable: true },
+      meta: { type: 'threejs', name: 'threejs太阳系', visable: false },
       component: () => import('@/views/three/SolarSystem.vue'),
     },
     {
@@ -43,7 +43,7 @@ const three: RouteRecordRaw = {
     },
     {
       path: 'atom',
-      meta: { type: 'threejs', name: '原子', visable: true },
+      meta: { type: 'threejs', name: '原子', visable: false },
       component: () => import('@/views/three/Atom.vue'),
     },
     {

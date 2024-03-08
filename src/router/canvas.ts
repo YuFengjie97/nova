@@ -69,7 +69,7 @@ const canvas: RouteRecordRaw = {
       meta: {
         type: 'canvas',
         name: '图片做Idle',
-        visable: true,
+        visable: false,
       },
       component: () => import('@/views/canvas/imgIdle.vue'),
     },

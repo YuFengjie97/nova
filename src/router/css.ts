@@ -73,7 +73,7 @@ const css: RouteRecordRaw = {
       meta: {
         type: 'css',
         name: '模拟水滴',
-        visable: true,
+        visable: false,
       },
       component: () => import('@/views/css/Water.vue'),
     },

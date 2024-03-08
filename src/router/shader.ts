@@ -7,7 +7,7 @@ const shader: RouteRecordRaw = {
   children: [
     {
       path: 'music-domainwrapping',
-      meta: { name: 'music-domainwrapping', visable: true },
+      meta: { name: 'music-domainwrapping', visable: false },
       component: () => import('@/views/shader/music_domainwrapping/index.vue'),
     },
     {

@@ -32,12 +32,12 @@ const p5: RouteRecordRaw = {
     },
     {
       path: 'musicRect',
-      meta: { name: 'musicRect', visable: true },
+      meta: { name: 'musicRect', visable: false },
       component: () => import('@/views/p5/MusicRect.vue'),
     },
     {
       path: 'musicCircle',
-      meta: { name: 'musicCircle', visable: true },
+      meta: { name: 'musicCircle', visable: false },
       component: () => import('@/views/p5/MusicCircle.vue'),
     },
     {
