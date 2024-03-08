@@ -1,0 +1,1 @@
+import{_ as a,o,b as s,aU as c}from"./index-FlqLmR99.js";const r={},t={class:"cardCon"};function n(e,d){return o(),s("div",t,[c(e.$slots,"default",{},void 0,!0)])}const f=a(r,[["render",n],["__scopeId","data-v-ba7a6c00"]]);export{f as C};
