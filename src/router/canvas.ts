@@ -113,7 +113,7 @@ const canvas: RouteRecordRaw = {
       path: 'music-mhsb',
       meta: {
         type: 'canvas',
-        name: '迷幻水波',
+        name: '我是一个快乐的鸡蛋饼',
         visable: true,
       },
       component: () => import('@/views/canvas/music/mihuanshuibo.vue'),
