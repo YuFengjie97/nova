@@ -100,6 +100,33 @@ const canvas: RouteRecordRaw = {
       },
       component: () => import('@/views/canvas/test.vue'),
     },
+    {
+      path: 'game-of-life',
+      meta: {
+        type: 'canvas',
+        name: '生命游戏',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/gameOfLife.vue'),
+    },
+    {
+      path: 'music-mhsb',
+      meta: {
+        type: 'canvas',
+        name: '迷幻水波',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/music/mihuanshuibo.vue'),
+    },
+    {
+      path: 'test',
+      meta: {
+        type: 'canvas',
+        name: 'test',
+        visable: false,
+      },
+      component: () => import('@/views/canvas/test.vue'),
+    },
   ],
 }
 
