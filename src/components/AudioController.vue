@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { AudioAnalyser } from '@/utils'
-import audioSrc from '@/assets/audio/audio1.mp3'
+import audioSrc from '@/assets/audio/audio-sugarCrush.mp3'
 
 const props = withDefaults(
   defineProps<{

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import P5Con from '@/components/P5Con.vue'
 import AudioController from '@/components/AudioController.vue'
 import { initBezier, newBezier } from '@/utils/p5bezier'
-import audio from '@/assets/audio/audio1.mp3'
+import audio from '@/assets/audio/audio-sugarCrush.mp3'
 import type { AudioAnalyser } from '@/utils'
 import { getRandomIndex } from '@/utils'
 

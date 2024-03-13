@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import p5 from 'p5'
 import AudioController from '@/components/AudioController.vue'
 import P5Con from '@/components/P5Con.vue'
-import audio from '@/assets/audio/audio1.mp3'
+import audio from '@/assets/audio/audio-sugarCrush.mp3'
 import type { AudioAnalyser } from '@/utils'
 
 import { initBezier, newBezier } from '@/utils/p5bezier'
