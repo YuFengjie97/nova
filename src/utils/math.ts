@@ -67,3 +67,7 @@ export function getTriangleCenter<T>(p1: T, p2: T, p3: T): T {
 export function numFixed(val: number, tail: number) {
   return Number.parseFloat(val.toFixed(tail))
 }
+
+export function lerp(start: number, end: number, amt: number) {
+  return (end - start) * amt + start
+}

@@ -119,6 +119,15 @@ const canvas: RouteRecordRaw = {
       component: () => import('@/views/canvas/music/mihuanshuibo.vue'),
     },
     {
+      path: 'music-rect',
+      meta: {
+        type: 'canvas',
+        name: '片片面',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/music/rect.vue'),
+    },
+    {
       path: 'test',
       meta: {
         type: 'canvas',

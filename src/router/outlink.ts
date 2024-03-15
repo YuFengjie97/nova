@@ -13,11 +13,11 @@ export const outlink = [
   },
   {
     path: 'https://codepen.io/Megalovania/pen/wvRvWdZ',
-    meta: { type: 'outlink', name: '生命游戏', visable: true },
+    meta: { type: 'outlink', name: '生命游戏', visable: false },
   },
   {
     path: 'https://codepen.io/Megalovania/pen/JjeaOJv',
-    meta: { type: 'outlink', name: 'gsap动画', visable: true },
+    meta: { type: 'outlink', name: 'gsap动画', visable: false },
   },
   {
     path: 'https://codepen.io/Megalovania/pen/mdQqgdv',
