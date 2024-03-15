@@ -20,6 +20,11 @@ const shader: RouteRecordRaw = {
       meta: { name: 'icon-gamepad', visable: false },
       component: () => import('@/views/shader/gamepad/index.vue'),
     },
+    {
+      path: 'music',
+      meta: { name: '音乐像素', visable: false, type: 'threejs' },
+      component: () => import('@/views/shader/music/index.vue'),
+    },
   ],
 }
 
