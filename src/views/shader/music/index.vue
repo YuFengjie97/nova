@@ -29,11 +29,11 @@ function handleAudio() {
     isPlaying.value = false
   }
 }
-// setInterval(() => {
-//   if (!isPlaying.value)
-//     return
-//   analyser.getFloatTimeDomainData(dataArray)
-// }, sampleInterval)
+setInterval(() => {
+  if (!isPlaying.value)
+    return
+  analyser.getFloatTimeDomainData(dataArray)
+}, sampleInterval)
 
 onMounted(() => {
   const { scene, renderWrap } = initThree(con.value!)
@@ -65,7 +65,7 @@ onMounted(() => {
 
   renderWrap(() => {
     const t = performance.now() / 1000
-    analyser && analyser.getFloatTimeDomainData(dataArray)
+    // analyser && analyser.getFloatTimeDomainData(dataArray)
     uniforms.iTime.value = t
   })()
 })

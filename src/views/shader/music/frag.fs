@@ -7,24 +7,13 @@ uniform int fftSize;
 uniform float dataArray[512];
 
 float PI = 3.1415926;
-float random(vec2 uv) {
-  // return fract(dot(sin(uv), vec2(1.)));
-  return fract(sin(dot(uv.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+float rand(float x) {
+  return fract(sin(x + iTime * 0.1) * 1.0);
 }
-float noise(vec2 uv) {
-  vec2 i = floor(uv);
-  vec2 f = fract(uv);
-
-  float a = random(i);
-  float b = random(i + vec2(size, 0));
-  float c = random(i + vec2(0., size));
-  float d = random(i + vec2(size));
-
-  vec2 u = f * f * (3. - 2. * f);
-
-  float v1 = mix(a, b, u.x);
-  float v2 = mix(c, d, u.x);
-  return mix(v1, v2, u.y);
+float noise(float x) {
+  float i = floor(x);
+  float f = fract(x);
+  return mix(rand(i), rand(i + 1.0), smoothstep(0., 1., f));
 }
 
 vec3 palette(float t) {
@@ -43,8 +32,10 @@ void main() {
   float distFactor = length(uv) / 0.5;
   int index = int(distFactor * float(fftSize));
   float val = dataArray[index];
+  float n = noise(iTime);
+  float p = n * .9 + val * 0.1;
 
-  vec3 col = palette(val);
+  vec3 col = palette(p);
   color_fin += col;
 
   gl_FragColor = vec4(color_fin, 1.);
