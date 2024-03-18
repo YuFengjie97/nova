@@ -1,23 +1,26 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import chroma from 'chroma-js'
+import { createNoise2D } from 'simplex-noise'
 import { initAudioAnalyser } from '@/utils/audio2'
 import mp3 from '@/assets/audio/audio-sugarCrush.mp3'
 import { initStats } from '@/hooks/initStats'
 import { lerp } from '@/utils'
+
+const noise = createNoise2D()
 
 const { min, max, PI, sin, cos, atan, random, abs, sqrt, floor } = Math
 const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
 let ctx: CanvasRenderingContext2D
 const canvasSize = 800
-const rectSize = 40
+const rectSize = 20
 const rows = canvasSize / rectSize
 const cols = canvasSize / rectSize
-const c = rows / 2
 const fftSize = 32
 const sampleInterval = 100
-const colors = ['#55efc4', '#81ecec', '#a29bfe', '#fd79a8', '#ffeaa7', '#ff7675']
+const colors = ['#d63031', '#81ecec', '#fdcb6e']
+// const colors = ['red', 'green', 'yellow']
 const palette = chroma.scale(colors)
 
 const dataArray = new Float32Array(fftSize)
@@ -38,7 +41,6 @@ function handleAudio() {
 class Rect {
   color = 0.1
   colort = 0.2
-  i = 0
   x = 0
   y = 0
   musicVal = 0
@@ -46,18 +48,26 @@ class Rect {
   h = 1
   wt = 1
   ht = 1
-  constructor(i: number, x: number, y: number, color: number) {
-    this.i = i
+  constructor(x: number, y: number, color: number) {
     this.x = x
     this.y = y
     this.color = color
     this.colort = color
   }
 
+  getData(i: number) {
+    return dataArray[i] * 0.5 + 0.5
+  }
+
   updateTarget() {
-    const i = floor(sqrt((this.x - c) ** 2 + (this.y - c) ** 2) / c * fftSize)
-    const n = dataArray[i] * 0.5 + 1
-    this.colort = n
+    const c = rows / 2
+    const xd = this.getData(floor((abs(this.x - c) / c) * fftSize))
+    const yd = this.getData(floor((abs(this.y - c) / c) * fftSize))
+    const d = ((noise(this.x / rows + xd, this.y / rows + yd) * 0.5 + 0.5))
+
+    this.wt = d
+    this.ht = d
+    this.colort = d
   }
 
   update() {
@@ -69,7 +79,11 @@ class Rect {
   draw() {
     ctx.beginPath()
     ctx.fillStyle = palette(this.color).css()
-    ctx.fillRect(this.x * rectSize, this.y * rectSize, this.w * rectSize, this.h * rectSize)
+    const w = this.w * rectSize
+    const h = this.h * rectSize
+    const x = this.x * rectSize + ((1 - this.w) / 2) * rectSize
+    const y = this.y * rectSize + ((1 - this.h) / 2) * rectSize
+    ctx.fillRect(x, y, w, h)
   }
 }
 
@@ -88,8 +102,7 @@ onMounted(() => {
     for (let x = 0; x < cols; x += 1) {
       for (let y = 0; y < rows; y += 1) {
         const d = (x + y) / (rows * 2)
-        const i = x + y * cols
-        const rect = new Rect(i, x, y, d)
+        const rect = new Rect(x, y, d)
         rects.push(rect)
       }
     }
