@@ -117,7 +117,7 @@ function setup($p: p5, canvas?: p5.Renderer) {
     initBezier(canvas)
 }
 function draw($p: p5) {
-  $p.background('rgba(0, 0, 0, 0.08)')
+  $p.background('rgba(0, 0, 0, 1.)')
   // $p.background('#2d3436')
   if (aa) {
     updateRects($p)

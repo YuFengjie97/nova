@@ -10,6 +10,7 @@ import { lerp } from '@/utils'
 const noise = createNoise2D()
 
 const { min, max, PI, sin, cos, atan, random, abs, sqrt, floor } = Math
+const TP = PI * 2
 const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
 let ctx: CanvasRenderingContext2D
@@ -17,21 +18,27 @@ const canvasSize = 800
 const rectSize = 20
 const rows = canvasSize / rectSize
 const cols = canvasSize / rectSize
-const fftSize = 32
+const fftSize = 512
+const frequencyBinCount = fftSize / 2
 const sampleInterval = 100
 const colors = ['#d63031', '#81ecec', '#fdcb6e']
 // const colors = ['red', 'green', 'yellow']
 const palette = chroma.scale(colors)
 
-const dataArray = new Float32Array(fftSize)
+const dataArray = new Uint8Array(frequencyBinCount)
 let analyser: AnalyserNode
 const { audio, getAnalyser } = initAudioAnalyser(mp3, fftSize)
 const isPlaying = ref(false)
+
+function getData(i: number) {
+  return dataArray[i]
+}
 function handleAudio() {
   if (audio.paused) {
     audio.play()
     isPlaying.value = true
-    analyser = getAnalyser().analyser
+    if (!analyser)
+      analyser = getAnalyser().analyser
   }
   else {
     audio.pause()
@@ -48,6 +55,8 @@ class Rect {
   h = 1
   wt = 1
   ht = 1
+  a = 0
+  at = 0
   constructor(x: number, y: number, color: number) {
     this.x = x
     this.y = y
@@ -55,35 +64,36 @@ class Rect {
     this.colort = color
   }
 
-  getData(i: number) {
-    return dataArray[i] * 0.5 + 0.5
-  }
-
   updateTarget() {
-    const c = rows / 2
-    const xd = this.getData(floor((abs(this.x - c) / c) * fftSize))
-    const yd = this.getData(floor((abs(this.y - c) / c) * fftSize))
-    const d = ((noise(this.x / rows + xd, this.y / rows + yd) * 0.5 + 0.5))
+    const x = getData(this.x % frequencyBinCount)
+    const y = getData(this.y % frequencyBinCount)
+    const d = noise(x < 100 ? 1 : x, y < 100 ? 1 : y) * 0.5 + 0.5
 
     this.wt = d
     this.ht = d
     this.colort = d
+    this.at = d
   }
 
   update() {
     this.w = lerp(this.w, this.wt, 0.1)
     this.h = lerp(this.h, this.ht, 0.1)
     this.color = lerp(this.color, this.colort, 0.1)
+    this.a = lerp(this.a, this.at, 0.1)
   }
 
   draw() {
+    ctx.save()
     ctx.beginPath()
     ctx.fillStyle = palette(this.color).css()
     const w = this.w * rectSize
     const h = this.h * rectSize
-    const x = this.x * rectSize + ((1 - this.w) / 2) * rectSize
-    const y = this.y * rectSize + ((1 - this.h) / 2) * rectSize
-    ctx.fillRect(x, y, w, h)
+    const cx = this.x * rectSize + rectSize / 2
+    const cy = this.y * rectSize + rectSize / 2
+    ctx.translate(cx, cy)
+    ctx.rotate(this.a * TP)
+    ctx.fillRect(-w / 2, -h / 2, w, h)
+    ctx.restore()
   }
 }
 
@@ -121,9 +131,15 @@ onMounted(() => {
   animate()
 
   setInterval(() => {
-    if (!isPlaying.value)
-      return
-    analyser.getFloatTimeDomainData(dataArray)
+    analyser && analyser.getByteFrequencyData(dataArray)
+    // console.log(dataArray)
+
+    // console.log(dataArray.reduce((acc, cur) => {
+    //   acc.max = max(acc.max, cur)
+    //   acc.min = min(acc.min, cur)
+    //   return acc
+    // }, { min: 0, max: 0 }))
+
     rects.forEach(r => r.updateTarget())
   }, sampleInterval)
 })
