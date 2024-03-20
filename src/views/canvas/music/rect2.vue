@@ -15,7 +15,7 @@ const con = ref<HTMLElement>()
 const canvas = ref<HTMLCanvasElement>()
 let ctx: CanvasRenderingContext2D
 const canvasSize = 800
-const rectSize = 20
+const rectSize = 100
 const rows = canvasSize / rectSize
 const cols = canvasSize / rectSize
 const fftSize = 512
@@ -50,7 +50,6 @@ class Rect {
   colort = 0.2
   x = 0
   y = 0
-  musicVal = 0
   w = 1
   h = 1
   wt = 1
@@ -109,12 +108,9 @@ onMounted(() => {
   ctx = canvas.value!.getContext('2d')!
 
   function init() {
-    for (let x = 0; x < cols; x += 1) {
-      for (let y = 0; y < rows; y += 1) {
-        const d = (x + y) / (rows * 2)
-        const rect = new Rect(x, y, d)
-        rects.push(rect)
-      }
+    for (let i = 0; i < fftSize / 2; i++) {
+      const rect = new Rect()
+      rects.push(rect)
     }
   }
   init()

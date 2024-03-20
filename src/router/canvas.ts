@@ -122,10 +122,19 @@ const canvas: RouteRecordRaw = {
       path: 'music-rect',
       meta: {
         type: 'canvas',
-        name: '片片面',
+        name: 'music-片片面',
         visable: true,
       },
       component: () => import('@/views/canvas/music/rect.vue'),
+    },
+    {
+      path: 'music-rect-2',
+      meta: {
+        type: 'canvas',
+        name: 'music-重叠矩形',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/music/rect2.vue'),
     },
     {
       path: 'freq-domain',
