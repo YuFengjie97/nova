@@ -1,0 +1,1 @@
+function a(c,i=512){const e=document.createElement("audio");e.src=c;function r(){const n=new window.AudioContext,o=n.createMediaElementSource(e),t=n.createAnalyser();return t.fftSize=i,o.connect(t),o.connect(n.destination),{analyser:t}}return{audio:e,getAnalyser:r}}export{a as i};
