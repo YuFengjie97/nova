@@ -109,8 +109,6 @@ onMounted(() => {
 
   function init() {
     for (let i = 0; i < fftSize / 2; i++) {
-      const rect = new Rect()
-      rects.push(rect)
     }
   }
   init()
