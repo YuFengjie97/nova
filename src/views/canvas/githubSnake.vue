@@ -3,8 +3,6 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import chroma from 'chroma-js'
 
 import { initStats } from '@/hooks/initStats'
-import { initGUI } from '@/hooks/initGUI'
-import { lerp } from '@/utils'
 
 const { random, PI, min, abs, sqrt, floor, ceil, round } = Math
 const palette = chroma.scale(['#ebedf0', '#27ae60'])
@@ -93,10 +91,6 @@ onMounted(() => {
       ctx.beginPath()
       ctx.roundRect(x, y, w, h, radii)
       ctx.fill()
-    }
-
-    toString() {
-      console.log(this.xInc, this.yInc)
     }
   }
   class Snake {
@@ -209,10 +203,8 @@ onMounted(() => {
       if (abs(this.xdt - this.x) < speed && abs(this.ydt - this.y) < speed)
         this.eat()
 
-      this.toString()
       this.tails.forEach((tail) => {
         tail.update()
-        tail.toString()
       })
 
       // console.log(this.history.map(item => `${item.xInd},${item.yInd} --`).reduce((acc, cur) => acc + cur, ''))
@@ -225,10 +217,6 @@ onMounted(() => {
       ctx.fill()
       this.tails.forEach(tail => tail.draw())
     }
-
-    toString() {
-      console.log(this.xInd, this.yInd, this.xInc, this.yInc)
-    }
   }
   const snake = new Snake()
 
@@ -238,7 +226,6 @@ onMounted(() => {
     ctx.fillRect(0, 0, width, height)
     Object.values(cells).forEach(c => c.draw())
     snake.update()
-    snake.toString()
 
     snake.draw()
 
