@@ -146,6 +146,15 @@ const canvas: RouteRecordRaw = {
       component: () => import('@/views/canvas/music/freqAndDomain.vue'),
     },
     {
+      path: 'github-snake',
+      meta: {
+        type: 'canvas',
+        name: 'github贪吃蛇',
+        visable: true,
+      },
+      component: () => import('@/views/canvas/githubSnake.vue'),
+    },
+    {
       path: 'test',
       meta: {
         type: 'canvas',
