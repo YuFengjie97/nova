@@ -105,7 +105,7 @@ const canvas: RouteRecordRaw = {
       meta: {
         type: 'canvas',
         name: '生命游戏',
-        visable: true,
+        visable: false,
       },
       component: () => import('@/views/canvas/gameOfLife.vue'),
     },
@@ -132,7 +132,7 @@ const canvas: RouteRecordRaw = {
       meta: {
         type: 'canvas',
         name: 'music-重叠矩形',
-        visable: true,
+        visable: false,
       },
       component: () => import('@/views/canvas/music/rect2.vue'),
     },
@@ -153,15 +153,6 @@ const canvas: RouteRecordRaw = {
         visable: true,
       },
       component: () => import('@/views/canvas/githubSnake.vue'),
-    },
-    {
-      path: 'test',
-      meta: {
-        type: 'canvas',
-        name: 'test',
-        visable: false,
-      },
-      component: () => import('@/views/canvas/test.vue'),
     },
   ],
 }

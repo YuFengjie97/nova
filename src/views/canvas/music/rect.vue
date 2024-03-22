@@ -179,6 +179,8 @@ onMounted(() => {
     transform: translate(-50%);
     z-index: 100;
     cursor: pointer;
+    background: #000;
+    padding: 10px 0;
   }
 }
 </style>
