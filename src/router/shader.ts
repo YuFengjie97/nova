@@ -25,6 +25,11 @@ const shader: RouteRecordRaw = {
       meta: { name: '音乐像素', visable: false, type: 'threejs' },
       component: () => import('@/views/shader/music/index.vue'),
     },
+    {
+      path: 'flow',
+      meta: { name: 'shader-flow', visable: true, type: 'threejs' },
+      component: () => import('@/views/shader/flow/index.vue'),
+    },
   ],
 }
 
