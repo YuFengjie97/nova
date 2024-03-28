@@ -30,6 +30,11 @@ const shader: RouteRecordRaw = {
       meta: { name: 'shader-flow', visable: true, type: 'threejs' },
       component: () => import('@/views/shader/flow/index.vue'),
     },
+    {
+      path: 'flow2',
+      meta: { name: 'shader-flow', visable: false, type: 'threejs' },
+      component: () => import('@/views/shader/flow2/index.vue'),
+    },
   ],
 }
 
