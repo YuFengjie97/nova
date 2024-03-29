@@ -53,15 +53,13 @@ float noise(vec3 x) {
 }
 
 vec3 palette(float t) {
-  vec3 a = vec3(1.000, 0.500, 0.500);
-  vec3 b = vec3(0.500, 0.500, 0.500);
-  vec3 c = vec3(0.750, 1.000, 0.667);
-  vec3 d = vec3(0.800, 1.000, 0.333);
+  vec3 a = vec3(0.731, 1.098, 0.192);
+  vec3 b = vec3(0.358, 1.090, 0.657);
+  vec3 c = vec3(1.077, 0.360, 0.328);
+  vec3 d = vec3(0.965, 2.265, 0.837);
   return a + b * cos(6.28318 * (c * t + d));
 }
-
 float PI = 3.1415926;
-float pix;
 float lineWidth;
 
 // p屏幕坐标，a起点，b终点
@@ -70,35 +68,67 @@ float sdSegment(in vec2 p, in vec2 a, in vec2 b) {
   float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
   return length(pa - ba * h);
 }
-float plotLine(vec2 uv, vec2 start, vec2 end, float lineWidth) {
+float plotLine(in vec2 uv,in vec2 start,in vec2 end,in float lineWidth) {
   float l = sdSegment(uv, start, end) - lineWidth;
-  return smoothstep(lineWidth + 2., lineWidth, abs(l));
+  return smoothstep(lineWidth * 1.5, lineWidth, abs(l));
 }
 
+float plotPoint(vec2 uv, vec2 pos) {
+    float r = .2;
+    float point = distance(uv, pos) - r;
+    return smoothstep(0.1, 0., point);
+}
 void main() {
-  vec2 uv = gl_FragCoord.xy;
-  vec3 fin_c = vec3(0.);
-  float lineWidth = 10.;
-  float lineLen = 100.;
-  float gap = 100.;
-  vec2 size = vec2(lineWidth + gap, gap);
-  vec2 rc = vec2(floor(iResolution.xy / size));
-  // vec2 pos = vec2(floor(uv / size));
-  // float x = pos.x;
-  // float y = pos.y;
-  for(float x; x < rc.x; x += 1.) {
-    for(float y; y < rc.y; y += 1.) {
+  float resolution = 20.;
+  
+  // 非常重要，坐标连续化的前提，原理是2+1=3
+  // 把断裂的坐标拼接起来，前提是uv是归一化的，
+  // 比如第1行第8列到第1行第9列，x坐标是8-9,9-10，这样两个格子的x坐标就变成连续的了
+  vec2 uv = gl_FragCoord.xy / iResolution.y * resolution; 
+  lineWidth = 0.05;
 
-      float noiseVal = noise(vec2(x, y) + iTime) * 0.5 + 0.5;
-      vec2 start = vec2(x * (lineWidth + gap), y * (lineWidth + gap));
+  vec2 uvi = floor(uv);
+  vec2 uvf = fract(uv);
+  vec3 fin_c = vec3(0.);
+
+  float lineLen = 1.5;
+  
+  float range = ceil(lineLen);
+
+  if(false) {
+      // 仅仅是在当前cell中绘制了线段
+      // 如果线段长度超出1.（预设的单元尺寸，在这里是1），就会不去绘制
+      // 因为在其他单元中是绘制对应他uvi坐标对应的线
+      // 所以一条完整的线，应该除了自身单元需要绘制，还有周边range*range-1个单元需要叠加绘制
+      float noiseVal = noise(uvi / resolution + iTime) * 0.5 + 0.5;
       float angle = noiseVal * PI * 2.;
-      vec2 end = vec2(cos(angle) * lineLen, sin(angle) * lineLen);
+      vec2 start = vec2(0.5) + uvi;
+      vec2 end = vec2(cos(angle) * lineLen, sin(angle) * lineLen) + start;
       float line = plotLine(uv, start, end, lineWidth);
       vec3 color = palette(noiseVal);
-      // fin_c += color * line;
-      fin_c = mix(fin_c, color, line);
-    }
+      fin_c += color * line;
+  } else {
+      // 循环range*range多层绘制出完整的线段
+      for(float x = -range; x <= range; x += 1.) {
+          for(float y = -range; y <= range; y += 1.) {
+          
+              // 对当前单元来说，线的起点在反方向，需要-vec2(x,y)
+              vec2 start = vec2(0.5) + uvi - vec2(x,y);
+              
+              float noiseVal = noise((uvi-vec2(x,y)) / resolution + iTime) * 0.5 + 0.5;
+              float angle = noiseVal * PI * 2.;
+              vec3 color = palette(noiseVal);
+              //lineLen *= noiseVal + 0.1;
+
+              vec2 end = vec2(cos(angle) * lineLen, sin(angle) * lineLen) + start;
+              float line = plotLine(uv, start, end, lineWidth);
+
+              fin_c += color * line;
+          }
+      }
+  
   }
 
+  
   gl_FragColor = vec4(fin_c, 1.);
 }
