@@ -5,29 +5,32 @@ import SnowyBg from './three/SnowyBg.vue'
 // import NavGrid from '@/components/NavGrid.vue'
 import { outlink, routes } from '@/router'
 
-const list = ref<{
+interface Link {
+  title: string
+  path: string
+}
+interface LinkGroup {
   type: string
   groupTitle: string
-  links: Array<{
-    title: string
-    path: string
-  }>
-}[]>([])
+  links: Link[]
+}
+
+const list = ref<LinkGroup[]>([])
 
 list.value.push(...routes.map((item) => {
   const res = {
     type: '',
-    groupTitle: item.meta.name,
-    links: item.children.map((link) => {
+    groupTitle: item.meta!.name,
+    links: item.children!.map((link) => {
       return {
-        title: link.meta.name,
+        title: link.meta!.name,
         path: `${item.path}/${link.path}`,
       }
     }),
   }
 
   return res
-}))
+}) as LinkGroup[])
 
 list.value.push(outlink.reduce((acc, cur) => {
   if (!cur.meta.visable)
@@ -41,7 +44,7 @@ list.value.push(outlink.reduce((acc, cur) => {
 }, {
   type: 'outlink',
   groupTitle: '外链',
-  links: [],
+  links: [] as Link[],
 }))
 </script>
 
