@@ -45,6 +45,11 @@ const shader: RouteRecordRaw = {
       meta: { name: '粒子斥力(shader绘制)', visable: true, type: 'threejs' },
       component: () => import('@/views/shader/particle_force/index.vue'),
     },
+    {
+      path: 'shader-voronoi-when-polar',
+      meta: { name: '极坐标下的泰森图', visable: true, type: 'threejs' },
+      component: () => import('@/views/shader/voronoi_when_polar/index.vue'),
+    },
   ],
 }
 

@@ -5,7 +5,7 @@ import { initThree } from '@/hooks/initThree'
 import utilfs from '@/views/shader/utils.glsl?raw'
 
 const props = withDefaults(defineProps<{
-  utils: string
+  utils?: string
   fs: string
 }>(), {
   utils: utilfs,
@@ -44,10 +44,9 @@ onMounted(() => {
     if (!mousedown)
       return
     const { x, y } = e
-    console.log(e)
 
     uniforms.iMouse.value.x = x
-    uniforms.iMouse.value.y = y
+    uniforms.iMouse.value.y = height - y
   })
 
   const shaderMaterial = new ShaderMaterial({
