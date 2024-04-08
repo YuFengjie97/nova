@@ -1,9 +1,6 @@
-#define PI 3.1415926
 #define lineWidth 0.02
 #define resolution 10.
 
-uniform float iTime;
-uniform vec2 iResolution;
 
 float plotLine(in vec2 uv,in vec2 start,in vec2 end) {
   float l = sdSegment(uv, start, end) - lineWidth;

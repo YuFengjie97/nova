@@ -40,6 +40,11 @@ const shader: RouteRecordRaw = {
       meta: { name: 'shader-flow-net', visable: true, type: 'threejs' },
       component: () => import('@/views/shader/flowNet/index.vue'),
     },
+    {
+      path: 'shader-particle-force',
+      meta: { name: '粒子斥力(shader绘制)', visable: true, type: 'threejs' },
+      component: () => import('@/views/shader/particle_force/index.vue'),
+    },
   ],
 }
 

@@ -1,4 +1,11 @@
 
+uniform float iTime;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
+
+#define PI 3.1415926
+
+
 // https://www.shadertoy.com/view/4dS3Wd
 float hash(float p) {
   p = fract(p * 0.011);
