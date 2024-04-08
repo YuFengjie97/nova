@@ -3,6 +3,9 @@ import AppVue from '@/App.vue'
 
 const p5: RouteRecordRaw = {
   path: '/p5',
+  meta: {
+    name: 'p5',
+  },
   component: AppVue,
   children: [
     {

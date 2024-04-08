@@ -3,6 +3,9 @@ import AppVue from '@/App.vue'
 
 const svg: RouteRecordRaw = {
   path: '/svg',
+  meta: {
+    name: 'SVG',
+  },
   component: AppVue,
   children: [
     {

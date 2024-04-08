@@ -3,6 +3,9 @@ import AppVue from '@/App.vue'
 
 const three: RouteRecordRaw = {
   path: '/three',
+  meta: {
+    name: 'three.js',
+  },
   component: AppVue,
   children: [
 

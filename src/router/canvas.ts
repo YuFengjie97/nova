@@ -3,6 +3,9 @@ import AppVue from '@/App.vue'
 
 const canvas: RouteRecordRaw = {
   path: '/canvas',
+  meta: {
+    name: 'Canvas',
+  },
   component: AppVue,
   children: [
     {

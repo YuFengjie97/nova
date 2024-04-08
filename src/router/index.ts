@@ -17,12 +17,12 @@ const home: RouteRecordRaw = {
 }
 const notfound: RouteRecordRaw = { path: '/:path(.*)', meta: { name: 'notfound', visable: false }, component: NotFound }
 
-export const routes: RouteRecordRaw[] = [home, css, canvas, p5, three, shader, svg, notfound]
+export const routes: RouteRecordRaw[] = [css, canvas, p5, three, shader, svg]
 
 export const router = createRouter({
   // history: createWebHistory(import.meta.env.VITE_BASE_URL),
   history: createWebHashHistory(import.meta.env.VITE_BASE_URL),
-  routes,
+  routes: [home, ...routes, notfound],
 })
 
 export * from './outlink'

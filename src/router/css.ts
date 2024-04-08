@@ -3,6 +3,9 @@ import AppVue from '@/App.vue'
 
 const css: RouteRecordRaw = {
   path: '/css',
+  meta: {
+    name: 'CSS',
+  },
   component: AppVue,
   children: [
     {
