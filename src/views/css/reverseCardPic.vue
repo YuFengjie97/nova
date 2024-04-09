@@ -70,7 +70,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div ref="con" class="w-full min-h-full flex flex-wrap p-y-40px p-x-10px bg-red justify-center items-center">
+  <div ref="con" class="w-full h-full overflow-y-scroll min-h-full flex flex-wrap p-y-40px p-x-10px bg-red justify-center items-center">
     <ReverseCard v-for="(item, i) in list" :key="i" v-bind="item" :con-dom-rect="conRect" />
   </div>
 </template>
