@@ -1,1 +1,0 @@
-import{_ as a,b as o,ak as s,o as c}from"./index-BkxFcAok.js";const r={},t={class:"cardCon"};function n(e,d){return c(),o("div",t,[s(e.$slots,"default",{},void 0,!0)])}const f=a(r,[["render",n],["__scopeId","data-v-ba7a6c00"]]);export{f as C};
