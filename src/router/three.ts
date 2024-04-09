@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import AppVue from '@/App.vue'
-import crushPic from '@/views/css/crushPic.vue'
+import crushPic from '@/views/three/crushPic.vue'
 
 const three: RouteRecordRaw = {
   path: '/three',
