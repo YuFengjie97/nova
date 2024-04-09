@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import AppVue from '@/App.vue'
+
+// 非常奇怪，我只是随便选了一个文件改为正常加载，所有路径就都修复了
 import crushPic from '@/views/three/crushPic.vue'
 
 const three: RouteRecordRaw = {
