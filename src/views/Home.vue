@@ -3,9 +3,10 @@ import { ref } from 'vue'
 import SnowyBg from './three/SnowyBg.vue'
 
 // import NavGrid from '@/components/NavGrid.vue'
-import { outlink, routes } from '@/router'
+import { outlink, router, routes } from '@/router'
 
 interface Link {
+  isOut: boolean
   title: string
   path: string
 }
@@ -25,7 +26,8 @@ list.value.push(...routes.map((item) => {
       if (!cur.meta!.visable)
         return acc
 
-      ;(acc as Link[]).push({
+      ; (acc as Link[]).push({
+        isOut: false,
         title: cur.meta!.name as string,
         path: `${item.path}/${cur.path}`,
       })
@@ -41,6 +43,7 @@ list.value.push(outlink.reduce((acc, cur) => {
     return acc
 
   acc.links.push({
+    isOut: true,
     title: cur.meta.name,
     path: cur.path,
   })
@@ -50,6 +53,17 @@ list.value.push(outlink.reduce((acc, cur) => {
   groupTitle: '外链',
   links: [] as Link[],
 }))
+
+function handleLink(link: Link) {
+  const { isOut, path } = link
+  if (isOut) {
+    window.open(path, '_blank')
+    return
+  }
+
+  const routeLocation = router.resolve({ path })
+  window.open(routeLocation.href, '_blank')
+}
 </script>
 
 <template>
@@ -57,16 +71,19 @@ list.value.push(outlink.reduce((acc, cur) => {
     <SnowyBg class="snowBg absolute z-1 top-0 left-0 pointer-events-none" />
     <!-- <NavGrid /> -->
     <div class="w-full h-full absolute p-y-4rem z-2 overflow-y-scroll">
-      <div v-for="(item, i) in list" :key="i" class="nav-item">
+      <div v-for="(group, i) in list" :key="i" class="nav-item">
         <h1>
-          {{ item.groupTitle }}
+          {{ group.groupTitle }}
         </h1>
         <div class="list-wrap">
-          <div v-for="(link, j) in item.links" :key="j" class="link-wrap">
-            <router-link v-if="item.type !== 'outlink'" target="_blank" class="link" :to="link.path">
+          <div v-for="(link, j) in group.links" :key="j" class="link-wrap" @click="handleLink(link)">
+            <span class="link">
+              {{ link.title }}
+            </span>
+            <!-- <router-link v-if="group.type !== 'outlink'" target="_blank" class="link" :to="link.path">
               {{ link.title }}
             </router-link>
-            <a v-else class="link" :href="link.path" target="_blank">{{ link.title }}</a>
+            <a v-else class="link" :href="link.path" target="_blank">{{ link.title }}</a> -->
           </div>
         </div>
       </div>
@@ -101,6 +118,7 @@ list.value.push(outlink.reduce((acc, cur) => {
     position: relative;
     display: inline-block;
     padding: 0.5rem 0;
+    cursor: pointer;
 
     &::before {
       position: absolute;

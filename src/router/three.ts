@@ -63,7 +63,7 @@ const three: RouteRecordRaw = {
       path: 'crush-pic',
       meta: { type: 'threejs', name: '破碎图片-threejs', visable: true },
       component: () => import('@/views/three/crushPic.vue').then().catch((err) => {
-        console.log(err)
+        console.log(1111, err)
       }),
     },
     {
