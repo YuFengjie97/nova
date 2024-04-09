@@ -1,0 +1,1 @@
+import{G as o}from"./dat.gui.module-DcMWPYuf.js";function i(t){const e=new o({autoPlace:!1});return t.append(e.domElement),e.domElement.style.cssText="position: fixed; top: 0; right: 0;",{gui:e}}export{i};
