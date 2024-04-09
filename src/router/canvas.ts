@@ -59,7 +59,7 @@ const canvas: RouteRecordRaw = {
       path: 'circuit-borad',
       meta: {
         type: 'canvas',
-        name: '电路板 ',
+        name: '电路板  ',
         visable: true,
       },
       component: () => import('@/views/canvas/circuitBoard.vue'),
