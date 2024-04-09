@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import AppVue from '@/App.vue'
+import crushPic from '@/views/css/crushPic.vue'
 
 const three: RouteRecordRaw = {
   path: '/three',
@@ -62,9 +63,8 @@ const three: RouteRecordRaw = {
     {
       path: 'crush-pic',
       meta: { type: 'threejs', name: '破碎图片-threejs', visable: true },
-      component: () => import(/* @vite-ignore */'@/views/three/crushPic.vue').then().catch((err) => {
-        console.log(1111, err)
-      }),
+      component: crushPic,
+      // component: () => import(/* @vite-ignore */'@/views/three/crushPic.vue'),
     },
     {
       path: 'flowfield-point-3d',
