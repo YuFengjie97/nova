@@ -21,12 +21,16 @@ list.value.push(...routes.map((item) => {
   const res = {
     type: '',
     groupTitle: item.meta!.name,
-    links: item.children!.map((link) => {
-      return {
-        title: link.meta!.name,
-        path: `${item.path}/${link.path}`,
-      }
-    }),
+    links: item.children!.reduce((acc, cur) => {
+      if (!cur.meta!.visable)
+        return acc
+
+      ;(acc as Link[]).push({
+        title: cur.meta!.name as string,
+        path: `${item.path}/${cur.path}`,
+      })
+      return acc
+    }, []),
   }
 
   return res
@@ -59,11 +63,7 @@ list.value.push(outlink.reduce((acc, cur) => {
         </h1>
         <div class="list-wrap">
           <div v-for="(link, j) in item.links" :key="j" class="link-wrap">
-            <router-link
-              v-if="item.type !== 'outlink'"
-              target="_blank" class="link"
-              :to="link.path"
-            >
+            <router-link v-if="item.type !== 'outlink'" target="_blank" class="link" :to="link.path">
               {{ link.title }}
             </router-link>
             <a v-else class="link" :href="link.path" target="_blank">{{ link.title }}</a>
@@ -78,6 +78,7 @@ list.value.push(outlink.reduce((acc, cur) => {
 .nav-item {
   width: 100%;
   padding: 0 10rem;
+
   h1 {
     color: #fff;
   }
@@ -86,6 +87,7 @@ list.value.push(outlink.reduce((acc, cur) => {
     display: flex;
     flex-wrap: wrap;
   }
+
   .link-wrap {
     background: #eee;
     border-radius: 4px;
@@ -109,7 +111,8 @@ list.value.push(outlink.reduce((acc, cur) => {
       content: '';
       height: 3px;
       background-color: #000;
-      transition: width .3s;;
+      transition: width .3s;
+      ;
     }
 
     &:hover {
