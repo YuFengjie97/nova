@@ -53,6 +53,11 @@ const shader: RouteRecordRaw = {
       meta: { name: '极坐标下的泰森图', visable: true, type: 'shader' },
       component: () => import('@/views/shader/voronoi_when_polar/index.vue'),
     },
+    {
+      path: 'glow-particle',
+      meta: { name: '发光粒子', visable: true, type: 'shader' },
+      component: () => import('@/views/shader/glow_particle/index.vue'),
+    },
   ],
 }
 
