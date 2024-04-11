@@ -47,7 +47,8 @@ void main() {
 
     vec2 trackCenter = random(i) * vec2(ixy,1.) - vec2(ixy * 0.5, .5);
     float trackRadius = randomFloat(i) * .8 + .1;
-    vec2 pos = trackCenter + vec2(cos(iTime * isClock * speed) * trackRadius, sin(iTime *isClock * speed) * trackRadius);
+    float randomStartAngle = randomFloat(i) * PI * 2.;
+    vec2 pos = trackCenter + vec2(cos(iTime * isClock * speed + randomStartAngle) * trackRadius, sin(iTime *isClock * speed + randomStartAngle) * trackRadius);
 
     float glowParticle = plotGlowParticle(uv, pos, radius, glowFactor);
 
