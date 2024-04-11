@@ -1,6 +1,20 @@
 #define lineWidth 0.02
 #define resolution 10.
 
+precision mediump float;
+uniform float iTime;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
+#define PI 3.1415926
+
+vec3 palette(float t) {
+  vec3 a = vec3(0.731, 1.098, 0.192);
+  vec3 b = vec3(0.358, 1.090, 0.657);
+  vec3 c = vec3(1.077, 0.360, 0.328);
+  vec3 d = vec3(0.965, 2.265, 0.837);
+  return a + b * cos(6.28318 * (c * t + d));
+}
+
 
 float plotLine(in vec2 uv,in vec2 start,in vec2 end) {
   float l = sdSegment(uv, start, end) - lineWidth;

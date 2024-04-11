@@ -1,10 +1,6 @@
 precision mediump float;
 
 #define PI 3.1415926
-
-#define lineWidth 0.02
-#define resolution 10.
-
 uniform vec2 iResolution;
 uniform float iTime;
 

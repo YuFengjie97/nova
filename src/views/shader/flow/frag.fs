@@ -1,9 +1,10 @@
 precision mediump float;
 
-uniform vec2 iResolution;
+precision mediump float;
 uniform float iTime;
-uniform sampler2D texture1;
-uniform float size;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
+#define PI 3.1415926
 
 // https://www.shadertoy.com/view/4dS3Wd
 float hash(float p) {
@@ -60,7 +61,6 @@ vec3 palette(float t) {
   return a + b * cos(6.28318 * (c * t + d));
 }
 
-float PI = 3.1415926;
 float pix;
 float lineWidth;
 

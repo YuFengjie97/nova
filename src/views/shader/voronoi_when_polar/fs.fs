@@ -2,6 +2,12 @@
 #define angleGap (PI / 6.)
 #define distGap 2.
 #define gap vec2(angleGap, distGap)
+#define PI 3.141592654
+
+precision mediump float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform vec2 iMouse;
 
 float angleGapMax = PI * 2. / angleGap;
 float distGapMax = resolution * 2. / distGap;

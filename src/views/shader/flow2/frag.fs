@@ -1,5 +1,6 @@
 precision mediump float;
 
+precision mediump float;
 uniform vec2 iResolution;
 uniform float iTime;
 uniform sampler2D texture1;

@@ -1,11 +1,25 @@
 #define resolution 30.
 #define r_particle 0.1
+#define PI 3.141592654
+
+precision mediump float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform vec2 iMouse;
 
 float pix;
 
 float plotCircle(vec2 p, vec2 c, float r) {
     float cir = length(p-c) - r;
     return smoothstep(pix*2., 0., cir);
+}
+
+vec3 palette(float t) {
+  vec3 a = vec3(0.731, 1.098, 0.192);
+  vec3 b = vec3(0.358, 1.090, 0.657);
+  vec3 c = vec3(1.077, 0.360, 0.328);
+  vec3 d = vec3(0.965, 2.265, 0.837);
+  return a + b * cos(6.28318 * (c * t + d));
 }
 
 void main()

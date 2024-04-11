@@ -1,11 +1,3 @@
-
-uniform float iTime;
-uniform vec2 iResolution;
-uniform vec2 iMouse;
-
-#define PI 3.1415926
-
-
 // https://www.shadertoy.com/view/4dS3Wd
 float hash(float p) {
   p = fract(p * 0.011);
@@ -65,12 +57,4 @@ float sdSegment(in vec2 p, in vec2 a, in vec2 b) {
   vec2 pa = p - a, ba = b - a;
   float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
   return length(pa - ba * h);
-}
-
-vec3 palette(float t) {
-  vec3 a = vec3(0.731, 1.098, 0.192);
-  vec3 b = vec3(0.358, 1.090, 0.657);
-  vec3 c = vec3(1.077, 0.360, 0.328);
-  vec3 d = vec3(0.965, 2.265, 0.837);
-  return a + b * cos(6.28318 * (c * t + d));
 }

@@ -8,7 +8,6 @@ const props = withDefaults(defineProps<{
   utils?: string
   fs: string
 }>(), {
-  utils: utilfs,
 })
 
 const con = ref<HTMLElement>()
@@ -53,7 +52,7 @@ onMounted(() => {
     uniforms,
     vertexShader,
     fragmentShader: `
-    ${props.utils}
+    ${props.utils ? props.utils : ''}
     ${props.fs}
     `,
   })
