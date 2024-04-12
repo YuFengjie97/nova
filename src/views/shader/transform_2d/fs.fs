@@ -34,44 +34,44 @@ float plotGlowParticle(vec2 uv, vec2 pos, float r, float glowFactor) {
   //return exp(-1. * glowFactor * v);
 }
 
-mat4 ortho(float t, float b, float l, float r, float n, float f) {
-  return mat4(
-    2. / (r - l), 0., 0., 0.,
-   0., 2. / (t - b), 0., 0., 
-   0., 0., 2. / (n - f), 0., 
-   0., 0., 0., 1.) 
-   * mat4(
-    1., 0., 0., -(r + l) / 2., 
-    0., 1., 0., -(t + b) / 2.,
-    0., 0., 1., -(n + f) / 2.,
-   0., 0., 0., 1.);
+mat3 rotate(float angle) {
+  return mat3(
+    cos(angle), -sin(angle), 0.,
+    sin(angle),  cos(angle), 0.,
+     0., 0., 1.
+  );
 }
-
-mat4 viewport(float w, float h) {
-  return mat4(
-    w/2., 0., 0., w/2.,
-    0,h/2.,0.,h/2.,
-    0.,0.,1.,0.,
-    0.,0.,0.,1.
+mat3 translate(vec2 t) {
+  return mat3(
+    1.,0.,t.x,
+    0.,1.,t.y,
+    0.,0.,1.
+  );
+}
+mat3 scale(vec2 s) {
+  return mat3(
+    s.x, 0., 0.,
+    0., s.y, 0.,
+    0., 0., 1.
   );
 }
 
-float sdSphere( vec3 p, float s )
-{
-  return length(p)-s;
-}
-
 void main() {
-  vec3 uv = vec3((gl_FragCoord.xy) / iResolution.y, gl_FragCoord.z);
+  vec2 uv = (gl_FragCoord.xy) / iResolution.y;
   float ixy = iResolution.x / iResolution.y;
   vec3 c_fin = vec3(0.);
   float pix = 1. / iResolution.y;
 
+  mat3 mat_r = rotate(iTime);
+  mat3 mat_t = translate(vec2(-0.5 * ixy, -0.5));
+  float s = sin(iTime) * 0.5 + 0.5;
+  mat3 mat_s = scale(vec2(1.) + vec2(8., 4.) * s);
 
-  float s = sdSphere(uv, 0.1);
-  float sphere = smoothstep(0.01, 0., s);
-  c_fin += sphere;
+  vec3 uv2 = vec3(uv, 1.) * mat_t * mat_r * mat_s;
 
+  float box = sdBox(uv2.xy, vec2(0.5, 0.1));
+  box = smoothstep(10.*pix, 0., abs(box));
+  c_fin += box;
 
   gl_FragColor = vec4(c_fin, 1.);
 }

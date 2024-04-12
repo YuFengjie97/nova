@@ -69,8 +69,13 @@ const shader: RouteRecordRaw = {
       component: () => import('@/views/shader/rgb_ring/index.vue'),
     },
     {
+      path: 'transform-2d',
+      meta: { name: '2d下的变换矩阵', visable: true, type: 'shader' },
+      component: () => import('@/views/shader/transform_2d/index.vue'),
+    },
+    {
       path: 'op-glow-particle',
-      meta: { name: '正交投影下的发光粒子', visable: true, type: 'shader' },
+      meta: { name: '正交投影下的发光粒子', visable: false, type: 'shader' },
       component: () => import('@/views/shader/op_glow_particle/index.vue'),
     },
   ],
