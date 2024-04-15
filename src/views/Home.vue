@@ -106,10 +106,14 @@ function handleLink(link: Link) {
   }
 
   .des {
+    width: fit-content;
     display: block;
     color: #fff;
     font-style: italic;
     margin-bottom: 10px;
+    background-color: #000;
+    border-radius: 2px;
+    padding: 4px 0;
   }
 
   .list-wrap {
