@@ -13,15 +13,18 @@ interface Link {
 interface LinkGroup {
   type: string
   groupTitle: string
+  des: string
   links: Link[]
 }
 
 const list = ref<LinkGroup[]>([])
 
+// @ts-expect-error fefefe
 list.value.push(...routes.map((item) => {
   const res = {
     type: '',
     groupTitle: item.meta!.name,
+    des: item.meta?.des ?? '',
     links: item.children!.reduce((acc, cur) => {
       if (!cur.meta!.visable)
         return acc
@@ -36,13 +39,13 @@ list.value.push(...routes.map((item) => {
   }
 
   return res
-}) as LinkGroup[])
+}))
 
 list.value.push(outlink.reduce((acc, cur) => {
   if (!cur.meta.visable)
     return acc
 
-  acc.links.push({
+  ;(acc.links as Link[]).push({
     isOut: true,
     title: cur.meta.name,
     path: cur.path,
@@ -51,7 +54,8 @@ list.value.push(outlink.reduce((acc, cur) => {
 }, {
   type: 'outlink',
   groupTitle: '外链',
-  links: [] as Link[],
+  des: '',
+  links: [],
 }))
 
 function handleLink(link: Link) {
@@ -75,6 +79,7 @@ function handleLink(link: Link) {
         <h1>
           {{ group.groupTitle }}
         </h1>
+        <span v-show="group.des" class="des"> > {{ group.des }}</span>
         <div class="list-wrap">
           <div v-for="(link, j) in group.links" :key="j" class="link-wrap" @click="handleLink(link)">
             <span class="link">
@@ -98,6 +103,13 @@ function handleLink(link: Link) {
 
   h1 {
     color: #fff;
+  }
+
+  .des {
+    display: block;
+    color: #fff;
+    font-style: italic;
+    margin-bottom: 10px;
   }
 
   .list-wrap {
