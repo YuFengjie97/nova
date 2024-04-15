@@ -74,6 +74,11 @@ const shader: RouteRecordRaw = {
       component: () => import('@/views/shader/transform_2d/index.vue'),
     },
     {
+      path: 'hexagon-grid',
+      meta: { name: '发光蜂巢格子', visable: false, type: 'shader' },
+      component: () => import('@/views/shader/hexagon_grid/index.vue'),
+    },
+    {
       path: 'op-glow-particle',
       meta: { name: '正交投影下的发光粒子', visable: false, type: 'shader' },
       component: () => import('@/views/shader/op_glow_particle/index.vue'),
