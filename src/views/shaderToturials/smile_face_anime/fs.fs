@@ -2,7 +2,7 @@ precision mediump float;
 #define PI 3.141592654
 #define pix (2./iResolution.y)
 #define S(a,b,t) smoothstep(a,b,t)
-#define sat(t) clamp(t, 0., 1.)
+#define sat(t) clamp(t, 0., 1.);
 
 uniform vec2 iResolution;
 uniform float iTime;
@@ -23,60 +23,6 @@ float remap(float a, float b, float c, float d, float t) {
 // 因为没有clamp所以超过rect的uv坐标同样被归一化了
 vec2 within(vec2 uv, vec4 rect) {
     return (uv.xy - rect.xy) / (rect.zw - rect.xy);
-}
-float sdBox(in vec2 p, in vec2 b) {
-  vec2 d = abs(p) - b;
-  return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
-}
-float get_widthin(vec2 uv) {
-    // float w = 2.*pix;
-    // vec2 tl = 1.-smoothstep(vec2(0.),vec2(w),abs(uv));
-    // vec2 br = 1.-smoothstep(vec2(0.),vec2(w),abs(uv-1.));
-    // return tl.x + tl.y + br.x + br.y;
-    float border = sdBox(uv-0.5, vec2(.5));
-    float box = 1. - smoothstep(0.,3. * pix,abs(border));
-    return box;
-}
-
-vec4 Brow(in vec2 uv) {
-    vec4 color = vec4(0.);
-    vec3 c_brow = vec3(0.3255, 0.2235, 0.0118);
-    vec3 c_brow_hl = vec3(1.);
-    vec3 c_brow_shadow = vec3(0.);
-
-    uv -= 0.5;
-    float y = uv.y; // y备份，用来制作眉毛高光
-    uv.y += uv.x * .8;
-
-    // 眉毛是两个圆形经过裁剪得到的，在这里是减法
-    float blur = 0.1;
-    vec2 brow_pos_1 = vec2(0.1, 0.);
-    vec2 brow_pos_2 = vec2(0.15, -0.1);
-    float brow_r_1 = 0.4;
-    float brow_r_2 = 0.45;
-    float brow_shape = S(blur, 0., length(uv - brow_pos_1) - brow_r_1) -
-     S(blur, 0.0, length(uv - (brow_pos_2)) - brow_r_2);
-    brow_shape = sat(brow_shape); //去掉负数部分
-    float edge_d = length(brow_pos_1-brow_pos_2);
-    float brow_shape_clean_blur = S(0.1,0.2, brow_shape);
-    color.rgb = mix(color.rgb, c_brow, brow_shape_clean_blur);
-    color.a += brow_shape_clean_blur ;
-    
-    // 眉毛上的高光
-    float highlight_shape = remap01(0.3, 0.45, y) * S(0.,1.6,brow_shape);
-    color.rgb = mix(color.rgb, c_brow_hl, highlight_shape);
-
-    // 眉毛阴影
-    vec2 brow_shadow_pos_1 = vec2(0.1, -0.1);
-    vec2 brow_shadow_pos_2 = vec2(0.15, -0.2);
-    float brow_shadow_shape = S(blur, 0., length(uv - brow_shadow_pos_1) - 0.4)
-     - S(blur, 0.0, length(uv - (brow_shadow_pos_2)) - 0.45);
-    brow_shadow_shape = sat(brow_shadow_shape); // 去掉shape中负值部分
-    color.rgb = mix(color.rgb, vec3(0.1686, 0.1686, 0.1686), brow_shadow_shape);
-    color.a += brow_shadow_shape;
-
-
-    return color;
 }
 
 vec4 Eye(in vec2 uv) {
@@ -132,12 +78,6 @@ vec4 Head(in vec2 uv) {
     float hl_start = 0.8;
     float hightlight = S(hl_start + 2. * pix, hl_start, d); // 高光位置 & 高光大小
     hightlight *= remap(hl_start, 0., 0.75, 0., uv.y); // 高光渐变
-    // 把脸部高光中的眼部周围部分挖出去
-    // length(uv - vec2(0.41, 0.2)),确定挖出去部分的位置，要根据眼睛位置确定
-    // S(0.32, 0.33,x),挖出去部分的范围
-    // *= 挖出去，01取与操作
-    // hightlight *= S(0.32, 0.33, length(uv - vec2(0.41, 0.2))); // 大杂烩写法
-    hightlight *= S(0., 0.01, length(uv - vec2(0.41, 0.2)) - 0.32); // 我觉得这种写法比较好
     color.rgb = mix(color.rgb, vec3(1.), hightlight);
 
     float d_cheek = length(uv - vec2(0.5, -0.4));
@@ -167,9 +107,9 @@ vec4 Mouth(in vec2 uv) {
     vec3 teeth_color = vec3(1.) * S(0.6, 0.34, d); // 牙齿颜色，也是根据d来计算
     color.rgb = mix(color.rgb, teeth_color, S(0.41, 0.4, teeth));
 
-    float tongue = length(uv - vec2(0., .5));
+    float tongue = length(uv-vec2(0.,.5));
     vec3 tongue_color = vec3(0.9569, 0.3333, 0.3333);
-    color.rgb = mix(color.rgb, tongue_color, S(.51, .3, tongue));
+    color.rgb = mix(color.rgb, tongue_color, S(.51,.3,tongue));
 
     color.a = S(0.51, 0.5, d);
     return color;
@@ -192,13 +132,6 @@ vec4 Smiley(in vec2 uv) {
 
     vec4 mouth = Mouth(within(uv, vec4(-0.6, -0.2, 0.6, -0.8)));
     color = mix(color, mouth, mouth.a);
-
-    vec2 brow_uv = within(uv, vec4(0.05, 0.4, 0.7, 0.8));
-    float brow_uv_l = get_widthin(brow_uv);
-    color.rgb = mix(color.rgb, vec3(1.,0.,0.), brow_uv_l);
-
-    vec4 brow = Brow(brow_uv);
-    color = mix(color, brow, brow.a);
 
     return color;
 }

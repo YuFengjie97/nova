@@ -24,6 +24,11 @@ const shader: RouteRecordRaw = {
       meta: { name: '笑脸-hard', visable: true, type: 'shader' },
       component: () => import('@/views/shaderToturials/smile_face_2/index.vue'),
     },
+    {
+      path: 'smile-face-anime',
+      meta: { name: '笑脸-动画', visable: true, type: 'shader' },
+      component: () => import('@/views/shaderToturials/smile_face_anime/index.vue'),
+    },
   ],
 }
 
