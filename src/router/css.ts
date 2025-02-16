@@ -107,6 +107,15 @@ const css: RouteRecordRaw = {
       },
       component: () => import('@/views/css/hackText.vue'),
     },
+    {
+      path: 'grid-jigsaw',
+      meta: {
+        type: 'css',
+        name: 'grid布局拼图',
+        visable: true,
+      },
+      component: () => import('@/views/css/Jigsaw.vue'),
+    },
   ],
 }
 

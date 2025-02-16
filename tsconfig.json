@@ -5,24 +5,17 @@
     "jsx": "preserve",
     "lib": ["ESNext", "DOM"],
     "useDefineForClassFields": true,
-    "module": "ESNext",
+    "module": "ES6",
     "moduleResolution": "Node",
     "paths": {
       "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "strict": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "./*.ts",
-    "eslint.config.js"]
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
