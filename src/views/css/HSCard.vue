@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import HSCard from '@/components/HSCard.vue'
-import card1 from '@/assets/img/hs/card1.png'
-import card2 from '@/assets/img/hs/card2.png'
-import card3 from '@/assets/img/hs/card3.png'
-import card4 from '@/assets/img/hs/card4.png'
-import card5 from '@/assets/img/hs/card5.png'
-import back from '@/assets/img/hs/back.png'
+import back from '/img/hs/back.png'
+import card1 from '/img/hs/card1.png'
+import card2 from '/img/hs/card2.png'
+import card3 from '/img/hs/card3.png'
+import card4 from '/img/hs/card4.png'
+import card5 from '/img/hs/card5.png'
 </script>
 
 <template>
