@@ -5,7 +5,7 @@ const shader: RouteRecordRaw = {
   path: '/shader-toturial',
   meta: {
     name: 'ShaderToturial',
-    des: '我受够无法实现我脑子里效果的状态了，痛苦啊！所以开了一个新坑来“系统”学习，follow bigwing',
+    des: '',
   },
   component: AppVue,
   children: [
