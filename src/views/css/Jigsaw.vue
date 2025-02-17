@@ -112,6 +112,5 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(auto-fill, 20px);
   grid-template-rows: repeat(auto-fill, 20px);
-
 }
 </style>
