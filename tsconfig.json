@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
-    // "types": ["vite/client"], // 默认自动引入node_modules/@types下所有类型，如果指定，则只引入那个，如果是[],都不引入
     "target": "ES6",
     "jsx": "preserve",
     "lib": ["ESNext", "DOM"],
     "useDefineForClassFields": true,
-    "module": "ES6",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
       "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "strict": true,
-    "sourceMap": false,
     "esModuleInterop": true,
-    "isolatedModules": true,
     "skipLibCheck": true
   },
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "include": ["env.d.ts", "src/**/*.d.ts"]
 }
